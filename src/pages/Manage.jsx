@@ -1,7 +1,9 @@
+import { containerStyle } from "./Quizzes";
+
 export default function Manage() {
 	return (
 		<>
-			<div className="container">
+			<div className={containerStyle}>
 				<div>Manage</div>
 			</div>
 		</>

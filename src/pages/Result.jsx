@@ -1,7 +1,9 @@
+import { containerStyle } from "./Quizzes";
+
 export default function Result() {
 	return (
 		<>
-			<div className="container">
+			<div className={containerStyle}>
 				<div>Result</div>
 			</div>
 		</>

@@ -1,7 +1,9 @@
+import { containerStyle } from "./Quizzes";
+
 export default function Create() {
 	return (
 		<>
-			<div className="container">
+			<div className={containerStyle}>
 				<div>Create</div>
 			</div>
 		</>
