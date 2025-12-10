@@ -1,4 +1,4 @@
-import Button from "./Button";
+import Button from "../UI/Button.jsx";
 
 export default function Description({ quiz, onClose }) {
 	return (

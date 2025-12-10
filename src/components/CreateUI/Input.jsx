@@ -1,7 +1,7 @@
-export default function Input({ placeholder, ...props }) {
+export default function Input({ placeholder, className = "", ...props }) {
 	return (
 		<>
-			<input type="text" placeholder={placeholder} {...props} />
+			<input type="text" placeholder={placeholder} className={className} {...props} />
 		</>
 	);
 }

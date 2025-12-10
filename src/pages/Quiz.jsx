@@ -1,6 +1,6 @@
 import Question from "../components/QuizUI/Question.jsx";
 import { useParams, useNavigate } from "react-router";
-import { getStorage } from "../services/storage.js";
+import { getStorage, setStorage } from "../services/storage.js";
 import { containerStyle } from "./Quizzes.jsx";
 
 export default function Quiz() {
@@ -69,10 +69,8 @@ export default function Quiz() {
 							questions: quiz.questions,
 						};
 
-						const storage = getStorage();
 						// store result
-						storage.results.push(result);
-						localStorage.setItem("storage", JSON.stringify(storage));
+						setStorage(result, "results");
 
 						if (allQuestionsAnswered) {
 							navigate("/result");

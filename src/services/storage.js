@@ -15,3 +15,10 @@ export function getStorage() {
 	const storage = localStorage.getItem(STORAGE_KEY);
 	return storage ? JSON.parse(storage) : [];
 }
+
+// Setting all quizzes
+export function setStorage(data, key) {
+	const storage = getStorage();
+	storage[key].push(data);
+	localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+}
