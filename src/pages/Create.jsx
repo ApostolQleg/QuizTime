@@ -18,7 +18,7 @@ export default function Create() {
 					placeholder="Enter quiz description here..."
 					className="w-full border border-gray-300 rounded text-white p-2 mb-4 h-10 resize-handle	"
 				/>
-				<Question></Question>
+				<Question id={0}></Question>
 			</div>
 		</>
 	);

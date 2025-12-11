@@ -9,7 +9,7 @@ export default function Option({ id, name, text, onDelete }) {
 				<Input
 					placeholder="Enter option text here..."
 					className="border border-gray-300 rounded text-white p-1 m-1 w-1/2"
-					value={text ? text : ""}
+					value={text ? text : null}
 				/>
 				<button
 					type="button"
