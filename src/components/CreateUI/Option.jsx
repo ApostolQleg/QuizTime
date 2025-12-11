@@ -8,7 +8,7 @@ export default function Option({ id, name, text, onDelete }) {
 				<Radio id={id} name={name} />
 				<Input
 					placeholder="Enter option text here..."
-					className="border border-gray-300 rounded text-white p-1 m-1 "
+					className="border border-gray-300 rounded text-white p-1 m-1 w-1/2"
 					value={text ? text : ""}
 				/>
 				<button
