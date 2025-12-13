@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Input from "./Input.jsx";
 import Option from "./Option.jsx";
+import Button from "../UI/Button.jsx";
 
 export default function Question({ id, onDelete }) {
 	const [options, setOptions] = useState([
@@ -20,16 +21,8 @@ export default function Question({ id, onDelete }) {
 	return (
 		<div className="p-4 border border-gray-300 rounded flex flex-col gap-2" id={id}>
 			<div className="flex flex-row justify-between items-center">
-				<Input
-					placeholder="Enter question text here..."
-					className="border border-gray-300 rounded text-white p-2 m-2 w-3/4"
-				/>
-				<button
-					className="bg-pink-600 text-black rounded-2xl transition hover:bg-pink-500 flex items-center justify-center px-4 py-2"
-					onClick={onDelete}
-				>
-					Delete
-				</button>
+				<Input placeholder="Enter question text here..." className=" m-2 w-3/4" />
+				<Button onClick={onDelete}>Delete</Button>
 			</div>
 			{options.map((option) => (
 				<Option
@@ -40,13 +33,7 @@ export default function Question({ id, onDelete }) {
 					onDelete={() => handleOptionDelete(option.id)}
 				/>
 			))}
-			<button
-				type="button"
-				className="bg-pink-600 text-black rounded-2xl transition hover:bg-pink-500 flex items-center justify-center px-4 py-2"
-				onClick={handleAddOption}
-			>
-				Add Option
-			</button>
+			<Button onClick={handleAddOption}>Add Option</Button>
 		</div>
 	);
 }

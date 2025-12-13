@@ -1,6 +1,7 @@
 import { containerStyle } from "./Quizzes";
 import Question from "../components/CreateUI/Question";
 import Input from "../components/CreateUI/Input.jsx";
+import Button from "../components/UI/Button.jsx";
 import Textarea from "../components/CreateUI/Textarea.jsx";
 import { useState } from "react";
 
@@ -18,21 +19,9 @@ export default function Create() {
 
 	return (
 		<div className={containerStyle + " flex flex-col gap-4"}>
-			<Input
-				placeholder="Enter quiz title here..."
-				className="w-full border border-gray-300 rounded text-white p-2 text-[20px]"
-			/>
-			<Textarea
-				placeholder="Enter quiz description here..."
-				className="w-full border border-gray-300 rounded text-white p-2 h-10 resize-handle"
-			/>
-			<button
-				type="button"
-				className="bg-pink-600 text-black rounded-2xl transition hover:bg-pink-500 flex items-center justify-center px-4 py-2"
-				onClick={handleAddQuestions}
-			>
-				Add Question
-			</button>
+			<Input placeholder="Enter quiz title here..." className="text-[20px]" />
+			<Textarea placeholder="Enter quiz description here..." className="h-10 resize-handle" />
+			<Button onClick={handleAddQuestions}>Add Question</Button>
 			{questions.map((question) => (
 				<Question
 					id={question.id}

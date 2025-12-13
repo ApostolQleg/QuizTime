@@ -1,15 +1,10 @@
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
-export default function Button({ text, to, className = "" }) {
+export default function Button({ children, className = "", to, onClick }) {
+	const navigate = useNavigate();
 	return (
-		<Link
-			className={
-				`${className}` +
-				" bg-pink-600 text-black rounded-2xl transition hover:bg-pink-500 flex items-center justify-center px-4 py-2"
-			}
-			to={to}
-		>
-			{text}
-		</Link>
+		<button className={`${className} button`} onClick={onClick ? onClick : () => navigate(to)}>
+			{children}
+		</button>
 	);
 }

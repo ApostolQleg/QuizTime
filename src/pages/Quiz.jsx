@@ -1,4 +1,5 @@
 import Question from "../components/QuizUI/Question.jsx";
+import Button from "../components/UI/Button.jsx";
 import { useParams, useNavigate } from "react-router";
 import { getStorage, setStorage } from "../services/storage.js";
 import { containerStyle } from "./Quizzes.jsx";
@@ -20,9 +21,7 @@ export default function Quiz() {
 						{question.text}
 					</Question>
 				))}
-				<button
-					type="button"
-					className="min-w-20 mx-auto bg-[rgb(255,0,98)] text-white px-5 py-2 rounded-xl text-[16px] text-center"
+				<Button
 					onClick={() => {
 						let allQuestionsAnswered = true;
 						// gather answers
@@ -78,7 +77,7 @@ export default function Quiz() {
 					}}
 				>
 					Submit
-				</button>
+				</Button>
 			</div>
 		</>
 	);

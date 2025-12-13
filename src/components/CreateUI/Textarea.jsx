@@ -3,10 +3,9 @@ export default function Textarea({ placeholder, className = "", ...props }) {
 		<>
 			<textarea
 				placeholder={placeholder}
-				className={className}
+				className={`${className} input`}
 				{...props}
 				onChange={(area) => {
-					area.target.style.height = "auto";
 					area.target.style.height = area.target.scrollHeight + "px";
 				}}
 			/>

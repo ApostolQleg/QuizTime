@@ -4,6 +4,13 @@
 	.image-pixel {
 		image-rendering: pixelated;
 	}
+	.button {
+		@apply bg-pink-600 rounded-xl transition hover:bg-pink-500 flex items-center justify-center px-4 py-2 max-w-max;
+	}
+
+	.input {
+		@apply border border-gray-300 rounded text-white p-2;
+	}
 }
 
 @layer base {
