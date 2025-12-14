@@ -147,13 +147,7 @@ export default function Create() {
 					}
 				/>
 			))}
-			<Button
-				className="self-center mt-auto min-w-full"
-				onClick={() => {
-					handleSaveQuiz();
-					console.log(JSON.stringify({ title, description, questions }));
-				}}
-			>
+			<Button className="self-center mt-auto min-w-full" onClick={handleSaveQuiz}>
 				Save Quiz
 			</Button>
 		</Container>
