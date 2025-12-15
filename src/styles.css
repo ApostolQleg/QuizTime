@@ -7,6 +7,9 @@
 	.button {
 		@apply bg-pink-600 rounded-xl transition hover:bg-pink-500 flex items-center justify-center px-4 py-2 w-max;
 	}
+	.quiz-card {
+		@apply bg-[rgb(233,14,178)] text-2xl rounded-3xl max-h-[400px] max-w-[400px] aspect-square w-full flex items-center justify-center text-center hover:scale-105 transition-all shadow-[0_0_10px_rgba(114,0,104,0.692)];
+	}
 	.input {
 		@apply border border-gray-300 rounded text-white p-2 min-w-0;
 	}

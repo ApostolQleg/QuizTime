@@ -14,7 +14,7 @@ export default function Description({ quiz, onClose }) {
 				</div>
 
 				<div className="flex justify-between">
-					<Button to="/manage">Manage</Button>
+					<Button to={`/manage/${quiz.id}`}>Manage</Button>
 					<Button to={`/quiz/${quiz.id}`}>Start Quiz</Button>
 					<Button onClick={onClose}>Delete</Button>
 				</div>

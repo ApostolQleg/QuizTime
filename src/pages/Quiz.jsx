@@ -6,10 +6,11 @@ import Button from "../components/UI/Button.jsx";
 import Container from "../components/UI/Container.jsx";
 
 export default function Quiz() {
-	const params = useParams();
 	const navigate = useNavigate();
-	const [answers, setAnswers] = useState([]);
+	const params = useParams();
 	const quiz = getStorage().quizzes.find((quiz) => quiz.id.toString() === params.quizId);
+	const isResultPage = window.location.pathname.endsWith("/result");
+	const [answers, setAnswers] = useState([]);
 
 	const handleSubmit = () => {
 		let allQuestionsAnswered = true;
@@ -67,8 +68,6 @@ export default function Quiz() {
 	if (!quiz) {
 		return navigate("/not-found");
 	}
-
-	const isResultPage = window.location.pathname.endsWith("/result");
 
 	return (
 		<>

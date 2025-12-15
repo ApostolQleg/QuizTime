@@ -1,27 +1,34 @@
+import { useNavigate, useParams } from "react-router";
+import { getStorage, setStorage } from "../services/storage.js";
 import { useState } from "react";
-import { useNavigate } from "react-router";
-import { setStorage } from "../services/storage.js";
-import Question from "../components/Create/Question.jsx";
+import Question from "../components/Edit/Question.jsx";
 import Input from "../components/UI/Input.jsx";
 import Button from "../components/UI/Button.jsx";
 import Textarea from "../components/UI/Textarea.jsx";
 import Container from "../components/UI/Container.jsx";
 
-export default function Create() {
+export default function Edit() {
 	const navigate = useNavigate();
+	const params = useParams();
+	const isManagePage = window.location.pathname.startsWith("/manage");
+	const quiz = getStorage().quizzes.find((quiz) => quiz.id.toString() === params.quizId);
 
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
-	const [questions, setQuestions] = useState([
-		{
-			id: 0,
-			text: "",
-			options: [
-				{ id: 0, text: "Так", isCorrect: false },
-				{ id: 1, text: "Ні", isCorrect: false },
-			],
-		},
-	]);
+	const [questions, setQuestions] = useState(
+		quiz
+			? quiz.questions
+			: [
+					{
+						id: 0,
+						text: "",
+						options: [
+							{ id: 0, text: "Так", isCorrect: false },
+							{ id: 1, text: "Ні", isCorrect: false },
+						],
+					},
+			  ]
+	);
 	const [errors, setErrors] = useState({
 		title: false,
 		description: false,
@@ -152,6 +159,10 @@ export default function Create() {
 
 		navigate("/");
 	};
+
+	if (isManagePage && !quiz) {
+		return navigate("/not-found");
+	}
 
 	return (
 		<Container className={"flex flex-col gap-4 flex-1"}>
