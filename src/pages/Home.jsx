@@ -7,8 +7,10 @@ import Container from "../components/UI/Container.jsx";
 
 export default function Home() {
 	const [selectedQuiz, setSelectedQuiz] = useState(null);
-	``;
-	const quizzes = getStorage().quizzes;
+
+	const isResultsPage = window.location.pathname === "/results";
+
+	const quizzes = isResultsPage ? getStorage().results : getStorage().quizzes;
 
 	return (
 		<Container
@@ -16,9 +18,11 @@ export default function Home() {
 				"grid gap-6 lg:gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 items-center justify-items-center"
 			}
 		>
-			<Link to="/create" id={`quiz-add`} className="quiz-card">
-				<img src={addIcon} alt="Add Quiz" className="w-1/2 h-1/2" />
-			</Link>
+			{isResultsPage ? null : (
+				<Link to="/create" id={`quiz-add`} className="quiz-card">
+					<img src={addIcon} alt="Add Quiz" className="w-1/2 h-1/2" />
+				</Link>
+			)}
 
 			{quizzes.map((quiz) => (
 				<button
@@ -30,7 +34,7 @@ export default function Home() {
 					{" "}
 					{quiz.title}
 					<br />
-					{`Questions: ${quiz.questions.length}`}{" "}
+					{`Questions: ${quiz.questions.length}`}
 				</button>
 			))}
 
