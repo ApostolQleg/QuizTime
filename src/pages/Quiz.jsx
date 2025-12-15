@@ -9,7 +9,7 @@ export default function Quiz() {
 	const navigate = useNavigate();
 	const params = useParams();
 	const quiz = getStorage().quizzes.find((quiz) => quiz.id.toString() === params.quizId);
-	const isResultPage = window.location.pathname.endsWith("/result");
+	const isResultPage = window.location.pathname.startsWith("/result");
 	const [answers, setAnswers] = useState([]);
 
 	const handleSubmit = () => {
@@ -53,6 +53,7 @@ export default function Quiz() {
 		const result = {
 			timestamp: new Date().toISOString(),
 			title: quiz.title,
+			id: quiz.id,
 			summary: summary,
 			answers: newAnswers,
 			questions: quiz.questions,
@@ -61,7 +62,7 @@ export default function Quiz() {
 		setStorage(result, "results");
 
 		if (allQuestionsAnswered) {
-			navigate(`/quiz/${params.quizId}/result`);
+			navigate(`/result/${params.quizId}`);
 		}
 	};
 

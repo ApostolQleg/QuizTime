@@ -1,16 +1,29 @@
 import { getStorage } from "../services/storage.js";
 import { useState } from "react";
-import { Link } from "react-router";
+import { useNavigate, Link } from "react-router";
 import addIcon from "../assets/plus-icon.png";
 import Description from "../components/Home/Description.jsx";
 import Container from "../components/UI/Container.jsx";
 
 export default function Home() {
+	const navigate = useNavigate();
+
 	const [selectedQuiz, setSelectedQuiz] = useState(null);
 
 	const isResultsPage = window.location.pathname === "/results";
+	const isHelpPage = window.location.pathname === "/help";
 
 	const quizzes = isResultsPage ? getStorage().results : getStorage().quizzes;
+
+	if (isHelpPage) {
+		return (
+			<Container>
+				<div className="text-center text-white col-span-full">
+					Here is an information section for new users.
+				</div>
+			</Container>
+		);
+	}
 
 	return (
 		<Container
@@ -24,12 +37,16 @@ export default function Home() {
 				</Link>
 			)}
 
-			{quizzes.map((quiz) => (
+			{quizzes.map((quiz, qIndex) => (
 				<button
 					type="button"
-					key={quiz.id}
+					key={qIndex}
 					className="quiz-card"
-					onClick={() => setSelectedQuiz(quiz)}
+					onClick={
+						isResultsPage
+							? () => navigate(`/result/${quiz.id}`)
+							: () => setSelectedQuiz(quiz)
+					}
 				>
 					{" "}
 					{quiz.title}
@@ -40,6 +57,12 @@ export default function Home() {
 
 			{selectedQuiz && (
 				<Description quiz={selectedQuiz} onClose={() => setSelectedQuiz(null)} />
+			)}
+
+			{isResultsPage && quizzes.length === 0 && (
+				<div className="text-center text-white col-span-full">
+					You have no quiz results yet. Take some quizzes first!
+				</div>
 			)}
 		</Container>
 	);

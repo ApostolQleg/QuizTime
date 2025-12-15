@@ -627,34 +627,5 @@ export const defaultQuizzes = {
 		},
 	],
 	// --- Секція результатів залишається без змін (для прикладу) ---
-	results: [
-		{
-			timestamp: "2026-06-06T03:06:06Z",
-			title: "Тест з англійської мови (A1)",
-			summary: 2,
-			answers: [[1], [2]],
-			questions: [
-				{
-					id: 0,
-					text: "Як сказати 'яблуко' англійською?",
-					options: [
-						{ text: "pear", id: 0, isCorrect: false },
-						{ text: "apple", id: 1, isCorrect: true },
-						{ text: "orange", id: 2, isCorrect: false },
-						{ text: "banana", id: 3, isCorrect: false },
-					],
-				},
-				{
-					id: 1,
-					text: "Оберіть правильне дієслово: 'They ___ from Ukraine.'",
-					options: [
-						{ text: "is", id: 0, isCorrect: false },
-						{ text: "am", id: 1, isCorrect: false },
-						{ text: "are", id: 2, isCorrect: true },
-						{ text: "be", id: 3, isCorrect: false },
-					],
-				},
-			],
-		},
-	],
+	results: [],
 };
