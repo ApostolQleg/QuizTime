@@ -13,8 +13,8 @@ export default function Edit() {
 	const isManagePage = window.location.pathname.startsWith("/manage");
 	const quiz = getStorage().quizzes.find((quiz) => quiz.id.toString() === params.quizId);
 
-	const [title, setTitle] = useState("");
-	const [description, setDescription] = useState("");
+	const [title, setTitle] = useState(quiz ? quiz.title : "");
+	const [description, setDescription] = useState(quiz ? quiz.description : "");
 	const [questions, setQuestions] = useState(
 		quiz
 			? quiz.questions
