@@ -127,6 +127,7 @@ export default function Edit() {
 	};
 
 	const handleSaveQuiz = () => {
+		// validate inputs
 		const newErrors = {
 			title: title.trim() === "",
 			description: description.trim() === "",
@@ -141,6 +142,13 @@ export default function Edit() {
 				return acc;
 			}, {}),
 		};
+		//validate radio buttons
+		questions.forEach((question) => {
+			const hasCorrectOption = question.options.some((option) => option.isCorrect);
+			if (!hasCorrectOption) {
+				newErrors.questions[question.id].hasRadioError = true;
+			}
+		});
 
 		setErrors(newErrors);
 
@@ -150,6 +158,7 @@ export default function Edit() {
 			Object.values(newErrors.questions).some(
 				(question) =>
 					question.hasError ||
+					question.hasRadioError ||
 					Object.values(question.options).some((option) => option.hasError)
 			);
 
@@ -167,7 +176,7 @@ export default function Edit() {
 
 	return (
 		<Container className={"flex flex-col gap-4 flex-1"}>
-			<div className="w-3/4 flex flex-row gap-2 justify-between items-center">
+			<div className="w-full flex flex-row gap-2 justify-between items-center">
 				<Input
 					placeholder="Enter quiz title here..."
 					className={`text-[20px] w-3/4 ${errors.title ? "input-error" : ""}`}
@@ -191,7 +200,7 @@ export default function Edit() {
 			</div>
 			<Textarea
 				placeholder="Enter quiz description here..."
-				className={`h-10 resize-handle w-3/4 ${errors.description ? "input-error" : ""}`}
+				className={`h-10 resize-handle w-full ${errors.description ? "input-error" : ""}`}
 				value={description}
 				onChange={(e) => setDescription(e.target.value)}
 			/>
