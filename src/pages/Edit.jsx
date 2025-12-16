@@ -34,6 +34,7 @@ export default function Edit() {
 		description: false,
 		questions: [],
 	});
+	const [counter, setCounter] = useState(0);
 
 	const handleQuestionAdd = () => {
 		const newId = questions.length ? questions[questions.length - 1].id + 1 : 0;
@@ -166,19 +167,35 @@ export default function Edit() {
 
 	return (
 		<Container className={"flex flex-col gap-4 flex-1"}>
-			<Input
-				placeholder="Enter quiz title here..."
-				className={`text-[20px] ${errors.title ? "input-error" : ""}`}
-				value={title}
-				onChange={(e) => setTitle(e.target.value)}
-			/>
+			<div className="w-3/4 flex flex-row gap-2 justify-between items-center">
+				<Input
+					placeholder="Enter quiz title here..."
+					className={`text-[20px] w-3/4 ${errors.title ? "input-error" : ""}`}
+					value={title}
+					onChange={(e) => {
+						const newValue = e.target.value.slice(0, 30);
+						setTitle(newValue);
+						setCounter(newValue.length);
+					}}
+					maxLength="30"
+				/>
+				<div className="text-white text-[20px]">{counter}/30</div>
+				<Button
+					onClick={() => {
+						setTitle("");
+						setCounter(0);
+					}}
+				>
+					Clear
+				</Button>
+			</div>
 			<Textarea
 				placeholder="Enter quiz description here..."
-				className={`h-10 resize-handle ${errors.description ? "input-error" : ""}`}
+				className={`h-10 resize-handle w-3/4 ${errors.description ? "input-error" : ""}`}
 				value={description}
 				onChange={(e) => setDescription(e.target.value)}
 			/>
-			<Button onClick={handleQuestionAdd}>Add Question</Button>
+
 			{questions.map((question) => (
 				<Question
 					id={question.id}
@@ -196,6 +213,7 @@ export default function Edit() {
 					}
 				/>
 			))}
+			<Button onClick={handleQuestionAdd}>Add Question</Button>
 			<Button className="self-center mt-auto min-w-full" onClick={handleSaveQuiz}>
 				Save Quiz
 			</Button>

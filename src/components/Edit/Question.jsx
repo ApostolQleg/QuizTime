@@ -15,7 +15,7 @@ export default function Question({
 	onOptionChange,
 }) {
 	return (
-		<div className="w-[95%] p-4 rounded-2xl flex flex-col gap-2 border border-gray-300" id={id}>
+		<div className="w-3/4 p-4 rounded-2xl flex flex-col gap-2 border border-gray-300" id={id}>
 			<div className="flex flex-row justify-between items-center">
 				<Input
 					placeholder="Enter question text here..."
