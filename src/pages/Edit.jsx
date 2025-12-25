@@ -164,8 +164,15 @@ export default function Edit() {
 
 		if (hasErrors) return;
 
-		const quiz = { title, description, id: Date.now().toString(), questions };
-		setStorage(quiz, "quizzes");
+		if (isManagePage) {
+			const updatedQuizzes = getStorage().quizzes.map((q) =>
+				q.id === quiz.id ? { ...q, title, description, questions } : q
+			);
+			setStorage({ quizzes: updatedQuizzes });
+		} else {
+			const quiz = { title, description, id: Date.now().toString(), questions };
+			setStorage(quiz, "quizzes");
+		}
 
 		navigate("/");
 	};
