@@ -44,7 +44,7 @@ export default function Home() {
 					className="quiz-card"
 					onClick={
 						isResultsPage
-							? () => navigate(`/result/${quiz.id}`)
+							? () => navigate(`/result/${quiz.id}/${quiz.timestamp}`)
 							: () => setSelectedQuiz(quiz)
 					}
 				>

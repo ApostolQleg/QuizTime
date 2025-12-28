@@ -37,96 +37,96 @@ export const defaultQuizzes = {
 						{ text: "Жовтий", id: 3, isCorrect: false },
 					],
 				},
-				{
-					id: 3,
-					text: "Яке число йде після 'two'?",
-					options: [
-						{ text: "one", id: 0, isCorrect: false },
-						{ text: "three", id: 1, isCorrect: true },
-						{ text: "four", id: 2, isCorrect: false },
-						{ text: "five", id: 3, isCorrect: false },
-					],
-				},
-				{
-					id: 4,
-					text: "Оберіть правильний займенник: '___ is my sister.'",
-					options: [
-						{ text: "He", id: 0, isCorrect: false },
-						{ text: "She", id: 1, isCorrect: true },
-						{ text: "It", id: 2, isCorrect: false },
-						{ text: "You", id: 3, isCorrect: false },
-					],
-				},
-				{
-					id: 5,
-					text: "Як сказати 'кіт' англійською?",
-					options: [
-						{ text: "dog", id: 0, isCorrect: false },
-						{ text: "bird", id: 1, isCorrect: false },
-						{ text: "cat", id: 2, isCorrect: true },
-						{ text: "mouse", id: 3, isCorrect: false },
-					],
-				},
-				{
-					id: 6,
-					text: "Антонім до слова 'big' (великий):",
-					options: [
-						{ text: "large", id: 0, isCorrect: false },
-						{ text: "small", id: 1, isCorrect: true },
-						{ text: "huge", id: 2, isCorrect: false },
-						{ text: "tall", id: 3, isCorrect: false },
-					],
-				},
-				{
-					id: 7,
-					text: "Вставте артикль: 'I have ___ car.'",
-					options: [
-						{ text: "a", id: 0, isCorrect: true },
-						{ text: "an", id: 1, isCorrect: false },
-						{ text: "two", id: 2, isCorrect: false },
-						{ text: "many", id: 3, isCorrect: false },
-					],
-				},
-				{
-					id: 8,
-					text: "Як перекладається 'Good morning'?",
-					options: [
-						{ text: "Добрий вечір", id: 0, isCorrect: false },
-						{ text: "На добраніч", id: 1, isCorrect: false },
-						{ text: "Добрий ранок", id: 2, isCorrect: true },
-						{ text: "Привіт", id: 3, isCorrect: false },
-					],
-				},
-				{
-					id: 9,
-					text: "Оберіть день тижня:",
-					options: [
-						{ text: "January", id: 0, isCorrect: false },
-						{ text: "Monday", id: 1, isCorrect: true },
-						{ text: "Spring", id: 2, isCorrect: false },
-						{ text: "Morning", id: 3, isCorrect: false },
-					],
-				},
-				{
-					id: 10,
-					text: "Як сказати 'дякую'?",
-					options: [
-						{ text: "Please", id: 0, isCorrect: false },
-						{ text: "Sorry", id: 1, isCorrect: false },
-						{ text: "Thank you", id: 2, isCorrect: true },
-						{ text: "Excuse me", id: 3, isCorrect: false },
-					],
-				},
-				{
-					id: 11,
-					text: "Оберіть правильну форму: 'I ___ (like) pizza.'",
-					options: [
-						{ text: "likes", id: 0, isCorrect: false },
-						{ text: "like", id: 1, isCorrect: true },
-						{ text: "liking", id: 2, isCorrect: false },
-						{ text: "to like", id: 3, isCorrect: false },
-					],
-				},
+				// {
+				// 	id: 3,
+				// 	text: "Яке число йде після 'two'?",
+				// 	options: [
+				// 		{ text: "one", id: 0, isCorrect: false },
+				// 		{ text: "three", id: 1, isCorrect: true },
+				// 		{ text: "four", id: 2, isCorrect: false },
+				// 		{ text: "five", id: 3, isCorrect: false },
+				// 	],
+				// },
+				// {
+				// 	id: 4,
+				// 	text: "Оберіть правильний займенник: '___ is my sister.'",
+				// 	options: [
+				// 		{ text: "He", id: 0, isCorrect: false },
+				// 		{ text: "She", id: 1, isCorrect: true },
+				// 		{ text: "It", id: 2, isCorrect: false },
+				// 		{ text: "You", id: 3, isCorrect: false },
+				// 	],
+				// },
+				// {
+				// 	id: 5,
+				// 	text: "Як сказати 'кіт' англійською?",
+				// 	options: [
+				// 		{ text: "dog", id: 0, isCorrect: false },
+				// 		{ text: "bird", id: 1, isCorrect: false },
+				// 		{ text: "cat", id: 2, isCorrect: true },
+				// 		{ text: "mouse", id: 3, isCorrect: false },
+				// 	],
+				// },
+				// {
+				// 	id: 6,
+				// 	text: "Антонім до слова 'big' (великий):",
+				// 	options: [
+				// 		{ text: "large", id: 0, isCorrect: false },
+				// 		{ text: "small", id: 1, isCorrect: true },
+				// 		{ text: "huge", id: 2, isCorrect: false },
+				// 		{ text: "tall", id: 3, isCorrect: false },
+				// 	],
+				// },
+				// {
+				// 	id: 7,
+				// 	text: "Вставте артикль: 'I have ___ car.'",
+				// 	options: [
+				// 		{ text: "a", id: 0, isCorrect: true },
+				// 		{ text: "an", id: 1, isCorrect: false },
+				// 		{ text: "two", id: 2, isCorrect: false },
+				// 		{ text: "many", id: 3, isCorrect: false },
+				// 	],
+				// },
+				// {
+				// 	id: 8,
+				// 	text: "Як перекладається 'Good morning'?",
+				// 	options: [
+				// 		{ text: "Добрий вечір", id: 0, isCorrect: false },
+				// 		{ text: "На добраніч", id: 1, isCorrect: false },
+				// 		{ text: "Добрий ранок", id: 2, isCorrect: true },
+				// 		{ text: "Привіт", id: 3, isCorrect: false },
+				// 	],
+				// },
+				// {
+				// 	id: 9,
+				// 	text: "Оберіть день тижня:",
+				// 	options: [
+				// 		{ text: "January", id: 0, isCorrect: false },
+				// 		{ text: "Monday", id: 1, isCorrect: true },
+				// 		{ text: "Spring", id: 2, isCorrect: false },
+				// 		{ text: "Morning", id: 3, isCorrect: false },
+				// 	],
+				// },
+				// {
+				// 	id: 10,
+				// 	text: "Як сказати 'дякую'?",
+				// 	options: [
+				// 		{ text: "Please", id: 0, isCorrect: false },
+				// 		{ text: "Sorry", id: 1, isCorrect: false },
+				// 		{ text: "Thank you", id: 2, isCorrect: true },
+				// 		{ text: "Excuse me", id: 3, isCorrect: false },
+				// 	],
+				// },
+				// {
+				// 	id: 11,
+				// 	text: "Оберіть правильну форму: 'I ___ (like) pizza.'",
+				// 	options: [
+				// 		{ text: "likes", id: 0, isCorrect: false },
+				// 		{ text: "like", id: 1, isCorrect: true },
+				// 		{ text: "liking", id: 2, isCorrect: false },
+				// 		{ text: "to like", id: 3, isCorrect: false },
+				// 	],
+				// },
 			],
 		},
 		// --- ТЕСТ 2: Англійська мова (A2) ---

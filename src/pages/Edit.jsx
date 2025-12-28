@@ -186,7 +186,7 @@ export default function Edit() {
 			<div className="w-full flex flex-row gap-2 justify-between items-center">
 				<Input
 					placeholder="Enter quiz title here..."
-					className={`text-[20px] w-3/4 ${errors.title ? "input-error" : ""}`}
+					className={`text-[20px] w-3/4 ${errors.title ? "error" : ""}`}
 					value={title}
 					onChange={(e) => {
 						const newValue = e.target.value.slice(0, 30);
@@ -208,7 +208,7 @@ export default function Edit() {
 			</div>
 			<Textarea
 				placeholder="Enter quiz description here..."
-				className={`h-10 resize-handle w-full ${errors.description ? "input-error" : ""}`}
+				className={`h-10 resize-handle w-full ${errors.description ? "error" : ""}`}
 				value={description}
 				onChange={(e) => setDescription(e.target.value)}
 			/>

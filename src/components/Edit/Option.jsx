@@ -23,7 +23,7 @@ export default function Option({
 				/>
 				<Input
 					placeholder="Enter option text here..."
-					className={`${errors?.hasError ? "input-error" : ""}`}
+					className={`${errors?.hasError ? "error" : ""}`}
 					value={text}
 					onChange={onChange}
 				/>

@@ -15,11 +15,11 @@ export default function Question({
 	onOptionChange,
 }) {
 	return (
-		<div className={`w-full p-4 rounded-2xl flex flex-col gap-2 border border-gray-300 ${errors?.hasRadioError ? "radio-error" : ""}`} id={id}>
+		<div className={`w-full p-4 rounded-2xl flex flex-col gap-2 border border-gray-300 ${errors?.hasRadioError ? "error" : ""}`} id={id}>
 			<div className="flex flex-row justify-between items-center">
 				<Input
 					placeholder="Enter question text here..."
-					className={`m-2 w-3/4 ${errors?.hasError ? "input-error" : ""}`}
+					className={`m-2 w-3/4 ${errors?.hasError ? "error" : ""}`}
 					value={text}
 					onChange={onChange}
 				/>
