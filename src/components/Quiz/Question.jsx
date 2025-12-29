@@ -1,8 +1,14 @@
 import Option from "./Option.jsx";
 
-export default function Question({ question, className, isResultPage, onOptionSelect, error, selected }) {
+export default function Question({
+	question,
+	className,
+	isResultPage,
+	onOptionSelect,
+	error,
+	selected,
+}) {
 	const options = question.options;
-	console.log(selected);
 	return (
 		<div className={error ? `quiz-error ${className}` : className}>
 			{question.text}
@@ -13,10 +19,10 @@ export default function Question({ question, className, isResultPage, onOptionSe
 					name={question.id}
 					value={option.id}
 					text={option.text}
-					isResultPage={isResultPage}
+					disabled={isResultPage}
 					onChange={() => onOptionSelect(option.id)}
 					isCorrect={option.isCorrect}
-					selected={selected && selected[0] === option.id}
+					selected={selected && selected.includes(option.id)}
 				/>
 			))}
 		</div>
