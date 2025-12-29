@@ -36,7 +36,7 @@ export default function Quiz() {
 				.filter((option) => option.isCorrect)
 				.map((option) => option.id);
 
-			const selectedOptionIds = answers[qIndex] || [];
+			const selectedOptionIds = Array.isArray(answers[qIndex]) ? answers[qIndex] : (answers[qIndex] !== undefined ? [answers[qIndex]] : []);
 			if (answers[qIndex] === undefined) {
 				allQuestionsAnswered = false;
 			}
@@ -95,6 +95,7 @@ export default function Quiz() {
 						isResultPage={isResultPage}
 						onOptionSelect={(optionId) => handleRadioUpdate(index, optionId)}
 						error = {errors[index]}
+						selected={isResultPage ? result?.answers?.[index] : answers[index]}
 					>
 						{question.text}
 					</Question>
