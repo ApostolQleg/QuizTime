@@ -36,7 +36,7 @@ export default function Quiz() {
 				.filter((option) => option.isCorrect)
 				.map((option) => option.id);
 
-			const selectedOptionIds = Array.isArray(answers[qIndex]) ? answers[qIndex] : (answers[qIndex] !== undefined ? [answers[qIndex]] : []);
+			const selectedOptionIds = answers[qIndex] || [];
 			if (answers[qIndex] === undefined) {
 				allQuestionsAnswered = false;
 			}
