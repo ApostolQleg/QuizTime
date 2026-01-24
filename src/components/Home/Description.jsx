@@ -1,17 +1,18 @@
-import { getStorage, setStorage } from "../../services/storage.js";
+import { deleteQuiz } from "../../services/storage.js"; // Імпортуємо нову функцію видалення
 import Button from "../UI/Button.jsx";
 
 export default function Description({ quiz, onClose }) {
 	const handleDelete = async () => {
 		try {
-			const data = await getStorage();
-			const updatedQuizzes = (data.quizzes || []).filter((q) => q.id !== quiz.id);
-			const newData = { ...data, quizzes: updatedQuizzes };
-			await setStorage(newData);
+			// Тепер це один легкий запит на сервер
+			await deleteQuiz(quiz.id);
+
 			onClose();
+			// Перезавантажуємо сторінку, щоб список квізів оновився
 			window.location.reload();
 		} catch (error) {
 			console.error("Помилка при видаленні:", error);
+			alert("Не вдалося видалити квіз. Спробуйте пізніше.");
 		}
 	};
 
@@ -28,6 +29,7 @@ export default function Description({ quiz, onClose }) {
 				</div>
 
 				<div className="flex justify-between">
+					{/* Використовуємо quiz.id, бо в базі це кастомний рядок, наприклад "1738493..." */}
 					<Button to={`/manage/${quiz.id}`}>Manage</Button>
 					<Button to={`/quiz/${quiz.id}`}>Start Quiz</Button>
 					<Button onClick={handleDelete}>Delete</Button>
