@@ -1,69 +1,75 @@
 import { useParams, useNavigate } from "react-router";
-import { getStorage, setStorage } from "../services/storage.js";
-import { useState, useEffect, useMemo } from "react";
+import { getQuizById, saveResult, getResultById } from "../services/storage.js";
+import { useState, useEffect } from "react";
 import Question from "../components/Quiz/Question.jsx";
 import Button from "../components/UI/Button.jsx";
 import Container from "../components/UI/Container.jsx";
 
 export default function Quiz() {
 	const navigate = useNavigate();
-	const { quizId, timestamp } = useParams();
+	const { quizId, resultIdParam } = useParams();
 
-	const [storage, setLocalStorage] = useState(null);
 	const [loading, setLoading] = useState(true);
 
+	// Дані для відображення
+	const [quizData, setQuizData] = useState(null); // Тут буде інфа про квіз (title, questions)
+	const [resultData, setResultData] = useState(null); // Тут буде інфа про результат (якщо переглядаємо)
+
 	const [answers, setAnswers] = useState([]);
-	const [localResult, setLocalResult] = useState(null);
 	const [errors, setErrors] = useState({});
 
-	const isResultPage = Boolean(timestamp);
+	// Якщо є другий параметр в URL - значить це сторінка результатів
+	const isResultPage = Boolean(resultIdParam);
 
 	useEffect(() => {
-		getStorage()
-			.then((data) => {
-				setLocalStorage(data);
-				setLoading(false);
-			})
-			.catch(() => {
-				setLoading(false);
+		const loadData = async () => {
+			try {
+				if (isResultPage) {
+					// РЕЖИМ ПЕРЕГЛЯДУ РЕЗУЛЬТАТУ
+					// Вантажимо результат по ID (resultIdParam)
+					const res = await getResultById(resultIdParam);
+
+					setResultData(res);
+					// У нашому новому Result об'єкті вже є масив 'questions' (історія)
+					// Тому нам не обов'язково вантажити окремо Quiz, ми можемо взяти питання з результату
+					setQuizData({
+						title: res.quizTitle,
+						questions: res.questions, // Беремо "заморожені" питання з історії
+					});
+				} else {
+					// РЕЖИМ ПРОХОДЖЕННЯ
+					// Вантажимо свіжий квіз
+					const quiz = await getQuizById(quizId);
+					setQuizData(quiz);
+				}
+			} catch (error) {
+				console.error("Failed to load data", error);
 				navigate("/not-found");
-			});
-	}, [navigate]);
+			} finally {
+				setLoading(false);
+			}
+		};
 
-	const quiz = useMemo(() => {
-		if (!storage) return null;
-		return storage.quizzes.find((q) => q.id.toString() === quizId) || null;
-	}, [storage, quizId]);
-
-	const historicalResult = useMemo(() => {
-		if (!storage || !isResultPage) return null;
-		return storage.results.find((r) => r.timestamp.toString() === timestamp) || null;
-	}, [storage, isResultPage, timestamp]);
-
-	const activeResult = historicalResult || localResult;
-
-	useEffect(() => {
-		if (!loading && !quiz) {
-			navigate("/not-found");
-		}
-	}, [loading, quiz, navigate]);
+		loadData();
+	}, [quizId, resultIdParam, isResultPage, navigate]);
 
 	const handleRadioUpdate = (qIndex, oIndex) => {
 		const newAnswers = [...answers];
 		newAnswers[qIndex] = [oIndex];
 		setAnswers(newAnswers);
-		// Скидаємо помилку при виборі
 		if (errors[qIndex]) {
 			setErrors((prev) => ({ ...prev, [qIndex]: false }));
 		}
 	};
 
 	const handleSubmit = async () => {
-		// Перевірка, чи всі питання мають відповіді
+		if (!quizData) return;
+
+		// Валідація
 		let allAnswered = true;
 		const newErrors = {};
 
-		quiz.questions.forEach((_, i) => {
+		quizData.questions.forEach((_, i) => {
 			if (!answers[i] || answers[i].length === 0) {
 				allAnswered = false;
 				newErrors[i] = true;
@@ -73,9 +79,9 @@ export default function Quiz() {
 		setErrors(newErrors);
 		if (!allAnswered) return;
 
-		// Підрахунок результату
-		let summary = 0;
-		quiz.questions.forEach((question, qIndex) => {
+		// Підрахунок
+		let score = 0;
+		quizData.questions.forEach((question, qIndex) => {
 			const correctIds = question.options.filter((o) => o.isCorrect).map((o) => o.id);
 			const selectedIds = answers[qIndex] || [];
 
@@ -83,49 +89,54 @@ export default function Quiz() {
 				correctIds.length === selectedIds.length &&
 				correctIds.every((id) => selectedIds.includes(id))
 			) {
-				summary++;
+				score++;
 			}
 		});
 
-		const newResultData = {
-			timestamp: Math.floor(Date.now() / 1000),
-			id: quiz.id,
-			title: quiz.title,
-			summary,
+		const summary = {
+			score,
+			correct: score, // або інша логіка якщо треба
+			total: quizData.questions.length,
+		};
+
+		const payload = {
+			quizId: quizData.id || quizId, // ID квіза
 			answers,
-			questions: quiz.questions,
+			summary,
+			timestamp: Math.floor(Date.now() / 1000),
+			// 'questions' додасть бекенд сам з бази, або ми можемо не передавати
+			// (але в твоїй реалізації бекенду ти береш їх з БД, що супер!)
 		};
 
-		// Оновлюємо сторедж
-		const newStorage = {
-			...storage,
-			results: [...storage.results, newResultData],
-		};
+		try {
+			// Зберігаємо в БД
+			const response = await saveResult(payload);
 
-		await setStorage(newStorage);
-		setLocalStorage(newStorage);
-		setLocalResult(newResultData);
-
-		navigate(`/result/${quiz.id}/${newResultData.timestamp}`);
+			// Переходимо на сторінку результату, використовуючи ID, який повернув бекенд (response.resultId)
+			navigate(`/result/${quizId}/${response.resultId}`);
+		} catch (error) {
+			console.error("Save error", error);
+			alert("Failed to save result");
+		}
 	};
 
 	if (loading) {
 		return <Container className="text-white text-center">Loading...</Container>;
 	}
 
-	if (!quiz) return null;
+	if (!quizData) return null;
 
 	return (
 		<Container className={"flex flex-col items-center"}>
-			<div className="text-white pb-5 text-[18px] text-center">{quiz.title}</div>
+			<div className="text-white pb-5 text-[18px] text-center">{quizData.title}</div>
 
-			{isResultPage && activeResult && (
+			{isResultPage && resultData && (
 				<div className="text-white mb-5">
-					Your Result is {activeResult.summary} / {quiz.questions.length}
+					Your Result is {resultData.summary.score} / {quizData.questions.length}
 				</div>
 			)}
 
-			{quiz.questions.map((question, index) => (
+			{quizData.questions.map((question, index) => (
 				<Question
 					question={question}
 					key={index}
@@ -135,7 +146,9 @@ export default function Quiz() {
 						!isResultPage && handleRadioUpdate(index, optionId)
 					}
 					error={errors[index]}
-					selected={isResultPage ? activeResult?.answers?.[index] : answers[index]}
+					// Якщо сторінка результатів - беремо відповіді з завантаженого результату
+					// Якщо проходження - беремо з локального стейту
+					selected={isResultPage ? resultData.answers?.[index] : answers[index]}
 				>
 					{question.text}
 				</Question>

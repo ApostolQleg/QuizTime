@@ -12,7 +12,6 @@ export default function Description({ quiz, onClose }) {
 			window.location.reload();
 		} catch (error) {
 			console.error("Помилка при видаленні:", error);
-			alert("Не вдалося видалити тест.");
 		}
 	};
 

@@ -1,5 +1,5 @@
 import { useNavigate, useParams, useLocation } from "react-router";
-import { getStorage, setStorage } from "../services/storage.js";
+import { createQuiz, getQuizById, updateQuiz } from "../services/storage.js"; // Оновлені імпорти
 import { useState, useEffect } from "react";
 import Question from "../components/Edit/Question.jsx";
 import Input from "../components/UI/Input.jsx";
@@ -23,8 +23,7 @@ export default function Edit() {
 
 	const isManagePage = location.pathname.startsWith("/manage");
 
-	const [storage, setLocalStorage] = useState(null);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(isManagePage); // Якщо створюємо новий - loading false одразу
 
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
@@ -37,31 +36,22 @@ export default function Edit() {
 		questions: {},
 	});
 
+	// Завантаження даних, якщо ми редагуємо існуючий квіз
 	useEffect(() => {
-		getStorage()
-			.then((data) => {
-				setLocalStorage(data);
-
-				if (isManagePage && quizId) {
-					const foundQuiz = data.quizzes.find((q) => q.id.toString() === quizId);
-
-					if (foundQuiz) {
-						setTitle(foundQuiz.title);
-						setDescription(foundQuiz.description);
-						setQuestions(foundQuiz.questions);
-						setCounter(foundQuiz.title.length);
-					} else {
-						navigate("/not-found");
-						return;
-					}
-				}
-
-				setLoading(false);
-			})
-			.catch((err) => {
-				console.error(err);
-				navigate("/not-found");
-			});
+		if (isManagePage && quizId) {
+			getQuizById(quizId)
+				.then((foundQuiz) => {
+					setTitle(foundQuiz.title);
+					setDescription(foundQuiz.description);
+					setQuestions(foundQuiz.questions);
+					setCounter(foundQuiz.title.length);
+					setLoading(false);
+				})
+				.catch((err) => {
+					console.error(err);
+					navigate("/not-found");
+				});
+		}
 	}, [isManagePage, quizId, navigate]);
 
 	const handleQuestionAdd = () => {
@@ -94,7 +84,7 @@ export default function Edit() {
 					};
 				}
 				return question;
-			})
+			}),
 		);
 	};
 
@@ -108,7 +98,7 @@ export default function Edit() {
 					};
 				}
 				return question;
-			})
+			}),
 		);
 	};
 
@@ -119,12 +109,12 @@ export default function Edit() {
 					return {
 						...question,
 						options: question.options.map((o) =>
-							o.id === optionId ? { ...o, text: newValue } : o
+							o.id === optionId ? { ...o, text: newValue } : o,
 						),
 					};
 				}
 				return question;
-			})
+			}),
 		);
 	};
 
@@ -141,7 +131,7 @@ export default function Edit() {
 					};
 				}
 				return question;
-			})
+			}),
 		);
 	};
 
@@ -182,32 +172,26 @@ export default function Edit() {
 		setErrors(newErrors);
 		if (hasError) return;
 
-		// Save logic
-		let updatedQuizzes;
-
-		if (isManagePage) {
-			// Update existing
-			updatedQuizzes = storage.quizzes.map((q) =>
-				q.id.toString() === quizId ? { ...q, title, description, questions } : q
-			);
-		} else {
-			// Create new
-			const newQuiz = {
+		// Save logic (API CALLS)
+		try {
+			const quizPayload = {
 				title,
 				description,
-				id: Date.now(),
 				questions,
-				timestamp: Math.floor(Date.now() / 1000),
+				...(isManagePage ? {} : { id: Date.now().toString() }),
 			};
-			updatedQuizzes = [...(storage.quizzes || []), newQuiz];
+
+			if (isManagePage) {
+				await updateQuiz(quizId, quizPayload);
+			} else {
+				await createQuiz(quizPayload);
+			}
+
+			navigate("/");
+		} catch (error) {
+			console.error("Failed to save quiz", error);
+			alert("Error saving quiz. Please try again.");
 		}
-
-		const newStorage = { ...storage, quizzes: updatedQuizzes };
-
-		await setStorage(newStorage);
-		setLocalStorage(newStorage);
-
-		navigate("/");
 	};
 
 	if (loading) {
