@@ -128,7 +128,7 @@ export default function Home() {
 
 			{/* Повідомлення, якщо список порожній */}
 			{!loading && items.length === 0 && (
-				<div className="text-center text-white col-span-full mt-10">
+				<div className="text-center text-white col-span-full">
 					{isResultsPage
 						? "You have no quiz results yet."
 						: "No quizzes found. Create one!"}
