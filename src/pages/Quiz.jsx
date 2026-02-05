@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router";
 import { getQuizById, saveResult, getResultById } from "../services/storage.js";
 import { useState, useEffect } from "react";
+import { useAuth } from "../hooks/useAuth";
 import Question from "../components/Quiz/Question.jsx";
 import Button from "../components/UI/Button.jsx";
 import Container from "../components/UI/Container.jsx";
@@ -8,27 +9,39 @@ import Container from "../components/UI/Container.jsx";
 export default function Quiz() {
 	const navigate = useNavigate();
 	const { quizId, resultIdParam } = useParams();
+	const { user } = useAuth();
 
 	const [loading, setLoading] = useState(true);
-
 	const [quizData, setQuizData] = useState(null);
 	const [resultData, setResultData] = useState(null);
 
 	const [answers, setAnswers] = useState([]);
 	const [errors, setErrors] = useState({});
 
-	const isResultPage = Boolean(resultIdParam);
+	const isResultView = Boolean(resultIdParam) || Boolean(resultData);
 
 	useEffect(() => {
+		if (resultIdParam && resultData && resultData._id === resultIdParam) {
+			return;
+		}
+
+		if (!resultIdParam && resultData && resultData.quizId === quizId) {
+			return;
+		}
+
 		setLoading(true);
 		setQuizData(null);
-		setResultData(null);
+
+		if (!resultData || resultData.quizId !== quizId) {
+			setResultData(null);
+		}
+
 		setAnswers([]);
 		setErrors({});
 
 		const loadData = async () => {
 			try {
-				if (isResultPage) {
+				if (resultIdParam) {
 					const res = await getResultById(resultIdParam);
 					setResultData(res);
 					setQuizData({
@@ -48,7 +61,7 @@ export default function Quiz() {
 		};
 
 		loadData();
-	}, [quizId, resultIdParam, isResultPage, navigate]);
+	}, [quizId, resultIdParam, navigate, resultData]);
 
 	const handleRadioUpdate = (qIndex, oIndex) => {
 		const newAnswers = [...answers];
@@ -98,15 +111,25 @@ export default function Quiz() {
 			quizId: quizData.id || quizId,
 			answers,
 			summary,
-			timestamp: Math.floor(Date.now() / 1000),
+			timestamp: Date.now(),
 		};
 
-		try {
-			const response = await saveResult(payload);
-			navigate(`/result/${quizId}/${response.resultId}`);
-		} catch (error) {
-			console.error("Save error", error);
-			alert("Failed to save result");
+		if (user) {
+			try {
+				const response = await saveResult(payload);
+				navigate(`/result/${quizId}/${response.resultId}`);
+			} catch (error) {
+				console.error("Save error", error);
+				alert("Failed to save result");
+			}
+		} else {
+			const localResult = {
+				...payload,
+				quizTitle: quizData.title,
+				questions: quizData.questions,
+			};
+			setResultData(localResult);
+			window.scrollTo({ top: 0, behavior: "smooth" });
 		}
 	};
 
@@ -121,10 +144,16 @@ export default function Quiz() {
 			<div className="text-3xl font-bold text-center drop-shadow-md pb-2 border-b w-full text-(--col-text-accent) border-(--col-border)">
 				{quizData.title}
 			</div>
-
-			{isResultPage && resultData && (
-				<div className="text-xl font-semibold px-6 py-2 rounded-full border text-(--col-success) bg-(--col-success-glow) border-(--col-success)">
-					Your Result: {resultData.summary?.score} / {quizData.questions.length}
+			{isResultView && resultData && (
+				<div className="flex flex-col items-center gap-2">
+					<div className="text-xl font-semibold px-6 py-2 rounded-full border text-(--col-success) bg-(--col-success-glow) border-(--col-success)">
+						Result: {resultData.summary?.score} / {quizData.questions.length}
+					</div>
+					{!user && !resultIdParam && (
+						<div className="text-xs text-yellow-500 opacity-80">
+							(Guest Mode: Result not saved to history)
+						</div>
+					)}
 				</div>
 			)}
 
@@ -134,19 +163,19 @@ export default function Quiz() {
 						question={question}
 						key={index}
 						className="p-6 rounded-xl border shadow-lg transition-all bg-(--col-bg-input) border-(--col-border) hover:border-(--col-border)"
-						isResultPage={isResultPage}
+						isResultPage={isResultView}
 						onOptionSelect={(optionId) =>
-							!isResultPage && handleRadioUpdate(index, optionId)
+							!isResultView && handleRadioUpdate(index, optionId)
 						}
 						error={errors[index]}
-						selected={isResultPage ? resultData?.answers?.[index] : answers[index]}
+						selected={isResultView ? resultData?.answers?.[index] : answers[index]}
 					>
 						{question.text}
 					</Question>
 				))}
 			</div>
 
-			{!isResultPage ? (
+			{!isResultView ? (
 				<Button
 					onClick={handleSubmit}
 					className="w-full md:w-auto min-w-[200px] text-lg shadow-xl"

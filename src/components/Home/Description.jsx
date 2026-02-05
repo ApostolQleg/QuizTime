@@ -1,17 +1,27 @@
 import { deleteQuiz } from "../../services/storage.js";
 import Button from "../UI/Button.jsx";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Description({ quiz, onClose }) {
+	const { user } = useAuth();
+
 	const handleDelete = async () => {
-		try {
-			await deleteQuiz(quiz.id);
-			onClose();
-			window.location.reload();
-		} catch (error) {
-			console.error("Error deleting quiz: ", error);
-			alert("Failed to delete quiz. Please try again later.");
+		if (window.confirm("Are you sure you want to delete this quiz?")) {
+			try {
+				await deleteQuiz(quiz.id);
+				onClose();
+				window.location.reload();
+			} catch (error) {
+				console.error("Error deleting quiz: ", error);
+				alert("Failed to delete quiz. Please try again later.");
+			}
 		}
 	};
+	// Is the current user the owner of the quiz?
+	const isOwner = user && quiz.authorId && String(user._id) === String(quiz.authorId);
+
+	// Is this a system quiz? (They cannot be modified by anyone)
+	const canManage = isOwner && !quiz.isSystem;
 
 	return (
 		<>
@@ -28,15 +38,42 @@ export default function Description({ quiz, onClose }) {
 					<div className="text-5xl font-bold drop-shadow-md text-(--col-text-accent)">
 						{quiz.title}
 					</div>
+
+					<div className="text-sm opacity-70">
+						{quiz.authorName ? (
+							<span>
+								Author:{" "}
+								<span className="text-(--col-primary)">{quiz.authorName}</span>
+							</span>
+						) : (
+							quiz.isSystem && <span className="text-yellow-500">System Quiz</span>
+						)}
+					</div>
+
 					<div className="text-2xl w-full break-all leading-relaxed border-t pt-4 text-(--col-text-muted) border-(--col-border)">
 						{quiz.description}
 					</div>
 				</div>
 
-				<div className="flex justify-between items-center pt-6 mt-2">
-					<Button to={`/manage/${quiz.id}`}>Manage</Button>
-					<Button to={`/quiz/${quiz.id}`}>Start Quiz</Button>
-					<Button onClick={handleDelete}>Delete</Button>
+				<div className="flex justify-between items-center pt-6 mt-2 gap-4">
+					{/* Manage button - only for the owner */}
+					{canManage && (
+						<Button to={`/manage/${quiz.id}`} className="bg-blue-600 hover:bg-blue-700">
+							Manage
+						</Button>
+					)}
+
+					{/* Start Quiz - available to everyone */}
+					<Button to={`/quiz/${quiz.id}`} className="flex-1 shadow-xl text-lg">
+						Start Quiz
+					</Button>
+
+					{/* Delete button - only for the owner */}
+					{canManage && (
+						<Button onClick={handleDelete} className="bg-red-600 hover:bg-red-700">
+							Delete
+						</Button>
+					)}
 				</div>
 			</div>
 		</>
