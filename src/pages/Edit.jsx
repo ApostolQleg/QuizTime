@@ -200,7 +200,7 @@ export default function Edit() {
 			<div className="w-full flex flex-row justify-between items-center p-4 rounded-xl border bg-(--col-bg-input-darker) border-(--col-border)">
 				<Input
 					placeholder="Enter quiz title here..."
-					className={`text-lg font-bold w-3/4 ${errors.title ? "error" : ""}`}
+					className={`text-xs lg:text-lg font-bold w-3/4 ${errors.title ? "error" : ""}`}
 					value={title}
 					onChange={(e) => {
 						const newValue = e.target.value.slice(0, 30);
@@ -210,7 +210,9 @@ export default function Edit() {
 					maxLength="30"
 				/>
 
-				<div className="font-bold text-lg text-(--col-text-muted)">{counter}/30</div>
+				<div className="font-bold m-1 text-xs sm:text-lg text-(--col-text-muted)">
+					{counter}/30
+				</div>
 				<Button
 					onClick={() => {
 						setTitle("");
@@ -223,7 +225,7 @@ export default function Edit() {
 
 			<Textarea
 				placeholder="Enter quiz description here..."
-				className={`resize-y w-full font-bold ${errors.description ? "error" : ""}`}
+				className={`resize-y w-full font-bold text-xs lg:text-lg ${errors.description ? "error" : ""}`}
 				value={description}
 				onChange={(e) => setDescription(e.target.value)}
 			/>

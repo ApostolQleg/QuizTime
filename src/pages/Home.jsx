@@ -96,7 +96,7 @@ export default function Home() {
 	return (
 		<Container
 			className={
-				"grid gap-6 lg:gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 items-center justify-items-center"
+				"grid gap-6 lg:gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 items-center justify-items-center"
 			}
 		>
 			{!isResultsPage && (

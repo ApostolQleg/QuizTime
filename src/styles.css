@@ -26,20 +26,23 @@
 		--col-success-bg: rgba(5, 150, 105, 0.1);
 	}
 
+	html {
+		@apply h-full bg-(--col-bg-card) text-(--col-text-main);
+		image-rendering: pixelated;
+	}
+
 	body {
+		@apply m-0 p-0 box-border font-[Balsamiq_Sans] h-full selection:bg-(--col-fail) selection:text-(--col-text-main);
 		background-color: var(--col-bg-main);
 		color: var(--col-text-main);
 	}
 }
 
 @layer utilities {
-	.image-pixel {
-		image-rendering: pixelated;
-	}
 	.button {
-		@apply transition-all duration-300 flex items-center justify-center px-6 py-3 w-max font-semibold tracking-wide rounded-xl shadow-lg;
+		@apply text-xs lg:text-base transition-all duration-300 flex items-center justify-center px-6 py-3 w-max font-semibold tracking-wide rounded-xl shadow-lg;
 		background-color: var(--col-fail);
-		color: white;
+		color: var(--col-text-main);
 		box-shadow: 0 10px 15px -3px var(--col-fail-glow);
 	}
 	.button:hover {
@@ -49,7 +52,7 @@
 	.quiz-card {
 		@apply text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl rounded-3xl max-h-[400px] max-w-[400px] aspect-square w-full flex items-center justify-center text-center hover:scale-105 transition-all shadow-xl border;
 		background-color: var(--col-primary);
-		color: white;
+		color: var(--col-text-main);
 		box-shadow: 0 20px 25px -5px var(--col-primary-glow);
 		border-color: rgba(129, 140, 248, 0.2);
 	}
@@ -69,14 +72,14 @@
 		@apply rounded-lg border;
 		border-color: var(--col-fail);
 		background-color: var(--col-fail-bg);
-		color: #fecdd3;
+		color: var(--col-text-main);
 	}
 
 	.quiz-error {
 		@apply rounded-lg backdrop-blur-sm border;
 		border-color: var(--col-fail);
 		background-color: var(--col-fail-bg);
-		color: white;
+		color: var(--col-text-main);
 	}
 
 	.container {
@@ -95,16 +98,24 @@
 	}
 
 	.option-false {
-		@apply flex shadow-md text-white border rounded-sm;
+		@apply flex shadow-md text-(--col-text-main) border rounded-sm;
 		background-color: var(--col-fail-bg);
 		border-color: var(--col-fail);
 		box-shadow: 0 4px 6px -1px var(--col-fail-glow);
 	}
 
 	.option-true {
-		@apply flex shadow-md text-white border rounded-sm;
+		@apply flex shadow-md text-(--col-text-main) border rounded-sm;
 		background-color: var(--col-success-bg);
 		border-color: var(--col-success);
 		box-shadow: 0 4px 6px -1px var(--col-success-glow);
+	}
+}
+
+@media (max-width: 640px) {
+	@layer base {
+		html {
+			@apply text-xs;
+		}
 	}
 }
