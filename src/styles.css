@@ -29,25 +29,6 @@
 	body {
 		background-color: var(--col-bg-main);
 		color: var(--col-text-main);
-		cursor:
-			url("./assets/cursor-icon.png") 4 4,
-			auto;
-	}
-
-	button,
-	label,
-	input[type="radio"],
-	a {
-		cursor:
-			url("./assets/cursor-pointer-icon.png") 2 2,
-			pointer;
-	}
-
-	input[type="text"],
-	textarea {
-		cursor:
-			url("./assets/cursor-text-icon.png") 16 16,
-			text;
 	}
 }
 
