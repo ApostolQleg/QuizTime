@@ -1,5 +1,5 @@
-const API_URL = "http://localhost:3000/api";
-// const API_URL = "https://quiztime-react-backend.vercel.app/api";
+// const API_URL = "http://localhost:3000/api";
+const API_URL = "https://quiztime-react-backend.vercel.app/api";
 
 const AUTH_URL = API_URL.replace("/api", "/auth");
 
