@@ -125,7 +125,6 @@ export default function Login() {
 					theme="filled_blue"
 					shape="pill"
 					size="large"
-					width="100%"
 				/>
 			</div>
 
