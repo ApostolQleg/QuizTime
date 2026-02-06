@@ -2,16 +2,26 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { GoogleLogin } from "@react-oauth/google";
-import { loginUser, registerUser, loginWithGoogle } from "../services/storage";
+import {
+	loginUser,
+	registerUser,
+	loginWithGoogle,
+	sendVerificationCode,
+} from "../services/storage";
 import Container from "../components/UI/Container.jsx";
 
 export default function Login() {
 	const [isRegister, setIsRegister] = useState(false);
+
+	const [isVerifying, setIsVerifying] = useState(false);
+
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
 		name: "",
+		code: "",
 	});
+
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
 	const { login } = useAuth();
@@ -27,7 +37,13 @@ export default function Login() {
 		try {
 			let data;
 			if (isRegister) {
-				data = await registerUser(formData);
+				if (!isVerifying) {
+					await sendVerificationCode(formData.email);
+					setIsVerifying(true);
+					return;
+				} else {
+					data = await registerUser(formData);
+				}
 			} else {
 				data = await loginUser({ email: formData.email, password: formData.password });
 			}
@@ -37,6 +53,13 @@ export default function Login() {
 		} catch (err) {
 			setError(err.message || "Something went wrong");
 		}
+	};
+
+	const toggleMode = () => {
+		setIsRegister(!isRegister);
+		setIsVerifying(false);
+		setError("");
+		setFormData({ ...formData, code: "" });
 	};
 
 	const handleGoogleSuccess = async (credentialResponse) => {
@@ -52,7 +75,7 @@ export default function Login() {
 	return (
 		<Container className="flex flex-col items-center justify-center gap-6 max-w-lg mx-auto mt-10">
 			<h2 className="text-3xl font-bold text-(--col-text-accent) drop-shadow-md">
-				{isRegister ? "Create Account" : "Welcome Back"}
+				{isRegister ? (isVerifying ? "Verify Email" : "Create Account") : "Welcome Back"}
 			</h2>
 
 			{error && (
@@ -62,53 +85,88 @@ export default function Login() {
 			)}
 
 			<form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
-				{isRegister && (
-					<div className="flex flex-col gap-1">
+				{(!isRegister || !isVerifying) && (
+					<>
+						{isRegister && (
+							<div className="flex flex-col gap-1">
+								<label className="text-sm font-semibold text-(--col-text-muted)">
+									Name
+								</label>
+								<input
+									className="input w-full text-lg"
+									type="text"
+									name="name"
+									placeholder="Enter your name"
+									value={formData.name}
+									onChange={handleChange}
+									required
+								/>
+							</div>
+						)}
+
+						<div className="flex flex-col gap-1">
+							<label className="text-sm font-semibold text-(--col-text-muted)">
+								Email
+							</label>
+							<input
+								className="input w-full text-lg"
+								type="email"
+								name="email"
+								placeholder="name@example.com"
+								value={formData.email}
+								onChange={handleChange}
+								required
+								disabled={isVerifying}
+							/>
+						</div>
+
+						<div className="flex flex-col gap-1">
+							<label className="text-sm font-semibold text-(--col-text-muted)">
+								Password
+							</label>
+							<input
+								className="input w-full text-lg"
+								type="password"
+								name="password"
+								placeholder="••••••••"
+								value={formData.password}
+								onChange={handleChange}
+								required
+								disabled={isVerifying}
+							/>
+						</div>
+					</>
+				)}
+				
+				{isRegister && isVerifying && (
+					<div className="flex flex-col gap-1 animate-fade-in">
 						<label className="text-sm font-semibold text-(--col-text-muted)">
-							Name
+							Verification Code
 						</label>
 						<input
-							className="input w-full text-lg"
+							className="input w-full text-lg text-center tracking-widest"
 							type="text"
-							name="name"
-							placeholder="Enter your name"
-							value={formData.name}
+							name="code"
+							placeholder="123456"
+							value={formData.code}
 							onChange={handleChange}
 							required
 						/>
+						<p className="text-xs text-(--col-text-muted) mt-1">
+							We sent a code to {formData.email}.
+							<button
+								type="button"
+								onClick={() => setIsVerifying(false)}
+								className="ml-1 text-(--col-primary) hover:underline bg-transparent border-none cursor-pointer"
+							>
+								Change details?
+							</button>
+						</p>
 					</div>
 				)}
 
-				<div className="flex flex-col gap-1">
-					<label className="text-sm font-semibold text-(--col-text-muted)">Email</label>
-					<input
-						className="input w-full text-lg"
-						type="email"
-						name="email"
-						placeholder="name@example.com"
-						value={formData.email}
-						onChange={handleChange}
-						required
-					/>
-				</div>
-
-				<div className="flex flex-col gap-1">
-					<label className="text-sm font-semibold text-(--col-text-muted)">
-						Password
-					</label>
-					<input
-						className="input w-full text-lg"
-						type="password"
-						name="password"
-						placeholder="••••••••"
-						value={formData.password}
-						onChange={handleChange}
-						required
-					/>
-				</div>
-
 				<button type="submit" className="button w-full mt-4 justify-center text-lg">
-					{isRegister ? "Register" : "Log In"}
+					{isRegister ? (isVerifying ? "Confirm & Register" : "Send Code") : "Log In"}
 				</button>
 			</form>
 
@@ -131,10 +189,7 @@ export default function Login() {
 			<div className="text-(--col-text-muted) text-sm mt-2">
 				{isRegister ? "Already have an account? " : "Don't have an account? "}
 				<button
-					onClick={() => {
-						setIsRegister(!isRegister);
-						setError("");
-					}}
+					onClick={toggleMode}
 					className="font-bold text-(--col-primary) hover:underline bg-transparent border-none cursor-pointer"
 				>
 					{isRegister ? "Log In" : "Register"}

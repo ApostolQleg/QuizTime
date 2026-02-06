@@ -40,8 +40,6 @@ export async function loginUser(data) {
 }
 
 export async function loginWithGoogle(credential) {
-	const AUTH_URL = API_URL.replace("/api", "/auth");
-
 	const res = await fetch(`${AUTH_URL}/google`, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -50,6 +48,18 @@ export async function loginWithGoogle(credential) {
 
 	const json = await res.json();
 	if (!res.ok) throw new Error(json.error || "Google login failed");
+	return json;
+}
+
+export async function sendVerificationCode(email) {
+	const res = await fetch(`${AUTH_URL}/send-code`, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ email }),
+	});
+
+	const json = await res.json();
+	if (!res.ok) throw new Error(json.error || "Failed to send verification code");
 	return json;
 }
 
