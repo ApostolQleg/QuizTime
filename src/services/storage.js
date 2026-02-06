@@ -65,8 +65,8 @@ export async function sendVerificationCode(email) {
 
 // --- Quizzes Services ---
 
-export async function getQuizzesList() {
-	const res = await fetch(`${API_URL}/quizzes`, {
+export async function getQuizzesList(skip = 0, limit = 36) {
+	const res = await fetch(`${API_URL}/quizzes?skip=${skip}&limit=${limit}`, {
 		headers: getHeaders(),
 	});
 	if (!res.ok) throw new Error("Failed to load quizzes");

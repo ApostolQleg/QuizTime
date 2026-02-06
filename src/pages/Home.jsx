@@ -1,5 +1,5 @@
 import { getQuizzesList, getResults } from "../services/storage.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import addIcon from "../assets/plus-icon.png";
@@ -15,41 +15,83 @@ export default function Home() {
 	const [loading, setLoading] = useState(true);
 	const [selectedQuiz, setSelectedQuiz] = useState(null);
 
+	const [page, setPage] = useState(1);
+	const [hasMore, setHasMore] = useState(true);
+	const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+	const ITEMS_PER_PAGE = 36;
+	const ITEMS_PER_PAGE_AUTH = 35;
 	const isResultsPage = location.pathname === "/results";
 	const isHelpPage = location.pathname === "/help";
 
-	useEffect(() => {
-		const fetchData = async () => {
-			if (isHelpPage) {
-				setLoading(false);
-				return;
-			}
-
-			setLoading(true);
-			setItems([]);
-
+	const loadData = useCallback(
+		async (pageToLoad, isInitialLoad = false) => {
 			try {
+				if (!isInitialLoad) setIsLoadingMore(true);
+
 				let data = [];
 
 				if (isResultsPage) {
 					if (user) {
 						data = await getResults();
+						setHasMore(false);
 					} else {
 						data = [];
 					}
 				} else {
-					data = await getQuizzesList();
+					let currentLimit = ITEMS_PER_PAGE;
+					let currentSkip = 0;
+
+					if (user) {
+						if (pageToLoad === 1) {
+							currentLimit = ITEMS_PER_PAGE_AUTH;
+							currentSkip = 0;
+						} else {
+							currentLimit = ITEMS_PER_PAGE;
+							currentSkip = ITEMS_PER_PAGE_AUTH + (pageToLoad - 2) * ITEMS_PER_PAGE;
+						}
+					} else {
+						currentLimit = ITEMS_PER_PAGE;
+						currentSkip = (pageToLoad - 1) * ITEMS_PER_PAGE;
+					}
+
+					data = await getQuizzesList(currentSkip, currentLimit);
+
+					if (data.length < currentLimit) {
+						setHasMore(false);
+					}
 				}
-				setItems(data || []);
+
+				setItems((prev) => (isInitialLoad ? data : [...prev, ...data]));
 			} catch (err) {
 				console.error("Failed to load data", err);
 			} finally {
 				setLoading(false);
+				setIsLoadingMore(false);
 			}
-		};
+		},
+		[isResultsPage, user, ITEMS_PER_PAGE, ITEMS_PER_PAGE_AUTH],
+	);
 
-		fetchData();
-	}, [isResultsPage, isHelpPage, user]);
+	useEffect(() => {
+		setItems([]);
+		setPage(1);
+		setHasMore(true);
+		setLoading(true);
+
+		if (isHelpPage) {
+			setLoading(false);
+			return;
+		}
+
+		loadData(1, true);
+	}, [isResultsPage, isHelpPage, user, loadData]);
+
+	const handleLoadMore = () => {
+		const nextPage = page + 1;
+		setPage(nextPage);
+		loadData(nextPage, false);
+	};
 
 	const formatDateTime = (timestamp) => {
 		if (!timestamp) return "";
@@ -61,18 +103,18 @@ export default function Home() {
 		const year = date.getFullYear();
 
 		const months = [
-			"January",
-			"February",
-			"March",
-			"April",
+			"Jan",
+			"Feb",
+			"Mar",
+			"Apr",
 			"May",
-			"June",
-			"July",
-			"August",
-			"September",
-			"October",
-			"November",
-			"December",
+			"Jun",
+			"Jul",
+			"Aug",
+			"Sep",
+			"Oct",
+			"Nov",
+			"Dec",
 		];
 		const monthName = months[date.getMonth()];
 
@@ -154,67 +196,81 @@ export default function Home() {
 	}
 
 	return (
-		<Container
-			className={
-				"grid gap-6 lg:gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 items-center justify-items-center"
-			}
-		>
-			{!isResultsPage && user && (
-				<Link to="/create" id={`quiz-add`} className="quiz-card group">
-					<img
-						src={addIcon}
-						alt="Add Quiz"
-						className="w-1/2 h-1/2 group-hover:rotate-90 transition-transform duration-300"
-					/>
-				</Link>
-			)}
+		<Container>
+			<div
+				className={
+					"grid gap-6 lg:gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 items-center justify-items-center mb-8"
+				}
+			>
+				{!isResultsPage && user && (
+					<Link to="/create" id={`quiz-add`} className="quiz-card group">
+						<img
+							src={addIcon}
+							alt="Add Quiz"
+							className="w-1/2 h-1/2 group-hover:rotate-90 transition-transform duration-300"
+						/>
+					</Link>
+				)}
 
-			{items.map((item, index) => (
-				<button
-					type="button"
-					key={item._id || index}
-					className="quiz-card flex flex-col justify-between"
-					onClick={
-						isResultsPage
-							? () => navigate(`/result/${item.quizId}/${item._id}`)
-							: () => setSelectedQuiz(item)
-					}
-				>
-					<div className="font-bold text-lg mb-2 pt-4 px-2">
-						{isResultsPage ? item.quizTitle : item.title}
-					</div>
+				{items.map((item, index) => (
+					<button
+						type="button"
+						key={`${item._id}-${index}`}
+						className="quiz-card flex flex-col justify-between"
+						onClick={
+							isResultsPage
+								? () => navigate(`/result/${item.quizId}/${item._id}`)
+								: () => setSelectedQuiz(item)
+						}
+					>
+						<div className="font-bold text-lg mb-2 pt-4 px-2">
+							{isResultsPage ? item.quizTitle : item.title}
+						</div>
 
-					<div className="text-sm opacity-90 text-indigo-100 pb-4 px-2 w-full">
-						{isResultsPage ? (
-							<>
-								<div>
-									Score: {item.summary?.score ?? 0}/{item.summary?.total ?? 0}
-								</div>
-								<div className="text-xs mt-1 opacity-70">
-									{item.timestamp ? formatDateTime(item.timestamp) : ""}
-								</div>
-							</>
-						) : (
-							<div className="flex flex-col gap-1">
-								<span>
-									{item.questionsCount
-										? `${item.questionsCount} questions`
-										: "No questions"}
-								</span>
-								{item.authorName ? (
-									<span className="text-xs text-yellow-300 opacity-80 truncate px-2">
-										by {item.authorName}
+						<div className="text-sm opacity-90 text-indigo-100 pb-4 px-2 w-full">
+							{isResultsPage ? (
+								<>
+									<div>
+										Score: {item.summary?.score ?? 0}/{item.summary?.total ?? 0}
+									</div>
+									<div className="text-xs mt-1 opacity-70">
+										{item.timestamp ? formatDateTime(item.timestamp) : ""}
+									</div>
+								</>
+							) : (
+								<div className="flex flex-col gap-1">
+									<span>
+										{item.questionsCount
+											? `${item.questionsCount} questions`
+											: "No questions"}
 									</span>
-								) : (
-									item.isSystem && (
-										<span className="text-xs opacity-60">System Quiz</span>
-									)
-								)}
-							</div>
-						)}
-					</div>
-				</button>
-			))}
+									{item.authorName ? (
+										<span className="text-xs text-yellow-300 opacity-80 truncate px-2">
+											by {item.authorName}
+										</span>
+									) : (
+										item.isSystem && (
+											<span className="text-xs opacity-60">System Quiz</span>
+										)
+									)}
+								</div>
+							)}
+						</div>
+					</button>
+				))}
+			</div>
+
+			{!isResultsPage && hasMore && items.length > 0 && (
+				<div className="flex justify-center pb-4">
+					<button
+						onClick={handleLoadMore}
+						disabled={isLoadingMore}
+						className="button px-8 py-3 text-lg"
+					>
+						{isLoadingMore ? "Loading..." : "Load More Quizzes"}
+					</button>
+				</div>
+			)}
 
 			{selectedQuiz && (
 				<Description quiz={selectedQuiz} onClose={() => setSelectedQuiz(null)} />

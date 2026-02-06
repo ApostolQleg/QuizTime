@@ -42,7 +42,7 @@ export default function Header() {
 								{user.avatarUrl ? (
 									<img
 										src={user.avatarUrl}
-										alt="Avatar"
+										alt="Profile picture"
 										className="w-10 h-10 rounded-full border-2 border-(--col-border) shadow-md object-cover"
 									/>
 								) : (

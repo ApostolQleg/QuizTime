@@ -83,7 +83,7 @@
 	}
 
 	.container {
-		@apply min-w-[95%] max-w-[95%] m-0 mx-auto mb-5 p-6 rounded-2xl shadow-2xl border;
+		@apply min-w-[95%] max-w-[95%] m-0 mx-auto mb-7 p-6 rounded-2xl shadow-2xl border;
 		background-color: var(--col-bg-card);
 		border-color: var(--col-border);
 		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
