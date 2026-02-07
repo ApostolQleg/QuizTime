@@ -197,68 +197,73 @@ export default function Home() {
 
 	return (
 		<Container>
-			<div
-				className={
-					"grid gap-6 lg:gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 items-center justify-items-center mb-8"
-				}
-			>
-				{!isResultsPage && user && (
-					<Link to="/create" id={`quiz-add`} className="quiz-card group">
-						<img
-							src={addIcon}
-							alt="Add Quiz"
-							className="w-1/2 h-1/2 group-hover:rotate-90 transition-transform duration-300"
-						/>
-					</Link>
-				)}
+			{(items.length > 0 || (!isResultsPage && user)) && (
+				<div
+					className={
+						"grid gap-6 lg:gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 items-center justify-items-center mb-8"
+					}
+				>
+					{!isResultsPage && user && (
+						<Link to="/create" id={`quiz-add`} className="quiz-card group">
+							<img
+								src={addIcon}
+								alt="Add Quiz"
+								className="w-1/2 h-1/2 group-hover:rotate-90 transition-transform duration-300"
+							/>
+						</Link>
+					)}
 
-				{items.map((item, index) => (
-					<button
-						type="button"
-						key={`${item._id}-${index}`}
-						className="quiz-card flex flex-col justify-between"
-						onClick={
-							isResultsPage
-								? () => navigate(`/result/${item.quizId}/${item._id}`)
-								: () => setSelectedQuiz(item)
-						}
-					>
-						<div className="font-bold text-lg mb-2 pt-4 px-2">
-							{isResultsPage ? item.quizTitle : item.title}
-						</div>
+					{items.map((item, index) => (
+						<button
+							type="button"
+							key={`${item._id}-${index}`}
+							className="quiz-card flex flex-col justify-between"
+							onClick={
+								isResultsPage
+									? () => navigate(`/result/${item.quizId}/${item._id}`)
+									: () => setSelectedQuiz(item)
+							}
+						>
+							<div className="font-bold text-lg mb-2 pt-4 px-2">
+								{isResultsPage ? item.quizTitle : item.title}
+							</div>
 
-						<div className="text-sm opacity-90 text-indigo-100 pb-4 px-2 w-full">
-							{isResultsPage ? (
-								<>
-									<div>
-										Score: {item.summary?.score ?? 0}/{item.summary?.total ?? 0}
-									</div>
-									<div className="text-xs mt-1 opacity-70">
-										{item.timestamp ? formatDateTime(item.timestamp) : ""}
-									</div>
-								</>
-							) : (
-								<div className="flex flex-col gap-1">
-									<span>
-										{item.questionsCount
-											? `${item.questionsCount} questions`
-											: "No questions"}
-									</span>
-									{item.authorName ? (
-										<span className="text-xs text-yellow-300 opacity-80 truncate px-2">
-											by {item.authorName}
+							<div className="text-sm opacity-90 text-indigo-100 pb-4 px-2 w-full">
+								{isResultsPage ? (
+									<>
+										<div>
+											Score: {item.summary?.score ?? 0}/
+											{item.summary?.total ?? 0}
+										</div>
+										<div className="text-xs mt-1 opacity-70">
+											{item.timestamp ? formatDateTime(item.timestamp) : ""}
+										</div>
+									</>
+								) : (
+									<div className="flex flex-col gap-1">
+										<span>
+											{item.questionsCount
+												? `${item.questionsCount} questions`
+												: "No questions"}
 										</span>
-									) : (
-										item.isSystem && (
-											<span className="text-xs opacity-60">System Quiz</span>
-										)
-									)}
-								</div>
-							)}
-						</div>
-					</button>
-				))}
-			</div>
+										{item.authorName ? (
+											<span className="text-xs text-yellow-300 opacity-80 truncate px-2">
+												by {item.authorName}
+											</span>
+										) : (
+											item.isSystem && (
+												<span className="text-xs opacity-60">
+													System Quiz
+												</span>
+											)
+										)}
+									</div>
+								)}
+							</div>
+						</button>
+					))}
+				</div>
+			)}
 
 			{!isResultsPage && hasMore && items.length > 0 && (
 				<div className="flex justify-center pb-4">
