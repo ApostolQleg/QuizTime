@@ -4,6 +4,7 @@ import { AuthProvider } from "./contexts/AuthProvider.jsx";
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import Home from "./pages/Home.jsx";
+import Help from "./pages/Help.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Edit from "./pages/Edit.jsx";
 import Login from "./pages/Login.jsx";
@@ -28,7 +29,7 @@ export default function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/results" element={<Home />} />
-					<Route path="/help" element={<Home />} />
+					<Route path="/help" element={<Help />} />
 					<Route path="/quiz/:quizId" element={<Quiz />} />
 					<Route path="/result/:quizId/:resultIdParam" element={<Quiz />} />
 					<Route path="/create" element={<Edit />} />
