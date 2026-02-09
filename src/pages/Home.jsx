@@ -254,16 +254,10 @@ export default function Home() {
 												? `${item.questionsCount} questions`
 												: "No questions"}
 										</span>
-										{item.authorName ? (
+										{item.authorName && (
 											<span className="text-xs text-yellow-300 opacity-80 truncate px-2">
 												by {item.authorName}
 											</span>
-										) : (
-											item.isSystem && (
-												<span className="text-xs opacity-60">
-													System Quiz
-												</span>
-											)
 										)}
 									</div>
 								)}
