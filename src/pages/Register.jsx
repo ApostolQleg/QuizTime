@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { GoogleLogin } from "@react-oauth/google";
-import { registerUser, sendVerificationCode, extractGoogleData } from "../services/storage";
+import { registerUser, sendVerificationCode, extractGoogleData } from "../services/auth.js";
 import Container from "../components/UI/Container.jsx";
 
 export default function Register() {

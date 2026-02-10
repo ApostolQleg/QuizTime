@@ -1,4 +1,5 @@
-import { getQuizzesList, getResults } from "../services/storage.js";
+import { getQuizzesList } from "../services/quizzes.js";
+import { getResults } from "../services/results.js";
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";

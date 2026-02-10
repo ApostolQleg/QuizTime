@@ -1,4 +1,4 @@
-import { deleteQuiz } from "../../services/storage.js";
+import { deleteQuiz } from "../../services/quizzes.js";
 import Button from "../UI/Button.jsx";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -17,11 +17,9 @@ export default function Description({ quiz, onClose }) {
 			}
 		}
 	};
-	// Is the current user the owner of the quiz?
-	const isOwner = user && quiz.authorId && String(user._id) === String(quiz.authorId);
 
-	// Is this a system quiz? (They cannot be modified by anyone)
-	const canManage = isOwner && !quiz.isSystem;
+	const isOwner = user && quiz.authorId && String(user._id) === String(quiz.authorId);
+	const canManage = isOwner;
 
 	return (
 		<>

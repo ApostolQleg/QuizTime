@@ -1,5 +1,5 @@
 import { useNavigate, useParams, useLocation } from "react-router";
-import { createQuiz, getQuizById, updateQuiz } from "../services/storage.js";
+import { createQuiz, getQuizById, updateQuiz } from "../services/quizzes.js";
 import { useState, useEffect } from "react";
 import Question from "../components/Edit/Question.jsx";
 import Input from "../components/UI/Input.jsx";
