@@ -1,14 +1,23 @@
 import logoImage from "../assets/logo-icon.png";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth.js";
+import { useState } from "react";
+import ModalConfirm from "./UI/ModalConfirm.jsx";
 
 export default function Header() {
 	const { user, logout } = useAuth();
 	const navigate = useNavigate();
 
-	const handleLogout = () => {
+	const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+	const handleLogoutClick = () => {
+		setIsLogoutModalOpen(true);
+	};
+
+	const confirmLogout = () => {
 		logout();
 		navigate("/");
+		setIsLogoutModalOpen(false);
 	};
 
 	return (
@@ -34,7 +43,6 @@ export default function Header() {
 				<div className="text-base sm:text-lg font-medium">
 					{user ? (
 						<div className="flex items-center gap-4 sm:gap-6">
-							{" "}
 							<Link
 								to="/profile"
 								className="flex items-center gap-3 group hover:opacity-90 transition-all"
@@ -76,10 +84,10 @@ export default function Header() {
 							</Link>
 
 							<button
-								onClick={handleLogout}
+								onClick={handleLogoutClick}
 								className="px-4 py-2 rounded-lg border border-(--col-border) text-(--col-text-muted) 
                                            hover:bg-(--col-fail-bg) hover:text-(--col-fail) hover:border-(--col-fail) 
-                                           transition-all duration-300 text-xs sm:text-sm font-semibold shadow-sm"
+                                           transition-all duration-300 text-xs sm:text-sm font-semibold shadow-sm cursor-pointer"
 							>
 								Sign Out
 							</button>
@@ -137,6 +145,15 @@ export default function Header() {
 					Help
 				</Link>
 			</nav>
+
+			<ModalConfirm
+				isOpen={isLogoutModalOpen}
+				onClose={() => setIsLogoutModalOpen(false)}
+				onConfirm={confirmLogout}
+				title="Sign Out?"
+				message="Are you sure you want to sign out of your account?"
+				confirmLabel="Sign Out"
+			/>
 		</>
 	);
 }
