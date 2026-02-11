@@ -6,11 +6,12 @@ import { verifySession, updateUser, deleteUser } from "../services/user.js";
 import Container from "../components/UI/Container.jsx";
 import ProfileForm from "../components/Profile/ProfileForm.jsx";
 import ModalConfirm from "../components/UI/ModalConfirm.jsx";
+import ModalChangePassword from "../components/Profile/ModalChangePassword.jsx"; 
 import Button from "../components/UI/Button.jsx";
 
 export default function Profile() {
 	const navigate = useNavigate();
-	const { logout } = useAuth();
+	const { logout, login, token } = useAuth();
 
 	const [user, setUser] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +24,7 @@ export default function Profile() {
 		isError: false,
 	});
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
 	useEffect(() => {
 		verifySession()
@@ -39,7 +41,10 @@ export default function Profile() {
 		setIsSaving(true);
 		try {
 			const updated = await updateUser(formData);
+
 			setUser(updated.user);
+			login(updated.user, token);
+
 			setModalInfo({
 				isOpen: true,
 				title: "Success",
@@ -88,8 +93,23 @@ export default function Profile() {
 
 			<hr className="w-full border-(--col-border) opacity-50" />
 
-			<div className="w-full max-w-lg flex flex-col gap-4">
+			<div className="w-full max-w-lg flex flex-col gap-6">
 				<h3 className="text-xl font-bold text-(--col-fail)">Danger Zone</h3>
+
+				<div className="p-4 border border-(--col-border) bg-(--col-bg-input-darker) rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+					<div className="text-sm opacity-90">
+						<p className="font-bold text-(--col-text-main)">Change Password</p>
+						<p className="text-(--col-text-muted)">
+							Update your password to keep your account secure.
+						</p>
+					</div>
+					<Button
+						onClick={() => setIsPasswordModalOpen(true)}
+						className="bg-(--col-bg-input) border border-(--col-border) hover:bg-(--col-border) shadow-none text-xs px-4 py-2 whitespace-nowrap"
+					>
+						Change Password
+					</Button>
+				</div>
 
 				<div className="p-4 border border-(--col-fail) bg-(--col-fail-bg) rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
 					<div className="text-sm opacity-90">
@@ -119,9 +139,14 @@ export default function Profile() {
 				onClose={() => setIsDeleteModalOpen(false)}
 				onConfirm={handleDeleteAccount}
 				title="Delete Account?"
-				message="Are you sure you want to delete your account? This action cannot be undone and you will lose all your progress."
+				message="Are you sure you want to delete your account? This action cannot be undone."
 				confirmLabel="Yes, Delete My Account"
 				isDanger={true}
+			/>
+
+			<ModalChangePassword
+				isOpen={isPasswordModalOpen}
+				onClose={() => setIsPasswordModalOpen(false)}
 			/>
 		</Container>
 	);
