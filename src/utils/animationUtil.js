@@ -13,8 +13,8 @@ export function startExplosionAnimation(onUpdateReactState, onFinishReactState) 
 		colorIterator,
 		2000,
 		(color, progress) => {
-			const oscillation = Math.sin(progress * Math.PI * 6) * (1 - progress);
-			const scale = 1 + Math.abs(oscillation) * 0.5;
+			const oscillation = Math.sin(progress * Math.PI * 10) * (1 - progress);
+			const scale = 1 + Math.abs(oscillation);
 
 			onUpdateReactState(color, scale);
 		},

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 
-export default function Button({ children, className = "", to, onClick }) {
+export default function Button({ children, className = "", to, onClick, ...props }) {
 	const navigate = useNavigate();
 	return (
 		<button
@@ -9,6 +9,7 @@ export default function Button({ children, className = "", to, onClick }) {
 				onClick ? onClick() : null;
 				to ? navigate(to) : null;
 			}}
+			{...props}
 		>
 			{children}
 		</button>

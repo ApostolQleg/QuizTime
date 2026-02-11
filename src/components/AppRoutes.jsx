@@ -13,6 +13,7 @@ import Quiz from "../pages/Quiz.jsx";
 import Edit from "../pages/Edit.jsx";
 import Login from "../pages/Login.jsx";
 import Register from "../pages/Register";
+import Profile from "../pages/Profile.jsx";
 import NotFound from "../pages/NotFound.jsx";
 
 export default function AppRoutes() {
@@ -51,6 +52,7 @@ export default function AppRoutes() {
 				<Route path="/register" element={<Register />} />
 				<Route path="/results" element={<Results />} />
 				<Route path="/help" element={<Help />} />
+				<Route path="/profile" element={<Profile />} />
 				<Route path="/quiz/:quizId" element={<Quiz />} />
 				<Route path="/result/:quizId/:resultIdParam" element={<Quiz />} />
 				<Route path="/create" element={<Edit />} />
