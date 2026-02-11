@@ -1,3 +1,8 @@
+/**
+ * JWT Utility
+ *
+ * Provides functions for working with JSON Web Tokens (JWT)
+ */
 export function isTokenExpired(token) {
 	if (!token) return true;
 	try {

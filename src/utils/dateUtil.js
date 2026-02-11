@@ -1,3 +1,8 @@
+/**
+ * Date Utility
+ *
+ * Provides functions for formatting dates and times
+ */
 export const formatDateTime = (timestamp) => {
 	if (!timestamp) return "";
 	const date = new Date(timestamp);
