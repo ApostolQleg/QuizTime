@@ -1,35 +1,38 @@
 /**
- * Iterator with Timeout
- * @param {Iterator} iterator - The iterator to consume
- * @param {number} durationMs - The duration in milliseconds to consume the iterator
- * @param {function} onTick - Callback function called on each tick with the next value and progress
- * @param {function} onFinish - Callback function called when the iterator is finished
- * @returns {function} A function to stop the interval
+ * AnimationSequence implements the Iterable Protocol using Symbol.iterator.
  */
-export function consumeIteratorWithTimeout(iterator, durationMs, onTick, onFinish) {
-	const startTime = Date.now();
+export class AnimationSequence {
+	constructor(generator, durationMs) {
+		this.generator = generator;
+		this.durationMs = durationMs;
+	}
 
-	const intervalId = setInterval(() => {
-		// Check if the duration has elapsed
-		const elapsed = Date.now() - startTime;
+	[Symbol.iterator]() {
+		const startTime = Date.now();
+		const gen = this.generator;
+		const duration = this.durationMs;
 
-		// Calculate progress as a value between 0 and 1
-		const progress = Math.min(elapsed / durationMs, 1);
+		return {
+			next: () => {
+				const now = Date.now();
+				const elapsed = now - startTime;
 
-		// If the duration has elapsed, stop the interval and call onFinish
-		if (progress >= 1) {
-			clearInterval(intervalId);
-			const finalValue = iterator.next().value;
-			if (onFinish) onFinish(finalValue);
-			return;
-		}
+				const progress = Math.min(elapsed / duration, 1);
 
-		// Get the next value from the iterator
-		const nextValue = iterator.next().value;
+				const { value: color } = gen.next();
 
-		// Call the onTick callback with the next value and progress
-		if (onTick) onTick(nextValue, progress);
-	}, 50);
+				const value = {
+					color,
+					progress,
+					isFinished: progress >= 1,
+				};
 
-	return () => clearInterval(intervalId);
+				if (progress >= 1) {
+					return { done: true, value };
+				}
+
+				return { done: false, value };
+			},
+		};
+	}
 }

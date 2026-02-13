@@ -1,28 +1,34 @@
 import { colorGenerator } from "./colorGenerator.js";
-import { consumeIteratorWithTimeout } from "./iterator.js";
+import { AnimationSequence } from "./iterator.js";
 
 /**
- * Explosion Animation
- * @param {function} onUpdateReactState - Callback function to update React state with the current color and scale
- * @param {function} onFinishReactState - Callback function to update React state when the animation finishes with the final color
+ * Explosion Animation using the custom Iterable Class
+ * @param {function} onUpdateReactState - Callback to update React state with current color and scale
+ * @param {function} onFinishReactState - Callback to update React state when animation finishes
+ * @returns {function} A cleanup function to stop the animation
  */
 export function startExplosionAnimation(onUpdateReactState, onFinishReactState) {
-	const colorIterator = colorGenerator();
+	const colorSource = colorGenerator();
 
-	return consumeIteratorWithTimeout(
-		colorIterator,
-		2000,
-		(color, progress) => {
-			// Create an oscillation effect that peaks at the middle of the animation
-			const oscillation = Math.sin(progress * Math.PI * 6) * (1 - progress);
+	const animationSequence = new AnimationSequence(colorSource, 2000);
 
-			// Scale the explosion from 1 to 2 and back to 1, with an oscillation effect
-			const scale = 1 + Math.abs(oscillation);
+	const iterator = animationSequence[Symbol.iterator]();
 
-			onUpdateReactState(color, scale);
-		},
-		(finalColor) => {
-			onFinishReactState(finalColor);
-		},
-	);
+	const intervalId = setInterval(() => {
+		const { value, done } = iterator.next();
+		const { color, progress } = value;
+
+		if (done) {
+			clearInterval(intervalId);
+			onFinishReactState(color);
+			return;
+		}
+
+		const oscillation = Math.sin(progress * Math.PI * 6) * (1 - progress);
+		const scale = 1 + Math.abs(oscillation) * 0.5;
+
+		onUpdateReactState(color, scale);
+	}, 50); // 20 FPS
+
+	return () => clearInterval(intervalId);
 }
