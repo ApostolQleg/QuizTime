@@ -82,18 +82,19 @@ export default function Quiz() {
 		let allAnswered = true;
 		const newErrors = {};
 
-		quizData.questions.forEach((_, i) => {
+		for (let i = 0; i < quizData.questions.length; i++) {
 			if (!answers[i] || answers[i].length === 0) {
 				allAnswered = false;
 				newErrors[i] = true;
 			}
-		});
+		}
 
 		setErrors(newErrors);
 		if (!allAnswered) return;
 
 		let score = 0;
-		quizData.questions.forEach((question, qIndex) => {
+
+		for (const [qIndex, question] of quizData.questions.entries()) {
 			const correctIds = question.options.filter((o) => o.isCorrect).map((o) => o.id);
 			const selectedIds = answers[qIndex] || [];
 
@@ -103,7 +104,7 @@ export default function Quiz() {
 			) {
 				score++;
 			}
-		});
+		}
 
 		const summary = {
 			score,

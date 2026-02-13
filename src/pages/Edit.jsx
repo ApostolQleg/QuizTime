@@ -146,16 +146,16 @@ export default function Edit() {
 
 		let hasError = newErrors.title || newErrors.description;
 
-		questions.forEach((question) => {
+		for (const question of questions) {
 			const optionsErrors = {};
 			let optionHasError = false;
 
-			question.options.forEach((option) => {
+			for (const option of question.options) {
 				if (option.text.trim() === "") {
 					optionsErrors[option.id] = { hasError: true };
 					optionHasError = true;
 				}
-			});
+			}
 
 			const hasCorrectOption = question.options.some((o) => o.isCorrect);
 			const questionTextEmpty = question.text.trim() === "";
@@ -168,7 +168,7 @@ export default function Edit() {
 					options: optionsErrors,
 				};
 			}
-		});
+		}
 
 		setErrors(newErrors);
 		if (hasError) return;
