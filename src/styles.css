@@ -51,7 +51,7 @@
 	}
 
 	.quiz-card {
-		@apply text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl rounded-3xl max-h-[400px] max-w-[400px] aspect-square w-full flex items-center justify-center text-center hover:scale-105 transition-all shadow-xl border;
+		@apply text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl rounded-3xl max-h-100 max-w-100 aspect-square w-full flex items-center justify-center text-center hover:scale-105 transition-all shadow-xl border;
 		background-color: var(--col-primary);
 		color: var(--col-text-main);
 		box-shadow: 0 20px 25px -5px var(--col-primary-glow);

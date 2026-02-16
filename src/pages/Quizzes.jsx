@@ -69,6 +69,13 @@ export default function Quizzes() {
 		loadData(nextPage, false);
 	};
 
+	const handleDeleteSuccess = (deletedQuizId) => {
+		setItems((prevItems) =>
+			prevItems.filter((item) => item.id !== deletedQuizId && item._id !== deletedQuizId),
+		);
+		setSelectedQuiz(null);
+	};
+
 	return (
 		<>
 			<Grid
@@ -88,6 +95,7 @@ export default function Quizzes() {
 					quiz={selectedQuiz}
 					onClose={() => setSelectedQuiz(null)}
 					isOpen={!!selectedQuiz}
+					onDeleteSuccess={handleDeleteSuccess}
 				/>
 			)}
 		</>

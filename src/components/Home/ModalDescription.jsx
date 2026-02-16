@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import Modal from "../UI/Modal.jsx";
 import ModalConfirm from "../UI/ModalConfirm.jsx";
 
-export default function ModalDescription({ quiz, onClose, isOpen }) {
+export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSuccess }) {
 	const { user } = useAuth();
 
 	const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
@@ -16,7 +16,13 @@ export default function ModalDescription({ quiz, onClose, isOpen }) {
 			await deleteQuiz(quiz.id);
 			setIsDeleteConfirmOpen(false);
 			onClose();
-			window.location.reload();
+
+			if (onDeleteSuccess) {
+				onDeleteSuccess(quiz.id);
+			} else {
+				onClose();
+			}
+			
 		} catch (error) {
 			console.error("Error deleting quiz: ", error);
 			setErrorMessage("Failed to delete quiz. Please try again later.");

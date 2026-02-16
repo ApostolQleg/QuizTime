@@ -45,9 +45,12 @@ export async function updateQuiz(id, data) {
 }
 
 export async function deleteQuiz(id) {
+	const headers = getHeaders();
+	delete headers["Content-Type"];
+
 	const res = await fetch(`${API_URL}/quizzes/${id}`, {
 		method: "DELETE",
-		headers: getHeaders(),
+		headers: headers,
 	});
 
 	const json = await res.json();

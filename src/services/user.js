@@ -12,9 +12,12 @@ export async function verifySession() {
 }
 
 export async function deleteUser() {
+	const headers = getHeaders();
+	delete headers["Content-Type"];
+
 	const res = await fetch(`${API_URL}/user/delete`, {
 		method: "DELETE",
-		headers: getHeaders(),
+		headers: headers,
 	});
 
 	const json = await res.json();
