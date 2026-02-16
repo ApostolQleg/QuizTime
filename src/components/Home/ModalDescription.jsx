@@ -22,7 +22,6 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 			} else {
 				onClose();
 			}
-			
 		} catch (error) {
 			console.error("Error deleting quiz: ", error);
 			setErrorMessage("Failed to delete quiz. Please try again later.");
@@ -68,7 +67,7 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 					{canManage && (
 						<Button
 							onClick={() => setIsDeleteConfirmOpen(true)}
-							className="bg-red-600 hover:bg-red-700"
+							className="bg-(--col-fail) hover:bg-(--col-fail-hover) shadow-(--col-fail-glow) flex-1 text-lg"
 						>
 							Delete
 						</Button>

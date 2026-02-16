@@ -37,7 +37,7 @@ export default function ModalConfirm({
 						}}
 						className={
 							isDanger
-								? "bg-red-600 hover:bg-red-700 shadow-red-900/20"
+								? "bg-(--col-fail) hover:bg-(--col-fail-hover) shadow-(--col-fail-glow)"
 								: "bg-(--col-primary) hover:brightness-110"
 						}
 					>

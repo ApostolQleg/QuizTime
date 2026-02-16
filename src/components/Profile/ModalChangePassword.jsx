@@ -45,13 +45,13 @@ export default function ModalChangePassword({ isOpen, onClose }) {
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} title="Change Password">
 			{success ? (
-				<div className="text-center text-green-500 py-8 text-xl font-bold animate-fade-in">
+				<div className="text-center text-(--col-success) py-8 text-xl font-bold animate-fade-in">
 					Password changed successfully!
 				</div>
 			) : (
 				<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 					{error && (
-						<div className="text-red-500 text-sm bg-red-500/10 p-2 rounded border border-red-500">
+						<div className="text-(--col-fail) text-sm bg-(--col-bg-input) p-2 rounded border border-(--col-fail)">
 							{error}
 						</div>
 					)}

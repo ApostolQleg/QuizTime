@@ -41,7 +41,6 @@ export default function ColorGenerator({ onColorSelect, initialColor }) {
 					style={{
 						backgroundColor: displayColor,
 						transform: `scale(${scale})`,
-						boxShadow: `0 0 20px ${displayColor}80`,
 					}}
 				/>
 			</div>

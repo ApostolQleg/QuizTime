@@ -18,7 +18,7 @@ export default function Modal({ isOpen, onClose, children, className = "" }) {
 	return ReactDOM.createPortal(
 		<>
 			<div
-				className="fixed inset-0 backdrop-blur-sm z-50 transition-opacity bg-slate-950/80"
+				className="fixed inset-0 backdrop-blur-sm z-50 transition-opacity bg-slate-950/60"
 				onClick={onClose}
 			/>
 			<div
@@ -26,7 +26,7 @@ export default function Modal({ isOpen, onClose, children, className = "" }) {
                     flex flex-col rounded-2xl p-8 z-50 shadow-2xl shadow-black/50 border 
                     bg-(--col-bg-card) border-(--col-border) text-(--col-text-main)
                     ${className}`}
-				onClick={(e) => e.stopPropagation()} 
+				onClick={(e) => e.stopPropagation()}
 			>
 				{children}
 			</div>

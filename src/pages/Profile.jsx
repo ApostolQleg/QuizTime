@@ -118,7 +118,7 @@ export default function Profile() {
 					</div>
 					<Button
 						onClick={() => setIsDeleteModalOpen(true)}
-						className="bg-red-600 hover:bg-red-700 shadow-none text-xs px-4 py-2"
+						className="bg-(--col-fail) hover:bg-(--col-fail-hover) shadow-none text-xs px-4 py-2"
 					>
 						Delete
 					</Button>
