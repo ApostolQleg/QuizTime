@@ -1,6 +1,3 @@
-/**
- * AnimationSequence implements the Iterable Protocol using Symbol.iterator.
- */
 export class AnimationSequence {
 	constructor(generator, durationMs) {
 		this.generator = generator;

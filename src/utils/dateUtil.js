@@ -1,8 +1,3 @@
-/**
- * Date Utility
- * @param {number} timestamp - The timestamp to format
- * @returns {string} Formatted date string in the format "HH:mm, D MMM YYYY"
- */
 export const formatDateTime = (timestamp) => {
 	if (!timestamp) return "";
 	const date = new Date(timestamp);

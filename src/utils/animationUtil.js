@@ -1,12 +1,6 @@
 import { colorGenerator } from "./colorGenerator.js";
 import { AnimationSequence } from "./iterator.js";
 
-/**
- * Explosion Animation using the custom Iterable Class
- * @param {function} onUpdateReactState - Callback to update React state with current color and scale
- * @param {function} onFinishReactState - Callback to update React state when animation finishes
- * @returns {function} A cleanup function to stop the animation
- */
 export function startExplosionAnimation(onUpdateReactState, onFinishReactState) {
 	const colorSource = colorGenerator();
 
@@ -28,7 +22,7 @@ export function startExplosionAnimation(onUpdateReactState, onFinishReactState) 
 		const scale = 1 + Math.abs(oscillation) * 0.5;
 
 		onUpdateReactState(color, scale);
-	}, 50); // 20 FPS
+	}, 50); 
 
 	return () => clearInterval(intervalId);
 }

@@ -1,8 +1,3 @@
-/**
- * JWT Utility
- * @param {string} token - The JWT token to check
- * @returns {boolean} True if the token is expired, false otherwise
- */
 export function isTokenExpired(token) {
 	if (!token) return true;
 	try {
