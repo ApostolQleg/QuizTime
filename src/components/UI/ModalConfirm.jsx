@@ -12,7 +12,7 @@ export default function ModalConfirm({
 	isAlert = false,
 }) {
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} className="w-[90vw] max-w-[400px] min-h-[200px]">
+		<Modal isOpen={isOpen} onClose={onClose} className="w-[90vw] max-w-100 min-h-50">
 			<div className="flex flex-col h-full justify-between gap-6">
 				<div>
 					<h3 className="text-2xl font-bold mb-4 text-(--col-text-accent) drop-shadow-md">
