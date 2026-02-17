@@ -78,7 +78,7 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 								?
 							</div>
 						)}
-						<p className="mt-4 text-sm text-(--col-text-muted)">
+						<p className="mt-6 text-sm text-(--col-text-muted)">
 							Using your Google account photo
 						</p>
 					</div>
