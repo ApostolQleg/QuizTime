@@ -4,6 +4,7 @@ import Button from "../UI/Button.jsx";
 import { useAuth } from "../../hooks/useAuth";
 import Modal from "../UI/Modal.jsx";
 import ModalConfirm from "../UI/ModalConfirm.jsx";
+import Avatar from "../UI/Avatar.jsx";
 
 export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSuccess }) {
 	const { user } = useAuth();
@@ -41,10 +42,27 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 
 					<div className="text-sm opacity-70">
 						{quiz.authorName ? (
-							<span>
-								Author:{" "}
-								<span className="text-(--col-primary)">{quiz.authorName}</span>
-							</span>
+							<div className="flex items-center gap-2 mt-1">
+								<span>Author:</span>
+
+								<div className="flex items-center gap-2 p-1 pr-3 rounded-full bg-(--col-bg-card) border border-(--col-border) w-fit">
+									<Avatar
+										src={quiz.authorAvatarUrl}
+										name={quiz.authorName}
+										type={quiz.authorAvatarType}
+										color={quiz.authorThemeColor}
+										size="sm"
+									/>
+									<span
+										className="font-bold text-sm"
+										style={{
+											color: quiz.authorThemeColor || "var(--col-primary)",
+										}}
+									>
+										{quiz.authorName}
+									</span>
+								</div>
+							</div>
 						) : (
 							quiz.isSystem && <span className="text-yellow-500">System Quiz</span>
 						)}
