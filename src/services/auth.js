@@ -1,4 +1,4 @@
-import { AUTH_URL } from "./api.js";
+import { AUTH_URL, getHeaders } from "./api.js";
 
 export async function registerUser(data) {
 	const res = await fetch(`${AUTH_URL}/register`, {
@@ -62,5 +62,17 @@ export async function sendVerificationCode(email) {
 
 	const json = await res.json();
 	if (!res.ok) throw new Error(json.error || "Failed to send verification code");
+	return json;
+}
+
+export async function linkGoogleAccount(credential) {
+	const res = await fetch(`${AUTH_URL}/link-google`, {
+		method: "POST",
+		headers: getHeaders(),
+		body: JSON.stringify({ token: credential }),
+	});
+
+	const json = await res.json();
+	if (!res.ok) throw new Error(json.error || "Failed to link Google account");
 	return json;
 }
