@@ -61,30 +61,22 @@ export default function Header() {
 									</span>
 								</div>
 
-								<div className="relative">
-									{user.avatarUrl ? (
-										<Avatar src={user.avatarUrl} name={user.name} size="sm" />
-									) : user.avatarType === "generated" && user.themeColor ? (
-										<div
-											className="w-10 h-10 rounded-full border border-(--col-border) shadow-md group-hover:scale-105 transition-transform"
-											style={{
-												backgroundColor: user.themeColor,
-												boxShadow: `0 0 10px ${user.themeColor}60`,
-											}}
-										/>
-									) : (
-										<div className="w-10 h-10 rounded-full bg-(--col-primary) flex items-center justify-center text-(--col-text-main) font-bold border border-(--col-border) shadow-md">
-											{user.name.charAt(0).toUpperCase()}
-										</div>
-									)}
+								<div className="relative group-hover:scale-105 transition-transform duration-300">
+									<Avatar
+										src={user.avatarUrl}
+										name={user.name}
+										type={user.avatarType}
+										color={user.themeColor} 
+										size="sm"
+									/>
 								</div>
 							</Link>
 
 							<button
 								onClick={handleLogoutClick}
 								className="px-4 py-2 rounded-lg border border-(--col-border) text-(--col-text-muted) 
-                                           hover:bg-(--col-fail-bg) hover:text-(--col-fail) hover:border-(--col-fail) 
-                                           transition-all duration-300 text-xs sm:text-sm font-semibold shadow-sm cursor-pointer"
+                                   hover:bg-(--col-fail-bg) hover:text-(--col-fail) hover:border-(--col-fail) 
+                                   transition-all duration-300 text-xs sm:text-sm font-semibold shadow-sm cursor-pointer"
 							>
 								Sign Out
 							</button>

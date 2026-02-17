@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Avatar({ src, name, size = "md", className = "" }) {
+export default function Avatar({ src, name, type = "google", color, size = "md", className = "" }) {
 	const [error, setError] = useState(false);
 
 	const sizeClasses = {
@@ -10,14 +10,17 @@ export default function Avatar({ src, name, size = "md", className = "" }) {
 		xl: "w-32 h-32 text-4xl",
 	};
 
-	if (!src || error) {
-		const initial = name ? name.charAt(0).toUpperCase() : "U";
+	if (type === "generated" || !src || error) {
+		const finalColor = color || "var(--col-primary)";
+
 		return (
 			<div
-				className={`${sizeClasses[size]} ${className} rounded-full bg-(--col-primary) text-(--col-text-main) flex items-center justify-center font-bold select-none`}
-			>
-				{initial}
-			</div>
+				className={`${sizeClasses[size]} ${className} rounded-full shadow-md border border-(--col-border)`}
+				style={{
+					backgroundColor: finalColor,
+					boxShadow: `0 0 10px ${finalColor}60`,
+				}}
+			/>
 		);
 	}
 
@@ -27,7 +30,7 @@ export default function Avatar({ src, name, size = "md", className = "" }) {
 		<img
 			src={secureSrc}
 			alt={name || "User avatar"}
-			className={`${sizeClasses[size]} ${className} rounded-full object-cover bg-(--col-bg-input)`}
+			className={`${sizeClasses[size]} ${className} rounded-full object-cover bg-(--col-bg-input) border border-(--col-border)`}
 			referrerPolicy="no-referrer"
 			onError={() => setError(true)}
 		/>
