@@ -40,7 +40,7 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 						{quiz.title}
 					</div>
 
-					<div className="text-sm opacity-70">
+					<div className="text-sm">
 						{quiz.authorName ? (
 							<div className="flex items-center gap-2 mt-1">
 								<span>Author:</span>
