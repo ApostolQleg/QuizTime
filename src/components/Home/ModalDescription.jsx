@@ -74,21 +74,12 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 				</div>
 
 				<div className="flex justify-between items-center pt-6 mt-2 gap-4">
-					{canManage && (
-						<Button to={`/manage/${quiz.id}`} className="bg-blue-600 hover:bg-blue-700">
-							Manage
-						</Button>
-					)}
-					<Button to={`/quiz/${quiz.id}`} className="flex-1 shadow-xl text-lg">
+					{canManage && <Button to={`/manage/${quiz.id}`}>Manage</Button>}
+					<Button to={`/quiz/${quiz.id}`} className="flex-1">
 						Start Quiz
 					</Button>
 					{canManage && (
-						<Button
-							onClick={() => setIsDeleteConfirmOpen(true)}
-							className="bg-(--col-fail) hover:bg-(--col-fail-hover) shadow-(--col-fail-glow) flex-1 text-lg"
-						>
-							Delete
-						</Button>
+						<Button onClick={() => setIsDeleteConfirmOpen(true)}>Delete</Button>
 					)}
 				</div>
 			</Modal>
