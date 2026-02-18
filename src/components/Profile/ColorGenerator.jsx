@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-// import { startColorAnimation } from "../../utils/animationUtil.js";
-import { startColorAnimation } from "../../utils/iterator.js";
+import { startColorAnimation } from "../../utils/animationUtil.js";
+// import { startColorAnimation } from "../../utils/iterator.js";
 import { generator } from "../../utils/generator.js";
 import Button from "../UI/Button.jsx";
 
