@@ -3,9 +3,9 @@ import getHue from "./colorUtil.js";
 export function startColorAnimation(
 	onUpdateReactState,
 	onFinishReactState,
-	initialColor,
 	iterator,
 	duration = 1000,
+	initialColor,
 ) {
 	const startHue = getHue(initialColor);
 	let targetHue = iterator.next().value;
