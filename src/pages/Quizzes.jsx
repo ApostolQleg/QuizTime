@@ -3,6 +3,7 @@ import { getQuizzes } from "../services/quizzes.js";
 import { useAuth } from "../hooks/useAuth";
 import Grid from "../components/Home/Grid.jsx";
 import ModalDescription from "../components/Home/ModalDescription.jsx";
+import SearchBar from "../components/Home/SearchBar.jsx";
 
 export default function Quizzes() {
 	const { user } = useAuth();
@@ -78,17 +79,20 @@ export default function Quizzes() {
 
 	return (
 		<>
-			<Grid
-				items={items}
-				loading={loading}
-				hasMore={hasMore}
-				onLoadMore={handleLoadMore}
-				isLoadingMore={isLoadingMore}
-				showAddButton={!!user}
-				isResultsPage={false}
-				onCardClick={setSelectedQuiz}
-				emptyMessage="No quizzes found."
-			/>
+			<div className="flex flex-col items-center justify-between gap-3">
+				<SearchBar onChange={() => {}} placeholder="Search for quizzes..." />
+				<Grid
+					items={items}
+					loading={loading}
+					hasMore={hasMore}
+					onLoadMore={handleLoadMore}
+					isLoadingMore={isLoadingMore}
+					showAddButton={!!user}
+					isResultsPage={false}
+					onCardClick={setSelectedQuiz}
+					emptyMessage="No quizzes found."
+				/>
+			</div>
 
 			{selectedQuiz && (
 				<ModalDescription
