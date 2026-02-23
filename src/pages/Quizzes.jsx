@@ -3,6 +3,7 @@ import { getQuizzes } from "../services/quizzes.js";
 import { useAuth } from "../hooks/useAuth";
 import Grid from "../components/Home/Grid.jsx";
 import ModalDescription from "../components/Home/ModalDescription.jsx";
+import SearchBar from "../components/Home/SearchBar.jsx";
 
 export default function Quizzes() {
 	const { user } = useAuth();
@@ -13,6 +14,8 @@ export default function Quizzes() {
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoadingMore, setIsLoadingMore] = useState(false);
 	const [selectedQuiz, setSelectedQuiz] = useState(null);
+
+	const [searchQuery, setSearchQuery] = useState("");
 
 	const ITEMS_PER_PAGE = 36;
 	const ITEMS_PER_PAGE_AUTH = ITEMS_PER_PAGE - 1;
@@ -76,19 +79,34 @@ export default function Quizzes() {
 		setSelectedQuiz(null);
 	};
 
+	const filteredItems = items.filter((item) =>
+		item.title.toLowerCase().includes(searchQuery.toLowerCase()),
+	);
+
 	return (
 		<>
-			<Grid
-				items={items}
-				loading={loading}
-				hasMore={hasMore}
-				onLoadMore={handleLoadMore}
-				isLoadingMore={isLoadingMore}
-				showAddButton={!!user}
-				isResultsPage={false}
-				onCardClick={setSelectedQuiz}
-				emptyMessage="No quizzes found."
-			/>
+			<div className="flex flex-col items-center justify-between gap-3">
+				<SearchBar
+					searchTerm={searchQuery}
+					onSearchChange={setSearchQuery}
+					placeholder="Search for quizzes..."
+				/>
+				<Grid
+					items={filteredItems}
+					loading={loading}
+					hasMore={hasMore && searchQuery === ""}
+					onLoadMore={handleLoadMore}
+					isLoadingMore={isLoadingMore}
+					showAddButton={!!user && searchQuery === ""}
+					isResultsPage={false}
+					onCardClick={setSelectedQuiz}
+					emptyMessage={
+						searchQuery
+							? `No quizzes found matching "${searchQuery}"`
+							: "No quizzes found."
+					}
+				/>
+			</div>
 
 			{selectedQuiz && (
 				<ModalDescription

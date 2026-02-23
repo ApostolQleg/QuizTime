@@ -183,7 +183,7 @@ export default function Quiz() {
 			{!isResultView ? (
 				<Button
 					onClick={handleSubmit}
-					className="w-full md:w-auto min-w-[200px] text-lg shadow-xl"
+					className="w-full md:w-auto min-w-50 text-lg shadow-xl"
 				>
 					Submit
 				</Button>
