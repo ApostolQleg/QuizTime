@@ -80,7 +80,7 @@ export default function Quizzes() {
 	return (
 		<>
 			<div className="flex flex-col items-center justify-between gap-3">
-				<SearchBar onChange={() => {}} placeholder="Search for quizzes..." />
+				<SearchBar onChange={() => {}} />
 				<Grid
 					items={items}
 					loading={loading}
