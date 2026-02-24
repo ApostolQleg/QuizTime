@@ -50,14 +50,20 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 			<div className="flex flex-col gap-2">
 				<label className="text-lg font-bold text-(--col-text-main)">{user.login}</label>
 				<label className="text-sm font-bold text-(--col-text-muted)">Nickname</label>
-				<Input
-					value={nickname}
-					onChange={(e) => setNickname(e.target.value)}
-					placeholder="Enter your nickname"
-					minLength={3}
-					maxLength={20}
-					required
-				/>
+				<div className="w-full flex flex-row items-center gap-4">
+					<Input
+						className="flex-1"
+						value={nickname}
+						onChange={(e) => setNickname(e.target.value)}
+						placeholder="Enter your nickname"
+						minLength={3}
+						maxLength={20}
+						required
+					/>
+					<Button type="button">
+						Random
+					</Button>
+				</div>
 			</div>
 
 			<div className="flex flex-col gap-3">
@@ -68,11 +74,10 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 						type="button"
 						onClick={() => setAvatarType("google")}
 						className={`flex-1 py-2 rounded-md transition-all text-sm font-semibold cursor-pointer flex items-center justify-center gap-2
-						${
-							avatarType === "google"
+						${avatarType === "google"
 								? "bg-(--col-bg-card) shadow-md text-(--col-text-main)"
 								: "text-(--col-text-muted) hover:text-(--col-text-main)"
-						}`}
+							}`}
 					>
 						{!hasGoogleAccount && avatarType !== "google" && (
 							<span className="w-2 h-2 rounded-full bg-(--col-primary)"></span>
@@ -83,11 +88,10 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 						type="button"
 						onClick={() => setAvatarType("generated")}
 						className={`flex-1 py-2 rounded-md transition-all text-sm font-semibold cursor-pointer
-						${
-							avatarType === "generated"
+						${avatarType === "generated"
 								? "bg-(--col-bg-card) shadow-md text-(--col-text-main)"
 								: "text-(--col-text-muted) hover:text-(--col-text-main)"
-						}`}
+							}`}
 					>
 						Color Generator
 					</button>
