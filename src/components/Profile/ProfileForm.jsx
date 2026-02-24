@@ -48,10 +48,11 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 	return (
 		<form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full max-w-lg">
 			<div className="flex flex-col gap-2">
+				<label className="text-lg font-bold text-(--col-text-main)">{user.login}</label>
 				<label className="text-sm font-bold text-(--col-text-muted)">Nickname</label>
 				<Input
 					value={nickname}
-					onChange={(e) => setName(e.target.value)}
+					onChange={(e) => setNickname(e.target.value)}
 					placeholder="Enter your nickname"
 					minLength={3}
 					maxLength={20}
