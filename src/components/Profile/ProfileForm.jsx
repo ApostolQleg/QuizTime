@@ -13,21 +13,21 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 	const [hasGoogleAccount, setHasGoogleAccount] = useState(!!user.googleId);
 	const [linkError, setLinkError] = useState(null);
 
-	const [name, setName] = useState(user.name || "");
+	const [nickname, setNickname] = useState(user.nickname || "");
 
 	const [avatarType, setAvatarType] = useState(user.avatarType || "generated");
 
 	const [generatedColor, setGeneratedColor] = useState(user.themeColor || "#4f46e5");
 
 	const hasChanges =
-		name !== user.name ||
+		nickname !== user.nickname ||
 		avatarType !== user.avatarType ||
 		(avatarType === "generated" && generatedColor !== user.themeColor);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		onSave({
-			name,
+			nickname,
 			avatarType,
 			themeColor: generatedColor,
 		});
@@ -50,7 +50,7 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 			<div className="flex flex-col gap-2">
 				<label className="text-sm font-bold text-(--col-text-muted)">Nickname</label>
 				<Input
-					value={name}
+					value={nickname}
 					onChange={(e) => setName(e.target.value)}
 					placeholder="Enter your nickname"
 					minLength={3}
@@ -98,7 +98,7 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 					hasGoogleAccount ? (
 						<div className="flex flex-col items-center p-6 border border-(--col-border) rounded-xl bg-(--col-bg-input-darker)">
 							{user.avatarUrl ? (
-								<Avatar src={user.avatarUrl} name={user.name} size="lg" />
+								<Avatar src={user.avatarUrl} name={user.nickname} size="lg" />
 							) : (
 								<div className="w-24 h-24 rounded-full bg-gray-600 flex items-center justify-center text-2xl">
 									?
