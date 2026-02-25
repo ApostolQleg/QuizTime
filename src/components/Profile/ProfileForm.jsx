@@ -6,7 +6,10 @@ import Input from "../UI/Input.jsx";
 import Button from "../UI/Button.jsx";
 import ColorGenerator from "./ColorGenerator.jsx";
 import Avatar from "../UI/Avatar.jsx";
-import { nicknameAnimation } from "../../utils/nicknameGen.js"
+import { getNicknameArray } from "../../services/user.js"
+import { redirectDocument } from "react-router";
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default function ProfileForm({ user, onSave, isLoading }) {
 	const { login, token } = useAuth();
@@ -15,6 +18,7 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 	const [linkError, setLinkError] = useState(null);
 
 	const [nickname, setNickname] = useState(user.nickname || "");
+	const [isAnimating, setIsAnimating] = useState(false);
 
 	const [avatarType, setAvatarType] = useState(user.avatarType || "generated");
 
@@ -47,10 +51,22 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 	};
 
 	const handleRandomNickname = async () => {
-		try{
-			nicknameAnimation();
+		if (isAnimating) return;
+
+		try {
+			setIsAnimating(true);
+
+			const data = await getNicknameArray();
+			const nicknames = data.nicknames;
+
+			for (let i = 0; i < nicknames.length; i++) {
+                setNickname(nicknames[i]);
+                await sleep(70);
+            }
 		} catch (err) {
-			console.error(err);
+			console.error("Failed to get nicknames", error);
+		} finally {
+			setIsAnimating(false);
 		}
 	}
 
@@ -68,9 +84,10 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 						minLength={3}
 						maxLength={20}
 						required
+						disabled={isAnimating}
 					/>
-					<Button type="button" onClick={handleRandomNickname}>
-						Random
+					<Button type="button" onClick={handleRandomNickname} disabled={isAnimating}>
+						{isAnimating ? "Rolling..." : "Random"}
 					</Button>
 				</div>
 			</div>
