@@ -6,6 +6,10 @@ import Input from "../UI/Input.jsx";
 import Button from "../UI/Button.jsx";
 import ColorGenerator from "./ColorGenerator.jsx";
 import Avatar from "../UI/Avatar.jsx";
+import { getNicknameArray } from "../../services/user.js"
+import { redirectDocument } from "react-router";
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default function ProfileForm({ user, onSave, isLoading }) {
 	const { login, token } = useAuth();
@@ -13,21 +17,22 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 	const [hasGoogleAccount, setHasGoogleAccount] = useState(!!user.googleId);
 	const [linkError, setLinkError] = useState(null);
 
-	const [name, setName] = useState(user.name || "");
+	const [nickname, setNickname] = useState(user.nickname || "");
+	const [isAnimating, setIsAnimating] = useState(false);
 
 	const [avatarType, setAvatarType] = useState(user.avatarType || "generated");
 
 	const [generatedColor, setGeneratedColor] = useState(user.themeColor || "#4f46e5");
 
 	const hasChanges =
-		name !== user.name ||
+		nickname !== user.nickname ||
 		avatarType !== user.avatarType ||
 		(avatarType === "generated" && generatedColor !== user.themeColor);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		onSave({
-			name,
+			nickname,
 			avatarType,
 			themeColor: generatedColor,
 		});
@@ -45,18 +50,46 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 		}
 	};
 
+	const handleRandomNickname = async () => {
+		if (isAnimating) return;
+
+		try {
+			setIsAnimating(true);
+
+			const data = await getNicknameArray();
+			const nicknames = data.nicknames;
+
+			for (let i = 0; i < nicknames.length; i++) {
+                setNickname(nicknames[i]);
+                await sleep(70);
+            }
+		} catch (err) {
+			console.error("Failed to get nicknames", error);
+		} finally {
+			setIsAnimating(false);
+		}
+	}
+
 	return (
 		<form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full max-w-lg">
 			<div className="flex flex-col gap-2">
+				<label className="text-lg font-bold text-(--col-text-main)">{user.login}</label>
 				<label className="text-sm font-bold text-(--col-text-muted)">Nickname</label>
-				<Input
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-					placeholder="Enter your nickname"
-					minLength={3}
-					maxLength={20}
-					required
-				/>
+				<div className="w-full flex flex-row items-center gap-4">
+					<Input
+						className="flex-1"
+						value={nickname}
+						onChange={(e) => setNickname(e.target.value)}
+						placeholder="Enter your nickname"
+						minLength={3}
+						maxLength={20}
+						required
+						disabled={isAnimating}
+					/>
+					<Button type="button" onClick={handleRandomNickname} disabled={isAnimating}>
+						{isAnimating ? "Rolling..." : "Random"}
+					</Button>
+				</div>
 			</div>
 
 			<div className="flex flex-col gap-3">
@@ -67,11 +100,10 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 						type="button"
 						onClick={() => setAvatarType("google")}
 						className={`flex-1 py-2 rounded-md transition-all text-sm font-semibold cursor-pointer flex items-center justify-center gap-2
-						${
-							avatarType === "google"
+						${avatarType === "google"
 								? "bg-(--col-bg-card) shadow-md text-(--col-text-main)"
 								: "text-(--col-text-muted) hover:text-(--col-text-main)"
-						}`}
+							}`}
 					>
 						{!hasGoogleAccount && avatarType !== "google" && (
 							<span className="w-2 h-2 rounded-full bg-(--col-primary)"></span>
@@ -82,11 +114,10 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 						type="button"
 						onClick={() => setAvatarType("generated")}
 						className={`flex-1 py-2 rounded-md transition-all text-sm font-semibold cursor-pointer
-						${
-							avatarType === "generated"
+						${avatarType === "generated"
 								? "bg-(--col-bg-card) shadow-md text-(--col-text-main)"
 								: "text-(--col-text-muted) hover:text-(--col-text-main)"
-						}`}
+							}`}
 					>
 						Color Generator
 					</button>
@@ -98,7 +129,7 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 					hasGoogleAccount ? (
 						<div className="flex flex-col items-center p-6 border border-(--col-border) rounded-xl bg-(--col-bg-input-darker)">
 							{user.avatarUrl ? (
-								<Avatar src={user.avatarUrl} name={user.name} size="lg" />
+								<Avatar src={user.avatarUrl} name={user.nickname} size="lg" />
 							) : (
 								<div className="w-24 h-24 rounded-full bg-gray-600 flex items-center justify-center text-2xl">
 									?

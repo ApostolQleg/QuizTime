@@ -76,13 +76,13 @@ export default function Login() {
 					<form onSubmit={handleSubmit} className="w-full max-w-xs flex flex-col gap-5">
 						<div className="flex flex-col gap-2">
 							<label className="text-sm font-semibold text-(--col-text-muted) ml-1">
-								Nickname
+								Login
 							</label>
 							<input
 								className="input w-full text-lg py-3 px-4"
 								type="text"
 								name="login"
-								placeholder="Your nickname"
+								placeholder="Your login"
 								value={formData.login}
 								onChange={handleChange}
 								required

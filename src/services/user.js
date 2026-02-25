@@ -48,3 +48,14 @@ export async function changePassword(data) {
 	if (!res.ok) throw new Error(json.error || "Failed to change password");
 	return json;
 }
+
+export async function getNicknameArray() {
+	const res = await fetch(`${API_URL}/user/nickname`, {
+		method: "GET",
+		headers: getHeaders(),
+	});
+
+	const json = await res.json();
+	if (!res.ok) throw new Error("Failed to get nickname array");
+	return json;
+}

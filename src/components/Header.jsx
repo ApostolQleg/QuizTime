@@ -57,14 +57,14 @@ export default function Header() {
 										className="font-bold max-w-37.5 truncate transition-colors duration-300"
 										style={{ color: user.themeColor || "var(--col-primary)" }}
 									>
-										{user.name}
+										{user.nickname}
 									</span>
 								</div>
 
 								<div className="relative group-hover:scale-105 transition-transform duration-300">
 									<Avatar
 										src={user.avatarUrl}
-										name={user.name}
+										name={user.nickname}
 										type={user.avatarType}
 										color={user.themeColor} 
 										size="sm"

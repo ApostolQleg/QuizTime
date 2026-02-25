@@ -19,7 +19,7 @@ export default function Register() {
 	const [formData, setFormData] = useState({
 		email: "",
 		code: "",
-		name: "",
+		login: "",
 		password: "",
 		confirmPassword: "",
 		avatarUrl: "",
@@ -55,7 +55,7 @@ export default function Register() {
 			setFormData((prev) => ({
 				...prev,
 				email: googleData.email,
-				name: "",
+				login: "",
 				avatarUrl: googleData.picture,
 				googleToken: credentialResponse.credential,
 			}));
@@ -82,15 +82,15 @@ export default function Register() {
 		if (formData.password !== formData.confirmPassword) {
 			return setError("Passwords do not match");
 		}
-		if (formData.name.length < 3) {
-			return setError("Nickname must be at least 3 characters");
+		if (formData.login.length < 3) {
+			return setError("Login must be at least 3 characters");
 		}
 
 		setIsLoading(true);
 		try {
 			const data = await registerUser({
 				email: formData.email,
-				name: formData.name,
+				login: formData.login,
 				password: formData.password,
 				code: formData.googleToken ? null : formData.code,
 				googleToken: formData.googleToken,
@@ -235,7 +235,7 @@ export default function Register() {
 					className="w-full flex flex-col gap-4 animate-fade-in"
 				>
 					<div className="p-3 mb-2 bg-(--col-bg-input-darker) rounded-lg border border-(--col-border) flex items-center gap-3">
-						<Avatar src={formData.avatarUrl} name={formData.name} size="md" />
+						<Avatar src={formData.avatarUrl} name={formData.login} size="md" />
 						<div className="flex flex-col overflow-hidden">
 							<span className="text-xs text-(--col-text-muted)">Registering as</span>
 							<span className="text-sm font-bold truncate">{formData.email}</span>
@@ -244,13 +244,13 @@ export default function Register() {
 
 					<div className="flex flex-col gap-1">
 						<label className="text-sm font-semibold text-(--col-text-muted)">
-							Nickname
+							Login
 						</label>
 						<Input
 							type="text"
-							name="name"
+							name="login"
 							placeholder="CoolUser123"
-							value={formData.name}
+							value={formData.login}
 							onChange={handleChange}
 							required
 							minLength={3}
