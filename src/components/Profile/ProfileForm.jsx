@@ -6,6 +6,7 @@ import Input from "../UI/Input.jsx";
 import Button from "../UI/Button.jsx";
 import ColorGenerator from "./ColorGenerator.jsx";
 import Avatar from "../UI/Avatar.jsx";
+import { nicknameAnimation } from "../../utils/nicknameGen.js"
 
 export default function ProfileForm({ user, onSave, isLoading }) {
 	const { login, token } = useAuth();
@@ -45,6 +46,14 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 		}
 	};
 
+	const handleRandomNickname = async () => {
+		try{
+			nicknameAnimation();
+		} catch (err) {
+			console.error(err);
+		}
+	}
+
 	return (
 		<form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full max-w-lg">
 			<div className="flex flex-col gap-2">
@@ -60,7 +69,7 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 						maxLength={20}
 						required
 					/>
-					<Button type="button">
+					<Button type="button" onClick={handleRandomNickname}>
 						Random
 					</Button>
 				</div>
