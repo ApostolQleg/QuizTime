@@ -6,7 +6,7 @@ import Input from "../UI/Input.jsx";
 import Button from "../UI/Button.jsx";
 import ColorGenerator from "./ColorGenerator.jsx";
 import Avatar from "../UI/Avatar.jsx";
-import { getNicknameArray } from "../../services/user.js"
+import { getNicknameArray } from "../../services/user.js";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -59,15 +59,15 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 			const nicknames = data.nicknames;
 
 			for (let i = 0; i < nicknames.length; i++) {
-                setNickname(nicknames[i]);
-                await sleep(70);
-            }
+				setNickname(nicknames[i]);
+				await sleep(70);
+			}
 		} catch (err) {
 			console.error("Failed to get nicknames", err);
 		} finally {
 			setIsAnimating(false);
 		}
-	}
+	};
 
 	return (
 		<form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full max-w-lg">
@@ -99,10 +99,11 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 						type="button"
 						onClick={() => setAvatarType("google")}
 						className={`flex-1 py-2 rounded-md transition-all text-sm font-semibold cursor-pointer flex items-center justify-center gap-2
-						${avatarType === "google"
+						${
+							avatarType === "google"
 								? "bg-(--col-bg-card) shadow-md text-(--col-text-main)"
 								: "text-(--col-text-muted) hover:text-(--col-text-main)"
-							}`}
+						}`}
 					>
 						{!hasGoogleAccount && avatarType !== "google" && (
 							<span className="w-2 h-2 rounded-full bg-(--col-primary)"></span>
@@ -113,10 +114,11 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 						type="button"
 						onClick={() => setAvatarType("generated")}
 						className={`flex-1 py-2 rounded-md transition-all text-sm font-semibold cursor-pointer
-						${avatarType === "generated"
+						${
+							avatarType === "generated"
 								? "bg-(--col-bg-card) shadow-md text-(--col-text-main)"
 								: "text-(--col-text-muted) hover:text-(--col-text-main)"
-							}`}
+						}`}
 					>
 						Color Generator
 					</button>
