@@ -7,7 +7,6 @@ import Button from "../UI/Button.jsx";
 import ColorGenerator from "./ColorGenerator.jsx";
 import Avatar from "../UI/Avatar.jsx";
 import { getNicknameArray } from "../../services/user.js"
-import { redirectDocument } from "react-router";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -64,7 +63,7 @@ export default function ProfileForm({ user, onSave, isLoading }) {
                 await sleep(70);
             }
 		} catch (err) {
-			console.error("Failed to get nicknames", error);
+			console.error("Failed to get nicknames", err);
 		} finally {
 			setIsAnimating(false);
 		}
