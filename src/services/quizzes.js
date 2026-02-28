@@ -1,7 +1,7 @@
 import { API_URL, getHeaders } from "./api.js";
 
-export async function getQuizzes(skip = 0, limit = 36) {
-	const res = await fetch(`${API_URL}/quizzes?skip=${skip}&limit=${limit}`, {
+export async function getQuizzes(skip = 0, limit = 36, search = "") {
+	const res = await fetch(`${API_URL}/quizzes?skip=${skip}&limit=${limit}&search=${search}`, {
 		headers: getHeaders(),
 	});
 

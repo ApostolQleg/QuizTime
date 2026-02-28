@@ -1,9 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { getQuizzes } from "../services/quizzes.js";
 import { useAuth } from "../hooks/useAuth";
+import { useDebounce } from "../hooks/useDebounce";
 import Grid from "../components/Home/Grid.jsx";
 import ModalDescription from "../components/Home/ModalDescription.jsx";
 import SearchBar from "../components/Home/SearchBar.jsx";
+
+const ITEMS_PER_PAGE = 36;
+const ITEMS_PER_PAGE_AUTH = ITEMS_PER_PAGE - 1;
 
 export default function Quizzes() {
 	const { user } = useAuth();
@@ -16,12 +20,10 @@ export default function Quizzes() {
 	const [selectedQuiz, setSelectedQuiz] = useState(null);
 
 	const [searchQuery, setSearchQuery] = useState("");
-
-	const ITEMS_PER_PAGE = 36;
-	const ITEMS_PER_PAGE_AUTH = ITEMS_PER_PAGE - 1;
+	const debouncedQuery = useDebounce(searchQuery, 500);
 
 	const loadData = useCallback(
-		async (pageToLoad, isInitialLoad = false) => {
+		async (pageToLoad, isInitialLoad = false, searchParam = "") => {
 			try {
 				if (!isInitialLoad) setIsLoadingMore(true);
 
@@ -41,7 +43,7 @@ export default function Quizzes() {
 					currentSkip = (pageToLoad - 1) * ITEMS_PER_PAGE;
 				}
 
-				const data = await getQuizzes(currentSkip, currentLimit);
+				const data = await getQuizzes(currentSkip, currentLimit, searchParam);
 
 				if (data.length < currentLimit) {
 					setHasMore(false);
@@ -55,7 +57,7 @@ export default function Quizzes() {
 				setIsLoadingMore(false);
 			}
 		},
-		[user, ITEMS_PER_PAGE, ITEMS_PER_PAGE_AUTH],
+		[user],
 	);
 
 	useEffect(() => {
@@ -63,13 +65,13 @@ export default function Quizzes() {
 		setPage(1);
 		setHasMore(true);
 		setLoading(true);
-		loadData(1, true);
-	}, [user, loadData]);
+		loadData(1, true, debouncedQuery);
+	}, [user, loadData, debouncedQuery]);
 
 	const handleLoadMore = () => {
 		const nextPage = page + 1;
 		setPage(nextPage);
-		loadData(nextPage, false);
+		loadData(nextPage, false, debouncedQuery);
 	};
 
 	const handleDeleteSuccess = (deletedQuizId) => {
@@ -78,10 +80,6 @@ export default function Quizzes() {
 		);
 		setSelectedQuiz(null);
 	};
-
-	const filteredItems = items.filter((item) =>
-		item.title.toLowerCase().includes(searchQuery.toLowerCase()),
-	);
 
 	return (
 		<>
@@ -92,17 +90,17 @@ export default function Quizzes() {
 					placeholder="Search for quizzes..."
 				/>
 				<Grid
-					items={filteredItems}
+					items={items}
 					loading={loading}
-					hasMore={hasMore && searchQuery === ""}
+					hasMore={hasMore}
 					onLoadMore={handleLoadMore}
 					isLoadingMore={isLoadingMore}
-					showAddButton={!!user && searchQuery === ""}
+					showAddButton={!!user && debouncedQuery === ""}
 					isResultsPage={false}
 					onCardClick={setSelectedQuiz}
 					emptyMessage={
-						searchQuery
-							? `No quizzes found matching "${searchQuery}"`
+						debouncedQuery
+							? `No quizzes found matching "${debouncedQuery}"`
 							: "No quizzes found."
 					}
 				/>
