@@ -6,7 +6,7 @@ export default function SearchBar({ searchTerm, onSearchChange, placeholder = "S
 			value={searchTerm}
 			onChange={(e) => onSearchChange(e.target.value)}
 			placeholder={"🔍 " + placeholder}
-			className="w-lg p-4"
+			className="w-xs sm:w-sm lg:w-lg xl:w-xl p-4"
 		/>
 	);
 }
