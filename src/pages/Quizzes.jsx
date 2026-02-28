@@ -30,7 +30,7 @@ export default function Quizzes() {
 				let currentLimit = ITEMS_PER_PAGE;
 				let currentSkip = 0;
 
-				if (user) {
+				if (user && searchParam === "") {
 					if (pageToLoad === 1) {
 						currentLimit = ITEMS_PER_PAGE_AUTH;
 						currentSkip = 0;
