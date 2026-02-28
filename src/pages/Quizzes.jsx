@@ -95,7 +95,7 @@ export default function Quizzes() {
 					hasMore={hasMore}
 					onLoadMore={handleLoadMore}
 					isLoadingMore={isLoadingMore}
-					showAddButton={!!user && debouncedQuery === ""}
+					showAddButton={!!user && searchQuery === ""}
 					isResultsPage={false}
 					onCardClick={setSelectedQuiz}
 					emptyMessage={
