@@ -1,7 +1,14 @@
 import { API_URL, getHeaders } from "./api.js";
 
-export async function getResults(skip = 0, limit = 36) {
-	const res = await fetch(`${API_URL}/results?skip=${skip}&limit=${limit}`, {
+export async function getResults(skip = 0, limit = 36, search = "") {
+	const params = new URLSearchParams({
+		skip: String(skip),
+		limit: String(limit),
+	});
+	if (search !== "") {
+		params.append("search", search);
+	}
+	const res = await fetch(`${API_URL}/results?${params.toString()}`, {
 		headers: getHeaders(),
 	});
 

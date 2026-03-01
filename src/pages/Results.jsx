@@ -2,7 +2,11 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getResults } from "../services/results.js";
 import { useAuth } from "../hooks/useAuth";
+import { useDebounce } from "../hooks/useDebounce";
 import Grid from "../components/Home/Grid.jsx";
+import SearchBar from "../components/Home/SearchBar.jsx";
+
+const ITEMS_PER_PAGE = 36;
 
 export default function Results() {
 	const navigate = useNavigate();
@@ -14,10 +18,11 @@ export default function Results() {
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-	const ITEMS_PER_PAGE = 36;
+	const [searchQuery, setSearchQuery] = useState("");
+	const debouncedQuery = useDebounce(searchQuery, 500);
 
 	const loadData = useCallback(
-		async (pageToLoad, isInitialLoad = false) => {
+		async (pageToLoad, isInitialLoad = false, searchParam = "") => {
 			if (!user) {
 				setLoading(false);
 				return;
@@ -27,7 +32,7 @@ export default function Results() {
 				if (!isInitialLoad) setIsLoadingMore(true);
 
 				const currentSkip = (pageToLoad - 1) * ITEMS_PER_PAGE;
-				const data = await getResults(currentSkip, ITEMS_PER_PAGE);
+				const data = await getResults(currentSkip, ITEMS_PER_PAGE, searchParam);
 
 				if (data.length < ITEMS_PER_PAGE) {
 					setHasMore(false);
@@ -41,7 +46,7 @@ export default function Results() {
 				setIsLoadingMore(false);
 			}
 		},
-		[user, ITEMS_PER_PAGE],
+		[user],
 	);
 
 	useEffect(() => {
@@ -49,14 +54,13 @@ export default function Results() {
 		setPage(1);
 		setHasMore(true);
 		setLoading(true);
-
-		loadData(1, true);
-	}, [user, loadData]);
+		loadData(1, true, debouncedQuery);
+	}, [user, loadData, debouncedQuery]);
 
 	const handleLoadMore = () => {
 		const nextPage = page + 1;
 		setPage(nextPage);
-		loadData(nextPage, false);
+		loadData(nextPage, false, debouncedQuery);
 	};
 
 	const emptyMessage = user ? (
@@ -66,23 +70,32 @@ export default function Results() {
 			<span className="text-xl font-bold">
 				History is available only for registered users
 			</span>
-			<Link to="/login" className="text-(--col-primary) hover:underline text-base">
-				Sign in to save your progress
+			<Link to="/register" className="text-(--col-primary) hover:underline text-base">
+				Sign up to save your progress
 			</Link>
 		</>
 	);
 
 	return (
-		<Grid
-			items={items}
-			loading={loading}
-			hasMore={hasMore}
-			onLoadMore={handleLoadMore}
-			isLoadingMore={isLoadingMore}
-			showAddButton={false}
-			isResultsPage={true}
-			onCardClick={(item) => navigate(`/result/${item.quizId}/${item._id}`)}
-			emptyMessage={emptyMessage}
-		/>
+		<>
+			<div className="flex flex-col items-center justify-between gap-3">
+				<SearchBar
+					searchTerm={searchQuery}
+					onSearchChange={setSearchQuery}
+					placeholder="Search for results..."
+				/>
+				<Grid
+					items={items}
+					loading={loading}
+					hasMore={hasMore}
+					onLoadMore={handleLoadMore}
+					isLoadingMore={isLoadingMore}
+					showAddButton={false}
+					isResultsPage={true}
+					onCardClick={(item) => navigate(`/result/${item.quizId}/${item._id}`)}
+					emptyMessage={emptyMessage}
+				/>
+			</div>
+		</>
 	);
 }
