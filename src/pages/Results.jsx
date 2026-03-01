@@ -4,6 +4,8 @@ import { getResults } from "../services/results.js";
 import { useAuth } from "../hooks/useAuth";
 import Grid from "../components/Home/Grid.jsx";
 
+const ITEMS_PER_PAGE = 36;
+
 export default function Results() {
 	const navigate = useNavigate();
 	const { user } = useAuth();
@@ -13,8 +15,6 @@ export default function Results() {
 	const [page, setPage] = useState(1);
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoadingMore, setIsLoadingMore] = useState(false);
-
-	const ITEMS_PER_PAGE = 36;
 
 	const loadData = useCallback(
 		async (pageToLoad, isInitialLoad = false) => {
@@ -41,7 +41,7 @@ export default function Results() {
 				setIsLoadingMore(false);
 			}
 		},
-		[user, ITEMS_PER_PAGE],
+		[user],
 	);
 
 	useEffect(() => {
@@ -66,8 +66,8 @@ export default function Results() {
 			<span className="text-xl font-bold">
 				History is available only for registered users
 			</span>
-			<Link to="/login" className="text-(--col-primary) hover:underline text-base">
-				Sign in to save your progress
+			<Link to="/register" className="text-(--col-primary) hover:underline text-base">
+				Sign up to save your progress
 			</Link>
 		</>
 	);
