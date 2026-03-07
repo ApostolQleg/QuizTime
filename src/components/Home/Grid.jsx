@@ -32,12 +32,6 @@ export default function Grid({
 						</Link>
 					)}
 
-					{!loading && items.length === 0 && (
-						<div className="text-center text-(--col-text-main) flex flex-col gap-2">
-							{emptyMessage}
-						</div>
-					)}
-
 					{items.map((item, index) => (
 						<QuizCard
 							key={`${item._id}-${index}`}
@@ -46,6 +40,12 @@ export default function Grid({
 							onClick={() => onCardClick(item)}
 						/>
 					))}
+				</div>
+			)}
+
+			{!loading && items.length === 0 && (
+				<div className="text-center text-(--col-text-main) flex flex-col gap-2">
+					{emptyMessage}
 				</div>
 			)}
 
