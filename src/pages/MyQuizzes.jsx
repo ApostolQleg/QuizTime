@@ -63,6 +63,10 @@ export default function MyQuizzes() {
     );
 
     useEffect(() => {
+        setItems([]);
+        setPage(1);
+        setHasMore(true);
+        setLoading(true);
         loadData(1, true, debouncedQuery, sortOption, `${user._id}`);
     }, [user, loadData, debouncedQuery, sortOption]);
 
