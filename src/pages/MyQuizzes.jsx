@@ -97,41 +97,41 @@ export default function MyQuizzes() {
 
     if (!user) return null;
 
-    return (
-        <>
-            <div className="flex flex-col items-center justify-between gap-3">
-                <ToolBar
-                    searchQuery={searchQuery}
-                    onSearchChange={setSearchQuery}
-                    sortOption={sortOption}
-                    onSortChange={setSortOption}
-                    placeholder={"Search for quizzes..."}
-                />
-                <Grid
-                    items={items}
-                    loading={loading}
-                    hasMore={hasMore}
-                    onLoadMore={handleLoadMore}
-                    isLoadingMore={isLoadingMore}
-                    showAddButton={!!user && searchQuery === ""}
-                    isResultsPage={false}
-                    onCardClick={setSelectedQuiz}
-                    emptyMessage={
-                        debouncedQuery
-                            ? `No quizzes found matching "${debouncedQuery}"`
-                            : "You are quizless, create one!"
-                    }
-                />
-            </div>
+	return (
+		<>
+			<div className="flex flex-col items-center justify-between gap-3">
+				<ToolBar
+					searchQuery={searchQuery}
+					onSearchChange={setSearchQuery}
+					sortOption={sortOption}
+					onSortChange={setSortOption}
+					placeholder={"Search for quizzes..."}
+				/>
+				<Grid
+					items={items}
+					loading={loading}
+					hasMore={hasMore}
+					onLoadMore={handleLoadMore}
+					isLoadingMore={isLoadingMore}
+					showAddButton={!!user && searchQuery === ""}
+					isResultsPage={false}
+					onCardClick={setSelectedQuiz}
+					emptyMessage={
+						debouncedQuery
+							? `No quizzes found matching "${debouncedQuery}"`
+							: "You are quizless, create one!"
+					}
+				/>
+			</div>
 
-            {selectedQuiz && (
-                <ModalDescription
-                    quiz={selectedQuiz}
-                    onClose={() => setSelectedQuiz(null)}
-                    isOpen={!!selectedQuiz}
-                    onDeleteSuccess={handleDeleteSuccess}
-                />
-            )}
-        </>
-    );
+			{selectedQuiz && (
+				<ModalDescription
+					quiz={selectedQuiz}
+					onClose={() => setSelectedQuiz(null)}
+					isOpen={!!selectedQuiz}
+					onDeleteSuccess={handleDeleteSuccess}
+				/>
+			)}
+		</>
+	);
 }
