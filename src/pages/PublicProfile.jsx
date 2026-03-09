@@ -34,6 +34,10 @@ export default function PublicProfile() {
 					navigate("/", { replace: true });
 				})
 				.finally(() => setIsLoadingProfile(false));
+		} else {
+			// If userId is missing, stop loading and redirect to a safe route
+			setIsLoadingProfile(false);
+			navigate("/", { replace: true });
 		}
 	}, [userId, navigate]);
 
