@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { deleteQuiz } from "../../services/quizzes.js";
 import Button from "../UI/Button.jsx";
 import { useAuth } from "../../hooks/useAuth";
@@ -8,6 +9,8 @@ import Avatar from "../UI/Avatar.jsx";
 
 export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSuccess }) {
 	const { user } = useAuth();
+
+	const navigate = useNavigate();
 
 	const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 	const [errorMessage, setErrorMessage] = useState(null);
@@ -45,7 +48,11 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 							<div className="flex items-center gap-2 mt-1">
 								<span>Author:</span>
 
-								<div className="flex items-center gap-2 p-1 pr-3 rounded-full bg-(--col-bg-card) border border-(--col-border) w-fit">
+								<button
+									type="button"
+									className="flex items-center gap-2 p-1 pr-3 rounded-full bg-(--col-bg-card) border border-(--col-border) w-fit"
+									onClick={() => navigate(`/user/${quiz.authorId}`)}
+								>
 									<Avatar
 										src={quiz.authorAvatarUrl}
 										name={quiz.authorName}
@@ -61,7 +68,7 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 									>
 										{quiz.authorName}
 									</span>
-								</div>
+								</button>
 							</div>
 						) : (
 							quiz.isSystem && <span className="text-yellow-500">System Quiz</span>
