@@ -3,7 +3,7 @@ import { saveResult, getResultById } from "../../results/api/results.api.js";
 import { getQuizById } from "../api/quizzes.api.js";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../auth/hooks/useAuth.js";
-import Question from "../../../components/quiz/Question.jsx";
+import Question from "../components/quiz/Question.jsx";
 import Button from "../../../shared/ui/Button.jsx";
 import Container from "../../../shared/ui/Container.jsx";
 import ModalConfirm from "../../../shared/ui/ModalConfirm.jsx";

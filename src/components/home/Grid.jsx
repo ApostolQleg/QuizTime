@@ -1,4 +1,4 @@
-import QuizCard from "./QuizCard.jsx";
+import QuizCard from "../../features/quizzes/components/discovery/QuizCard.jsx";
 import Container from "../../shared/ui/Container.jsx";
 import { Link } from "react-router-dom";
 import addIcon from "../../assets/plus-icon.png";

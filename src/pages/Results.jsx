@@ -4,7 +4,7 @@ import { getResults } from "../features/results/api/results.api.js";
 import { useAuth } from "../features/auth/hooks/useAuth.js";
 import { useDebounce } from "../shared/hooks/useDebounce.js";
 import Grid from "../components/home/Grid.jsx";
-import ToolBar from "../components/home/ToolBar.jsx";
+import ToolBar from "../features/quizzes/components/discovery/ToolBar.jsx";
 
 const ITEMS_PER_PAGE = 36;
 
