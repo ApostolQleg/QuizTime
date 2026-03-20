@@ -1,4 +1,4 @@
-import { API_URL, getHeaders } from "../../../shared/api/client.js";
+import { API_URL, getHeaders } from "@/shared/api/client.js";
 
 export async function getResults(skip = 0, limit = 36, search = "", sort = "newest") {
 	const params = new URLSearchParams({

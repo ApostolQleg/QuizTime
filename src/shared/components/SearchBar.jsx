@@ -1,4 +1,4 @@
-import Input from "../ui/Input.jsx";
+import Input from "@/shared/ui/Input.jsx";
 
 export default function SearchBar({ searchTerm, onSearchChange, placeholder = "Search..." }) {
 	return (

@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUserProfile } from "../api/user.api.js";
-import { getQuizzes } from "../../quizzes/api/quizzes.api.js";
+import { getUserProfile } from "@/features/profile/api/user.api.js";
+import { getQuizzes } from "@/features/quizzes/api/quizzes.api.js";
 
-import Container from "../../../shared/ui/Container.jsx";
-import Avatar from "../../../shared/ui/Avatar.jsx";
-import Grid from "../../../shared/components/Grid.jsx";
-import ModalDescription from "../../quizzes/components/modals/ModalDescription.jsx";
+import Container from "@/shared/ui/Container.jsx";
+import Avatar from "@/shared/ui/Avatar.jsx";
+import Grid from "@/shared/components/Grid.jsx";
+import ModalDescription from "@/features/quizzes/components/modals/ModalDescription.jsx";
 
 const ITEMS_PER_PAGE = 36;
 

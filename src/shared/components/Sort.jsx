@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import newoldIcon from "..//assets/sort-newold-icon.png";
-import oldnewIcon from "..//assets/sort-oldnew-icon.png";
-import azIcon from "../assets/sort-AZ-icon.png";
-import zaIcon from "../assets/sort-ZA-icon.png";
+import newoldIcon from "@/shared/assets/sort-newold-icon.png";
+import oldnewIcon from "@/shared/assets/sort-oldnew-icon.png";
+import azIcon from "@/shared/assets/sort-AZ-icon.png";
+import zaIcon from "@/shared/assets/sort-ZA-icon.png";
 
 const SORT_OPTIONS = [
 	{ id: "newest", label: "Newest first", icon: newoldIcon },

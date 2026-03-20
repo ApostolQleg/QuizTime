@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { deleteQuiz } from "../../api/quizzes.api.js";
-import Button from "../../../../shared/ui/Button.jsx";
-import { useAuth } from "../../../auth/hooks/useAuth.js";
-import Modal from "../../../../shared/ui/Modal.jsx";
-import ModalConfirm from "../../../../shared/ui/ModalConfirm.jsx";
-import Avatar from "../../../../shared/ui/Avatar.jsx";
+import { deleteQuiz } from "@/features/quizzes/api/quizzes.api.js";
+import Button from "@/shared/ui/Button.jsx";
+import { useAuth } from "@/features/auth/hooks/useAuth.js";
+import Modal from "@/shared/ui/Modal.jsx";
+import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
+import Avatar from "@/shared/ui/Avatar.jsx";
 
 export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSuccess }) {
 	const { user } = useAuth();

@@ -1,4 +1,4 @@
-import Radio from "../../../../shared/ui/Radio.jsx";
+import Radio from "@/shared/ui/Radio.jsx";
 
 export default function Option({ id, name, text, value, disabled, onChange, isCorrect, selected }) {
 	return (

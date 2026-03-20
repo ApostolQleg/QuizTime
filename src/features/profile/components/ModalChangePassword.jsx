@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Modal from "../../../shared/ui/Modal.jsx";
-import Input from "../../../shared/ui/Input.jsx";
-import Button from "../../../shared/ui/Button.jsx";
-import { changePassword } from "../api/user.api.js";
+import Modal from "@/shared/ui/Modal.jsx";
+import Input from "@/shared/ui/Input.jsx";
+import Button from "@/shared/ui/Button.jsx";
+import { changePassword } from "@/features/profile/api/user.api.js";
 
 export default function ModalChangePassword({ isOpen, onClose }) {
 	const [currentPassword, setCurrentPassword] = useState("");

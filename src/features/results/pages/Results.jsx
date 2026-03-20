@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getResults } from "../api/results.api.js";
-import { useAuth } from "../../auth/hooks/useAuth.js";
-import { useDebounce } from "../../../shared/hooks/useDebounce.js";
-import Grid from "../../../shared/components/Grid.jsx";
-import ToolBar from "../../../shared/components/ToolBar.jsx";
+import { useAuth } from "@/features/auth/hooks/useAuth.js";
+import { useDebounce } from "@/shared/hooks/useDebounce.js";
+import Grid from "@/shared/components/Grid.jsx";
+import ToolBar from "@/shared/components/ToolBar.jsx";
 
 const ITEMS_PER_PAGE = 36;
 
