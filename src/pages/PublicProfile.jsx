@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUserProfile } from "../api/user.js";
-import { getQuizzes } from "../api/quizzes.js";
+import { getUserProfile } from "../features/profile/api/user.api.js";
+import { getQuizzes } from "../features/quizzes/api/quizzes.api.js";
 
 import Container from "../shared/ui/Container.jsx";
 import Avatar from "../shared/ui/Avatar.jsx";

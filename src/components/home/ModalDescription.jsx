@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { deleteQuiz } from "../../api/quizzes.js";
+import { deleteQuiz } from "../../features/quizzes/api/quizzes.api.js";
 import Button from "../../shared/ui/Button.jsx";
 import { useAuth } from "../../shared/hooks/useAuth.js";
 import Modal from "../../shared/ui/Modal.jsx";

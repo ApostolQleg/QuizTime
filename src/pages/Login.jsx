@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../shared/hooks/useAuth.js";
 import { GoogleLogin } from "@react-oauth/google";
-import { loginUser, loginWithGoogle } from "../api/auth.js";
+import { loginUser, loginWithGoogle } from "../features/auth/api/auth.api.js";
 import Container from "../shared/ui/Container.jsx";
 
 export default function Login() {

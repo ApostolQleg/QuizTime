@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { saveResult, getResultById } from "../api/results.js";
-import { getQuizById } from "../api/quizzes.js";
+import { saveResult, getResultById } from "../features/results/api/results.api.js";
+import { getQuizById } from "../features/quizzes/api/quizzes.api.js";
 import { useState, useEffect } from "react";
 import { useAuth } from "../shared/hooks/useAuth.js";
 import Question from "../components/quiz/Question.jsx";

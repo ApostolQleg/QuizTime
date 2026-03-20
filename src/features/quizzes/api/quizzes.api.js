@@ -1,6 +1,12 @@
-import { API_URL, getHeaders } from "./api.js";
+import { API_URL, getHeaders } from "../../../shared/api/client.js";
 
-export async function getQuizzes(skip = 0, limit = 36, search = "", sort = "newest", authorId = "") {
+export async function getQuizzes(
+	skip = 0,
+	limit = 36,
+	search = "",
+	sort = "newest",
+	authorId = "",
+) {
 	const params = new URLSearchParams({
 		skip: String(skip),
 		limit: String(limit),
@@ -11,7 +17,7 @@ export async function getQuizzes(skip = 0, limit = 36, search = "", sort = "newe
 	}
 	if (authorId !== "") {
 		params.append("authorId", authorId);
-	} 
+	}
 	const res = await fetch(`${API_URL}/quizzes?${params.toString()}`, {
 		headers: getHeaders(),
 	});

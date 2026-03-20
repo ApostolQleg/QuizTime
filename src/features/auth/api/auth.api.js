@@ -1,4 +1,4 @@
-import { AUTH_URL, getHeaders } from "./api.js";
+import { AUTH_URL, getHeaders } from "../../../shared/api/client.js";
 
 export async function registerUser(data) {
 	const res = await fetch(`${AUTH_URL}/register`, {

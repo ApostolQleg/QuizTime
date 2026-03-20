@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../shared/hooks/useAuth.js";
-import { verifySession, updateUser, deleteUser } from "../api/user.js";
+import { verifySession, updateUser, deleteUser } from "../features/profile/api/user.api.js";
 
 import Container from "../shared/ui/Container.jsx";
 import ProfileForm from "../components/profile/ProfileForm.jsx";

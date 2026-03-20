@@ -1,4 +1,4 @@
-import { API_URL, getHeaders } from "./api.js";
+import { API_URL, getHeaders } from "../../../shared/api/client.js";
 
 export async function verifySession() {
 	const res = await fetch(`${API_URL}/user`, {
