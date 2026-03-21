@@ -7,6 +7,7 @@ import Button from "@/shared/ui/Button.jsx";
 import ColorGenerator from "./ColorGenerator.jsx";
 import Avatar from "@/shared/ui/Avatar.jsx";
 import { getNicknameArray } from "../api/user.api.js";
+import { QUIZ_CONSTRAINTS } from "@/constants/config.js";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -80,8 +81,8 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 						value={nickname}
 						onChange={(e) => setNickname(e.target.value)}
 						placeholder="Enter your nickname"
-						minLength={3}
-						maxLength={20}
+						minLength={QUIZ_CONSTRAINTS.NICKNAME_MIN_LENGTH}
+						maxLength={QUIZ_CONSTRAINTS.NICKNAME_MAX_LENGTH}
 						required
 						disabled={isAnimating}
 					/>

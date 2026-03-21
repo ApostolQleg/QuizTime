@@ -5,8 +5,9 @@ import { useAuth } from "@/features/auth/hooks/useAuth.js";
 import { useDebounce } from "@/shared/hooks/useDebounce.js";
 import Grid from "@/shared/components/Grid.jsx";
 import ToolBar from "@/shared/components/ToolBar.jsx";
+import { API_CONFIG } from "@/constants/config.js";
 
-const ITEMS_PER_PAGE = 36;
+const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_RESULTS;
 
 export default function Results() {
 	const navigate = useNavigate();

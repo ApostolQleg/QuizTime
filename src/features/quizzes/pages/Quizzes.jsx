@@ -5,9 +5,10 @@ import { useDebounce } from "@/shared/hooks/useDebounce.js";
 import Grid from "@/shared/components/Grid.jsx";
 import ModalDescription from "@/features/quizzes/components/modals/ModalDescription.jsx";
 import ToolBar from "@/shared/components/ToolBar.jsx";
+import { API_CONFIG } from "@/constants/config.js";
 
-const ITEMS_PER_PAGE = 36;
-const ITEMS_PER_PAGE_AUTH = ITEMS_PER_PAGE - 1;
+const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_QUIZZES;
+const ITEMS_PER_PAGE_AUTH = API_CONFIG.ITEMS_PER_PAGE_QUIZZES_AUTH;
 
 export default function Quizzes() {
 	const { user } = useAuth();

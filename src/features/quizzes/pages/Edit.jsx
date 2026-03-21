@@ -7,6 +7,7 @@ import Button from "@/shared/ui/Button.jsx";
 import Textarea from "@/shared/ui/Textarea.jsx";
 import Container from "@/shared/ui/Container.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
+import { QUIZ_CONSTRAINTS } from "@/constants/config.js";
 
 const DEFAULT_QUESTION = {
 	id: 0,
@@ -209,15 +210,15 @@ export default function Edit() {
 					className={`text-xs lg:text-lg font-bold w-3/4 ${errors.title ? "error" : ""}`}
 					value={title}
 					onChange={(e) => {
-						const newValue = e.target.value.slice(0, 30);
+						const newValue = e.target.value.slice(0, QUIZ_CONSTRAINTS.TITLE_MAX_LENGTH);
 						setTitle(newValue);
 						setCounter(newValue.length);
 					}}
-					maxLength="30"
+					maxLength={QUIZ_CONSTRAINTS.TITLE_MAX_LENGTH}
 				/>
 
 				<div className="font-bold m-1 text-xs sm:text-lg text-(--col-text-muted)">
-					{counter}/30
+					{counter}/{QUIZ_CONSTRAINTS.TITLE_MAX_LENGTH}
 				</div>
 				<Button
 					onClick={() => {

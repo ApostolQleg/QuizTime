@@ -7,6 +7,7 @@ import Container from "@/shared/ui/Container.jsx";
 import Input from "@/shared/ui/Input.jsx";
 import Button from "@/shared/ui/Button.jsx";
 import Avatar from "@/shared/ui/Avatar.jsx";
+import { QUIZ_CONSTRAINTS } from "@/constants/config.js";
 
 export default function Register() {
 	const navigate = useNavigate();
@@ -82,8 +83,8 @@ export default function Register() {
 		if (formData.password !== formData.confirmPassword) {
 			return setError("Passwords do not match");
 		}
-		if (formData.login.length < 3) {
-			return setError("Login must be at least 3 characters");
+		if (formData.login.length < QUIZ_CONSTRAINTS.LOGIN_MIN_LENGTH) {
+			return setError(`Login must be at least ${QUIZ_CONSTRAINTS.LOGIN_MIN_LENGTH} characters`);
 		}
 
 		setIsLoading(true);
@@ -253,7 +254,7 @@ export default function Register() {
 							value={formData.login}
 							onChange={handleChange}
 							required
-							minLength={3}
+							minLength={QUIZ_CONSTRAINTS.LOGIN_MIN_LENGTH}
 							className="text-lg"
 						/>
 					</div>
@@ -269,7 +270,7 @@ export default function Register() {
 							value={formData.password}
 							onChange={handleChange}
 							required
-							minLength={6}
+							minLength={QUIZ_CONSTRAINTS.PASSWORD_MIN_LENGTH}
 							className="text-lg"
 						/>
 					</div>

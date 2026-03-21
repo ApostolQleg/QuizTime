@@ -7,8 +7,9 @@ import Container from "@/shared/ui/Container.jsx";
 import Avatar from "@/shared/ui/Avatar.jsx";
 import Grid from "@/shared/components/Grid.jsx";
 import ModalDescription from "@/features/quizzes/components/modals/ModalDescription.jsx";
+import { API_CONFIG } from "@/constants/config.js";
 
-const ITEMS_PER_PAGE = 36;
+const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_PUBLIC_PROFILE;
 
 export default function PublicProfile() {
 	const navigate = useNavigate();
