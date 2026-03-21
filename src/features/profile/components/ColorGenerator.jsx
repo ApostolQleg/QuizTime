@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { startColorAnimation } from "@/shared/libs/colorAnimation.js";
-// import { startColorAnimation } from "../../../shared/libs/iterator.js";
-import { generator } from "@/shared/libs/generator.js";
+import { startColorAnimation } from "@/features/profile/libs/colorAnimation.js";
+import { generator } from "@/features/profile/libs/generator.js";
 import Button from "@/shared/ui/Button.jsx";
 
 export default function ColorGenerator({ onColorSelect, initialColor }) {
