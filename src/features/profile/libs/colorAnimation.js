@@ -1,5 +1,5 @@
 import getHue from "./getHue.js";
-import { COLOR_ANIMATION_CONFIG } from "@/constants/config.js";
+import { COLOR_ANIMATION_CONFIG } from "@/shared/config/config.js";
 
 export function startColorAnimation(
 	onUpdateReactState,

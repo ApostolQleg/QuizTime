@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/useAuth.js";
 import { isTokenExpired } from "../libs/jwt.js";
 import { verifySession } from "@/features/profile/api/user.api.js";
-import { AUTO_RELOAD_CONFIG } from "@/constants/config.js";
+import { AUTO_RELOAD_CONFIG } from "@/shared/config/config.js";
 
 export default function useAutoReload(onRefresh, timeoutMs = AUTO_RELOAD_CONFIG.TIME_OUT_MS) {
 	const lastLeaveTime = useRef(null);

@@ -91,7 +91,7 @@ Configured in `src/app/AppRoutes.jsx`.
 
 ## Configuration
 
-Global app constants are centralized in `src/constants/config.js`.
+Global app constants are centralized in `src/shared/config/config.js`.
 
 It currently includes:
 

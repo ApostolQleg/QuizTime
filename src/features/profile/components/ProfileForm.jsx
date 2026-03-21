@@ -7,7 +7,7 @@ import Button from "@/shared/ui/Button.jsx";
 import ColorGenerator from "./ColorGenerator.jsx";
 import Avatar from "@/shared/ui/Avatar.jsx";
 import { getNicknameArray } from "../api/user.api.js";
-import { QUIZ_CONSTRAINTS } from "@/constants/config.js";
+import { QUIZ_CONSTRAINTS } from "@/shared/config/config.js";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
