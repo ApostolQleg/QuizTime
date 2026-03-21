@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { getResults } from "../api/results.api.js";
+import { getResults } from "@/features/results/api/results.api.js";
 import { useAuth } from "@/features/auth/hooks/useAuth.js";
 import { useDebounce } from "@/shared/hooks/useDebounce.js";
-import Grid from "@/shared/components/Grid.jsx";
-import ToolBar from "@/shared/components/ToolBar.jsx";
-import { API_CONFIG } from "@/constants/config.js";
+import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
+import ToolBar from "@/widgets/quiz-toolbar/ui/ToolBar.jsx";
+import { API_CONFIG } from "@/shared/config/config.js";
 
 const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_RESULTS;
 

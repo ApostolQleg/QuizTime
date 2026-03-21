@@ -5,9 +5,9 @@ import { getQuizzes } from "@/features/quizzes/api/quizzes.api.js";
 
 import Container from "@/shared/ui/Container.jsx";
 import Avatar from "@/shared/ui/Avatar.jsx";
-import Grid from "@/shared/components/Grid.jsx";
+import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
 import ModalDescription from "@/features/quizzes/components/modals/ModalDescription.jsx";
-import { API_CONFIG } from "@/constants/config.js";
+import { API_CONFIG } from "@/shared/config/config.js";
 
 const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_PUBLIC_PROFILE;
 

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { startColorAnimation } from "@/features/profile/libs/colorAnimation.js";
 import { generator } from "@/features/profile/libs/generator.js";
 import Button from "@/shared/ui/Button.jsx";
-import { COLOR_ANIMATION_CONFIG } from "@/constants/config.js";
+import { COLOR_ANIMATION_CONFIG } from "@/shared/config/config.js";
 
 export default function ColorGenerator({ onColorSelect, initialColor }) {
 	const [displayColor, setDisplayColor] = useState(initialColor);

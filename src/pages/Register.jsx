@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth.js";
+import { useAuth } from "@/features/auth/hooks/useAuth.js";
 import { GoogleLogin } from "@react-oauth/google";
-import { registerUser, sendVerificationCode, extractGoogleData } from "../api/auth.api.js";
+import {
+	registerUser,
+	sendVerificationCode,
+	extractGoogleData,
+} from "@/features/auth/api/auth.api.js";
 import Container from "@/shared/ui/Container.jsx";
 import Input from "@/shared/ui/Input.jsx";
 import Button from "@/shared/ui/Button.jsx";
 import Avatar from "@/shared/ui/Avatar.jsx";
-import { QUIZ_CONSTRAINTS } from "@/constants/config.js";
+import { QUIZ_CONSTRAINTS } from "@/shared/config/config.js";
 
 export default function Register() {
 	const navigate = useNavigate();

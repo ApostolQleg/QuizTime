@@ -3,7 +3,7 @@ import newoldIcon from "@/shared/assets/sort-newold-icon.png";
 import oldnewIcon from "@/shared/assets/sort-oldnew-icon.png";
 import azIcon from "@/shared/assets/sort-AZ-icon.png";
 import zaIcon from "@/shared/assets/sort-ZA-icon.png";
-import { SORT_OPTIONS as BASE_SORT_OPTIONS } from "@/constants/config.js";
+import { SORT_OPTIONS as BASE_SORT_OPTIONS } from "@/shared/config/config.js";
 
 const SORT_ICONS = {
 	newest: newoldIcon,
