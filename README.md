@@ -55,19 +55,23 @@ Core flows:
 
 ```text
 src/
-    app/              # App shell, routes, layout, providers, app-level pages
-    constants/        # Centralized app constants and configuration values
+    app/              # App bootstrap, routing, and providers
+    entities/         # Business entities (domain-specific atomic UI)
+        quiz/
     features/         # Domain modules (auth, profile, quizzes, results)
         auth/
         profile/
         quizzes/
         results/
+    pages/            # Route-level composition layer
     shared/           # Reusable cross-feature modules
         api/          # API client and headers
-        components/   # Shared UI blocks (grid, cards, toolbar, sort)
+        assets/       # Static assets and icons
+        config/       # Global app config/constants
         hooks/        # Shared hooks (debounce, auto reload)
         libs/         # Shared utils (jwt, formatDateTime)
         ui/           # Low-level UI primitives
+    widgets/          # Large compositional UI blocks (header, footer, grid, toolbar)
     styles.css        # Global styles and theme tokens
 ```
 
@@ -189,7 +193,6 @@ MIT. See [LICENSE](LICENSE) for details.
     - National Technical University of Ukraine "Igor Sikorsky Kyiv Polytechnic Institute"
     - Faculty of Informatics and Computer Engineering (FIOT)
     - Group: **IM-54**
-    
 - **dimpennn** - _Partner Developer_
     - National Technical University of Ukraine "Igor Sikorsky Kyiv Polytechnic Institute"
     - Faculty of Informatics and Computer Engineering (FIOT)
