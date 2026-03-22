@@ -3,7 +3,7 @@ import {
 	createQuiz,
 	getQuizById,
 	updateQuiz,
-	clearQuizCacheById,
+	clearAllQuizzesCache,
 } from "@/features/quizzes/api/quizzes.api.js";
 import { useState, useEffect } from "react";
 import Question from "@/features/quizzes/components/edit/QuestionEditor.jsx";
@@ -188,11 +188,11 @@ export default function Edit() {
 			};
 
 			if (isManagePage) {
-				clearQuizCacheById(quizId);
 				await updateQuiz(quizId, quizPayload);
 			} else {
 				await createQuiz(quizPayload);
 			}
+			clearAllQuizzesCache();
 
 			navigate("/");
 		} catch (error) {

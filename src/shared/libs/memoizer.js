@@ -1,7 +1,6 @@
 export default class Memoizer {
 	constructor() {
 		this.cache = new Map();
-		this.cacheSize = this.cache.size;
 	}
 
 	memoize(fn, ttl = 30000, capacity = 50) {
@@ -35,7 +34,10 @@ export default class Memoizer {
 
 	clear(...args) {
 		const key = JSON.stringify(args);
-		const cache = this.cache;
-		cache.delete(key);
+		this.cache.delete(key);
+	}
+
+	clearAll() {
+		this.cache.clear();
 	}
 }

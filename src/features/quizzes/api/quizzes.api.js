@@ -19,7 +19,7 @@ const getQuiz = (id) => client.get(`/quizzes/${id}`);
 
 export const getQuizById = cache.memoize(getQuiz);
 
-export const clearQuizCacheById = (id) => cache.clear(id);
+export const clearAllQuizzesCache = () => cache.clearAll();
 
 export const updateQuiz = (id, data) => client.put(`/quizzes/${id}`, data);
 
