@@ -32,4 +32,10 @@ export default class Memoizer {
 			return result;
 		};
 	}
+
+	clear(...args) {
+		const key = JSON.stringify(args);
+		const cache = this.cache;
+		cache.delete(key);
+	}
 }
