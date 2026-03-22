@@ -1,26 +1,34 @@
 export default class Memoizer {
 	constructor() {
 		this.cache = new Map();
+		this.cacheSize = this.cache.size;
 	}
 
-	memoize(fn) {
+	memoize(fn, ttl = 10000, capacity = 100) {
 		return (...args) => {
 			const key = JSON.stringify(args);
+			const cache = this.cache;
 
 			const now = Date.now();
-			const ttl = 10000;
 
-			if (this.cache.has(key)) {
-				const { data, timestamp } = this.cache.get(key);
+			if (cache.has(key)) {
+				const entry = cache.get(key);
+				const { data, timestamp } = entry;
 
 				if (now - timestamp <= ttl) {
+					cache.delete(key);
+					cache.set(key, entry);
 					return data;
 				}
-				this.cache.delete(key);
+				cache.delete(key);
 			}
 
 			const result = fn(...args);
-			this.cache.set(key, { data: result, timestamp: now });
+			if (cache.size >= capacity) {
+				const oldestKey = cache.keys().next().value;
+				cache.delete(oldestKey);
+			}
+			cache.set(key, { data: result, timestamp: now });
 			return result;
 		};
 	}
