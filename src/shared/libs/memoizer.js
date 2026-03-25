@@ -8,12 +8,14 @@ export default class Memoizer {
 			throw new TypeError("Expected a function to memoize");
 		}
 
-		return (...args) => {
+		const memoizer = this;
+
+		return function (...args) {
 			const key = JSON.stringify(args);
-			let cache = this.cache.get(fn);
+			let cache = memoizer.cache.get(fn);
 			if (!cache) {
 				cache = new Map();
-				this.cache.set(fn, cache);
+				memoizer.cache.set(fn, cache);
 			}
 
 			const now = Date.now();
@@ -30,7 +32,7 @@ export default class Memoizer {
 				cache.delete(key);
 			}
 
-			const result = fn(...args);
+			const result = fn.apply(this, args);
 			if (cache.size >= capacity) {
 				const oldestKey = cache.keys().next().value;
 				cache.delete(oldestKey);
