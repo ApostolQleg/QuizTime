@@ -5,13 +5,13 @@ import { GoogleLogin } from "@react-oauth/google";
 import {
 	registerUser,
 	sendVerificationCode,
-	extractGoogleData,
+	loginWithGoogle,
 } from "@/features/auth/api/auth.api.js";
 import Container from "@/shared/ui/Container.jsx";
 import Input from "@/shared/ui/Input.jsx";
 import Button from "@/shared/ui/Button.jsx";
-import Avatar from "@/shared/ui/Avatar.jsx";
 import { QUIZ_CONSTRAINTS } from "@/shared/config/config.js";
+import getGoogleAuthErrorMessage from "@/features/auth/libs/getGoogleAuthErrorMessage.js";
 
 export default function Register() {
 	const navigate = useNavigate();
@@ -26,8 +26,6 @@ export default function Register() {
 		code: "",
 		password: "",
 		confirmPassword: "",
-		avatarUrl: "",
-		googleToken: null,
 	});
 
 	const handleChange = (e) => {
@@ -52,20 +50,19 @@ export default function Register() {
 	};
 
 	const handleGoogleSuccess = async (credentialResponse) => {
+		if (!credentialResponse?.credential) {
+			setError("Google did not return a credential. Please try again.");
+			return;
+		}
+
 		setIsLoading(true);
 		setError("");
 		try {
-			const googleData = await extractGoogleData(credentialResponse.credential);
-			setFormData((prev) => ({
-				...prev,
-				email: googleData.email,
-				avatarUrl: googleData.picture,
-				googleToken: credentialResponse.credential,
-			}));
-			setStep(3);
+			const data = await loginWithGoogle(credentialResponse.credential);
+			login(data.user, data.token);
+			navigate("/");
 		} catch (err) {
-			console.error(err);
-			setError(err.message || "Google Sign-Up Failed. Please try manually.");
+			setError(getGoogleAuthErrorMessage(err));
 		} finally {
 			setIsLoading(false);
 		}
@@ -91,9 +88,7 @@ export default function Register() {
 			const data = await registerUser({
 				email: formData.email,
 				password: formData.password,
-				code: formData.googleToken ? null : formData.code,
-				googleToken: formData.googleToken,
-				avatarUrl: formData.avatarUrl,
+				code: formData.code,
 			});
 
 			login(data.user, data.token);
@@ -108,7 +103,7 @@ export default function Register() {
 	const renderTitle = () => {
 		if (step === 1) return "Create Account";
 		if (step === 2) return "Verify Email";
-		return "Finish Registration";
+		return "Set Password";
 	};
 
 	return (
@@ -233,12 +228,9 @@ export default function Register() {
 					onSubmit={handleFinalRegister}
 					className="w-full flex flex-col gap-4 animate-fade-in"
 				>
-					<div className="p-3 mb-2 bg-(--col-bg-input-darker) rounded-lg border border-(--col-border) flex items-center gap-3">
-						<Avatar src={formData.avatarUrl} size="md" />
-						<div className="flex flex-col overflow-hidden">
-							<span className="text-xs text-(--col-text-muted)">Registering as</span>
-							<span className="text-sm font-bold truncate">{formData.email}</span>
-						</div>
+					<div className="p-3 mb-2 bg-(--col-bg-input-darker) rounded-lg border border-(--col-border)">
+						<p className="text-xs text-(--col-text-muted)">Registering as</p>
+						<p className="text-sm font-bold truncate">{formData.email}</p>
 					</div>
 
 					<div className="flex flex-col gap-1">
@@ -279,15 +271,13 @@ export default function Register() {
 							{isLoading ? "Creating Account..." : "Create Account"}
 						</Button>
 
-						{!formData.googleToken && (
-							<button
-								type="button"
-								onClick={() => setStep(2)}
-								className="text-sm text-center text-(--col-text-muted) hover:text-(--col-primary) underline bg-transparent border-none cursor-pointer"
-							>
-								Back
-							</button>
-						)}
+						<button
+							type="button"
+							onClick={() => setStep(2)}
+							className="text-sm text-center text-(--col-text-muted) hover:text-(--col-primary) underline bg-transparent border-none cursor-pointer"
+						>
+							Back
+						</button>
 					</div>
 				</form>
 			)}
