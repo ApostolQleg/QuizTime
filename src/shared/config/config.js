@@ -27,11 +27,13 @@ export const SORT_OPTIONS = [
 	{ id: "newest", label: "Newest first" },
 	{ id: "oldest", label: "Oldest first" },
 	{ id: "az", label: "Alphabetical (A-Z)" },
-	{ id: "za", label: "Alphabetical (Z-A)" },
+	{ id: "za", label: "Alphabetical (sZ-A)" },
 ];
 
+// const API_URL = "http://localhost:3000/api";
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const URL_CONFIG = {
-	// API_URL: "http://localhost:3000/api",
-	API_URL: import.meta.env.VITE_API_URL,
-	AUTH_URL: import.meta.env.VITE_API_URL.replace("/api", "/auth"),
+	API_URL: API_URL,
+	AUTH_URL: API_URL.replace("/api", "/auth"),
 };
