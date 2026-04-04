@@ -127,7 +127,7 @@ export default function Quiz() {
 			try {
 				const response = await saveResult(payload);
 				clearAllResultsCache();
-				navigate(`/result/${quizId}/${response.resultId}`);
+				navigate(`/result/${quizId}/${response.result._id}`);
 			} catch (error) {
 				console.error("Save error", error);
 				setAlertInfo({ isOpen: true, message: "Failed to save result" });
