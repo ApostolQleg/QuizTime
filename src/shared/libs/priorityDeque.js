@@ -45,7 +45,7 @@ export class PriorityDeque {
 			}
 			return index;
 		}
-		throw new Error(`Invalid type: "${type}". Expected type: highest, lowest, newest, oldest`);
+		throw new TypeError(`Invalid type: "${type}". Expected: highest/lowest/newest/oldest`);
 	}
 
 	dequeue(type = "highest") {
