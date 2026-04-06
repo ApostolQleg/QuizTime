@@ -120,7 +120,7 @@ export default function Quiz() {
 			quizId: quizData.id || quizId,
 			answers,
 			summary,
-			timestamp: Date.now(),
+			createdAt: Date.now(),
 		};
 
 		if (user) {

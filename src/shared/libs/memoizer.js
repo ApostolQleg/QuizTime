@@ -18,13 +18,13 @@ export default class Memoizer {
 				memoizer.cache.set(fn, cache);
 			}
 
-			const now = Date.now();
+			const accessTime = Date.now();
 
 			if (cache.has(key)) {
 				const entry = cache.get(key);
 				const { data, timestamp } = entry;
 
-				if (now - timestamp <= ttl) {
+				if (accessTime - timestamp <= ttl) {
 					cache.delete(key);
 					cache.set(key, entry);
 					return data;
@@ -37,7 +37,7 @@ export default class Memoizer {
 				const oldestKey = cache.keys().next().value;
 				cache.delete(oldestKey);
 			}
-			cache.set(key, { data: result, timestamp: now });
+			cache.set(key, { data: result, timestamp: accessTime });
 			return result;
 		};
 	}
