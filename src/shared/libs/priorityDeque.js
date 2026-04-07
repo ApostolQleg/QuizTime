@@ -13,13 +13,27 @@ export class PriorityDeque {
 	}
 
 	enqueue(item, priority = 0) {
-		this.items.push({ item, priority, order: this.count++ });
-		this.items.sort((a, b) => {
-			if (a.priority !== b.priority) {
-				return b.priority - a.priority;
+		// this.items.push({ item, priority, order: this.count++ });
+		// this.items.sort((a, b) => {
+		// 	if (a.priority !== b.priority) {
+		// 		return b.priority - a.priority;
+		// 	}
+		// 	return a.order - b.order;
+		// });
+		const newItem = { item, priority, order: this.count++ };
+		let added = false;
+
+		for (let i = 0; i < this.size; i++) {
+			if (this.items[i].priority < newItem.priority) {
+				this.items.splice(i, 0, newItem);
+				added = true;
+				break;
 			}
-			return a.order - b.order;
-		});
+		}
+		
+		if (!added) {
+			this.items.push(newItem);
+		}
 	}
 
 	_findIndex(type) {
