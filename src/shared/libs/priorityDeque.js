@@ -13,13 +13,6 @@ export class PriorityDeque {
 	}
 
 	enqueue(item, priority = 0) {
-		// this.items.push({ item, priority, order: this.count++ });
-		// this.items.sort((a, b) => {
-		// 	if (a.priority !== b.priority) {
-		// 		return b.priority - a.priority;
-		// 	}
-		// 	return a.order - b.order;
-		// });
 		const newItem = { item, priority, order: this.count++ };
 		let added = false;
 
@@ -30,7 +23,7 @@ export class PriorityDeque {
 				break;
 			}
 		}
-		
+
 		if (!added) {
 			this.items.push(newItem);
 		}
