@@ -12,6 +12,10 @@ export class PriorityDeque {
 		return this.size === 0;
 	}
 
+	toArray() {
+		return this.items;
+	}
+
 	enqueue(item, priority = 0) {
 		const newItem = { item, priority, order: this.count++ };
 		let added = false;
