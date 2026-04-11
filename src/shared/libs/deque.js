@@ -16,26 +16,22 @@ export class Deque {
 	}
 
 	enqueue(item, type = "end") {
-		if (type === "end") this.items.push(item);
-		else if (type === "start") this.items.unshift(item);
-		else throw new TypeError(`Invalid type: "${type}". Expected: end/start`);
+		if (type === "end") return this.items.push(item);
+		if (type === "start") return this.items.unshift(item);
+		throw new TypeError(`Invalid type: "${type}". Expected: end/start`);
 	}
 
-	_findIndex(type) {
-		if (type === "start") return 0;
-		else if (type === "end") return this.size - 1;
-		else throw new TypeError(`Invalid type: "${type}". Expected: end/start`);
-	}
-
-	dequeue(type = "end") {
+	dequeue(type = "start") {
 		if (this.isEmpty()) return null;
-		const index = this._findIndex(type);
-		return this.items.splice(index, 1)[0];
+		if (type === "start") return this.items.shift(); 
+		if (type === "end") return this.items.pop(); 
+		throw new TypeError(`Invalid type: "${type}". Expected: end/start`);
 	}
 
-	peek(type = "end") {
+	peek(type = "start") {
 		if (this.isEmpty()) return null;
-		const index = this._findIndex(type);
-		return this.items[index];
+		if (type === "start") return this.items[0];
+		if (type === "end") return this.items[this.size - 1];
+		throw new TypeError(`Invalid type: "${type}". Expected: end/start`);
 	}
 }
