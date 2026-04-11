@@ -36,7 +36,6 @@ export default function PublicProfile() {
 				})
 				.finally(() => setIsLoadingProfile(false));
 		} else {
-			// If userId is missing, stop loading and redirect to a safe route
 			setIsLoadingProfile(false);
 			navigate("/", { replace: true });
 		}
