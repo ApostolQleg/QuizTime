@@ -12,7 +12,7 @@ export class Deque {
 	}
 
 	toArray() {
-		return this.items;
+		return [...this.items];
 	}
 
 	enqueue(item, type = "end") {
