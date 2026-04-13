@@ -192,10 +192,10 @@ export default function Edit() {
 
 			if (isManagePage) {
 				await updateQuiz(quizId, quizPayload);
-				addToast("Your quiz is updated.");
+				addToast("Your quiz has been updated.");
 			} else {
 				await createQuiz(quizPayload);
-				addToast("Your quiz is created.");
+				addToast("Your quiz has been created.");
 			}
 			clearAllQuizzesCache();
 

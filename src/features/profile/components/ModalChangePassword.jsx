@@ -12,7 +12,6 @@ export default function ModalChangePassword({ isOpen, onClose }) {
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
-	const [success, setSuccess] = useState(false);
 
 	const addToast = useToastStore((state) => state.addToast);
 
@@ -30,16 +29,12 @@ export default function ModalChangePassword({ isOpen, onClose }) {
 		setIsLoading(true);
 		try {
 			await changePassword({ currentPassword, newPassword });
-			setSuccess(true);
-			setTimeout(() => {
-				onClose();
-				setSuccess(false);
-				setCurrentPassword("");
-				setNewPassword("");
-				setConfirmPassword("");
-			}, 1500);
-
 			addToast("Your password has been changed successfully.");
+			onClose();
+			setCurrentPassword("");
+			setNewPassword("");
+			setConfirmPassword("");
+			setError("");
 		} catch (err) {
 			setError(err.message || "Failed to change password");
 		} finally {
@@ -47,7 +42,7 @@ export default function ModalChangePassword({ isOpen, onClose }) {
 		}
 	};
 
-	return !success ? (
+	return (
 		<Modal isOpen={isOpen} onClose={onClose} title="Change Password">
 			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 				{error && (
@@ -107,5 +102,5 @@ export default function ModalChangePassword({ isOpen, onClose }) {
 				</div>
 			</form>
 		</Modal>
-	) : null;
+	);
 }

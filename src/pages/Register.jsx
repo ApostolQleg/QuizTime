@@ -97,6 +97,7 @@ export default function Register() {
 			});
 
 			login(data.user, data.token);
+			addToast("Registration successful. Welcome to QuizTime!");
 			navigate("/");
 		} catch (err) {
 			setError(err.message || "Registration failed");

@@ -39,7 +39,6 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 			avatarType,
 			themeColor: generatedColor,
 		});
-		addToast("Your profile is updated.");
 	};
 
 	const handleGoogleLinkSuccess = async (credentialResponse) => {
@@ -67,7 +66,7 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 				setNickname(nicknames[i]);
 				await sleep(70);
 			}
-			addToast("Nickname generated");
+			addToast("Nickname generated.");
 		} catch (err) {
 			console.error("Failed to get nicknames", err);
 		} finally {
