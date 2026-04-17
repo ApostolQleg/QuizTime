@@ -10,9 +10,9 @@ const timers = new Map();
 export const useToastStore = create((set, get) => ({
 	toasts: [],
 
-	addToast: (message) => {
+	addToast: (message, image) => {
 		const id = crypto.randomUUID();
-		const newToast = { id, message };
+		const newToast = { id, message, image };
 
 		queue.enqueue(newToast);
 

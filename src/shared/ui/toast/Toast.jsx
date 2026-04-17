@@ -1,9 +1,12 @@
 import { useToastStore } from "./toastStore.js";
 
 import { TOAST_CONFIG } from "@/shared/config/config.js";
+
+import systemIcon from "@/shared/assets/logo-icon.png";
+
 const { TOAST_LIFETIME, TOAST_ANIM_TIME } = TOAST_CONFIG;
 
-export default function Toast({ id, message, isExiting }) {
+export default function Toast({ id, message, image = systemIcon, isExiting }) {
 	const dismissToast = useToastStore((state) => state.dismissToast);
 
 	const styles = {
@@ -19,6 +22,13 @@ export default function Toast({ id, message, isExiting }) {
 			style={styles}
 		>
 			<div className="flex w-full items-start gap-3">
+				{image && (
+					<img
+						src={image}
+						alt="Toast"
+						className="h-8 w-8 shrink-0 rounded-md object-cover"
+					/>
+				)}
 				<p className="flex-1 p-1 text-sm">{message}</p>
 
 				<button

@@ -13,6 +13,7 @@ export default function ToastContainer() {
 					key={toast.id}
 					id={toast.id}
 					message={toast.message}
+					image={toast.image}
 					isExiting={toast.isExiting}
 				/>
 			))}
