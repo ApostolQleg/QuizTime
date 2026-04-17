@@ -1,11 +1,12 @@
 import { useToastStore } from "./toastStore.js";
 
 import { TOAST_CONFIG } from "@/shared/config/config.js";
+
+import systemIcon from "@/shared/assets/logo-icon.png";
+
 const { TOAST_LIFETIME, TOAST_ANIM_TIME } = TOAST_CONFIG;
 
-import system_icon from "@/shared/assets/logo-icon.png";
-
-export default function Toast({ id, message, image = system_icon, isExiting }) {
+export default function Toast({ id, message, image = systemIcon, isExiting }) {
 	const dismissToast = useToastStore((state) => state.dismissToast);
 
 	const styles = {
