@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/useAuth.js";
-import { verifySession, updateUser, deleteUser } from "@/features/profile/api/user.api.js";
+import { useProfilePageStore } from "@/features/profile/stores/profilePageStore.js";
+import useProfilePageActions from "@/features/profile/hooks/useProfilePageActions.js";
 
 import Container from "@/shared/ui/Container.jsx";
 import ProfileForm from "@/features/profile/components/ProfileForm.jsx";
@@ -14,53 +14,24 @@ import { useToastStore } from "@/shared/ui/toast/toastStore.js";
 export default function Profile() {
 	const navigate = useNavigate();
 	const { logout, login, token } = useAuth();
-
-	const [user, setUser] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isSaving, setIsSaving] = useState(false);
-	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+	const user = useProfilePageStore((state) => state.user);
+	const isLoading = useProfilePageStore((state) => state.isLoading);
+	const isSaving = useProfilePageStore((state) => state.isSaving);
+	const isDeleteModalOpen = useProfilePageStore((state) => state.isDeleteModalOpen);
+	const isPasswordModalOpen = useProfilePageStore((state) => state.isPasswordModalOpen);
+	const openDeleteModal = useProfilePageStore((state) => state.openDeleteModal);
+	const closeDeleteModal = useProfilePageStore((state) => state.closeDeleteModal);
+	const openPasswordModal = useProfilePageStore((state) => state.openPasswordModal);
+	const closePasswordModal = useProfilePageStore((state) => state.closePasswordModal);
 
 	const addToast = useToastStore((state) => state.addToast);
-
-	useEffect(() => {
-		verifySession()
-			.then((data) => {
-				setUser(data.user);
-			})
-			.catch(() => {
-				navigate("/login");
-			})
-			.finally(() => setIsLoading(false));
-	}, [navigate]);
-
-	const handleSaveProfile = async (formData) => {
-		setIsSaving(true);
-		try {
-			const updated = await updateUser(formData);
-
-			setUser(updated.user);
-			login(updated.user, token);
-			addToast("Your profile has been updated successfully.");
-		} catch (error) {
-			addToast(error.message || "Failed to update profile.");
-		} finally {
-			setIsSaving(false);
-		}
-	};
-
-	const handleDeleteAccount = async () => {
-		try {
-			await deleteUser();
-			logout();
-			navigate("/");
-			addToast("Your account has been deleted successfully.");
-		} catch (error) {
-			setIsDeleteModalOpen(false);
-			console.error("Failed to delete account: ", error);
-			addToast("Failed to delete account. Try again later.");
-		}
-	};
+	const { saveProfile, removeAccount } = useProfilePageActions({
+		navigate,
+		login,
+		logout,
+		token,
+		addToast,
+	});
 
 	if (isLoading) return <Container className="text-center">Loading...</Container>;
 	if (!user) return null;
@@ -74,7 +45,7 @@ export default function Profile() {
 			<ProfileForm
 				key={user._id + (user.themeColor || "")}
 				user={user}
-				onSave={handleSaveProfile}
+				onSave={saveProfile}
 				isLoading={isSaving}
 			/>
 
@@ -91,7 +62,7 @@ export default function Profile() {
 						</p>
 					</div>
 					<Button
-						onClick={() => setIsPasswordModalOpen(true)}
+						onClick={openPasswordModal}
 						className="bg-(--col-bg-input) border border-(--col-border) hover:bg-(--col-border) shadow-none text-xs px-4 py-2 whitespace-nowrap"
 					>
 						Change Password
@@ -104,7 +75,7 @@ export default function Profile() {
 						<p>Permanently remove your account and all quiz results.</p>
 					</div>
 					<Button
-						onClick={() => setIsDeleteModalOpen(true)}
+						onClick={openDeleteModal}
 						className="bg-(--col-fail) hover:bg-(--col-fail-hover) shadow-none text-xs px-4 py-2"
 					>
 						Delete
@@ -114,18 +85,15 @@ export default function Profile() {
 
 			<ModalConfirm
 				isOpen={isDeleteModalOpen}
-				onClose={() => setIsDeleteModalOpen(false)}
-				onConfirm={handleDeleteAccount}
+				onClose={closeDeleteModal}
+				onConfirm={removeAccount}
 				title="Delete Account?"
 				message="Are you sure you want to delete your account? This action cannot be undone."
 				confirmLabel="Yes"
 				isDanger={true}
 			/>
 
-			<ModalChangePassword
-				isOpen={isPasswordModalOpen}
-				onClose={() => setIsPasswordModalOpen(false)}
-			/>
+			<ModalChangePassword isOpen={isPasswordModalOpen} onClose={closePasswordModal} />
 		</Container>
 	);
 }
