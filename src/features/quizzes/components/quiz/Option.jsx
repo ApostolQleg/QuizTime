@@ -45,7 +45,7 @@ export default function Option({ questionId, optionId, questionIndex, disabled }
 				disabled={disabled}
 				onChange={() => selectAnswer(questionIndex, option.id)}
 			/>
-			<label htmlFor={id}>{text}</label>
+			{text}
 		</label>
 	);
 }
