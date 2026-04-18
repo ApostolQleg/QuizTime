@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { getQuizzes } from "@/features/quizzes/api/quizzes.api.js";
 import { useAuth } from "@/features/auth/hooks/useAuth.js";
 import { useDebounce } from "@/shared/hooks/useDebounce.js";
@@ -73,10 +73,12 @@ export default function MyQuizzes() {
 		[debouncedQuery, sortOption],
 	);
 
+	const authorParams = useMemo(() => ({ authorId: user?._id }), [user?._id]);
+
 	const { items, setItems, loading, hasMore, isLoadingMore, handleLoadMore } = useInfiniteList(
 		loadData,
-		[loadData],
-		{ authorId: user?._id },
+		[loadData, user?._id],
+		authorParams,
 	);
 
 	const handleDeleteSuccess = (deletedQuizId, deletedQuizTitle) => {

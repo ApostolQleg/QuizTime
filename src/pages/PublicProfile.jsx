@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserProfile } from "@/features/profile/api/user.api.js";
 import { getQuizzes } from "@/features/quizzes/api/quizzes.api.js";
@@ -66,14 +66,15 @@ export default function PublicProfile() {
 		}
 	}, []);
 
+	const authorParams = useMemo(() => ({ authorId: userId }), [userId]);
+
 	const {
 		items,
-		setItems,
 		loading: loadingQuizzes,
 		hasMore,
 		isLoadingMore,
 		handleLoadMore,
-	} = useInfiniteList(loadData, [loadData], { authorId: userId });
+	} = useInfiniteList(loadData, [loadData, userId], authorParams);
 
 	if (isLoadingProfile) return <Container className="text-center">Loading...</Container>;
 	if (!user) return null;
