@@ -78,11 +78,9 @@ export default function Results() {
 		<>
 			<div className="flex flex-col items-center justify-between gap-3">
 				<ToolBar
-					searchQuery={searchQuery}
-					onSearchChange={setSearchQuery}
-					sortOption={sortOption}
-					onSortChange={setSortOption}
-					placeholder={"Search for results..."}
+					search={{ value: searchQuery, onChange: setSearchQuery }}
+					sort={{ value: sortOption, onChange: setSortOption }}
+					placeholder="Search for results..."
 				/>
 				<Grid
 					items={items}

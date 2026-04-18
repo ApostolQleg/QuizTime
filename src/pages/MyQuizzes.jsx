@@ -97,11 +97,9 @@ export default function MyQuizzes() {
 		<>
 			<div className="flex flex-col items-center justify-between gap-3">
 				<ToolBar
-					searchQuery={searchQuery}
-					onSearchChange={setSearchQuery}
-					sortOption={sortOption}
-					onSortChange={setSortOption}
-					placeholder={"Search for quizzes..."}
+					search={{ value: searchQuery, onChange: setSearchQuery }}
+					sort={{ value: sortOption, onChange: setSortOption }}
+					placeholder="Search for quizzes..."
 				/>
 				<Grid
 					items={items}
