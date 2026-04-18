@@ -6,6 +6,7 @@ import { useDebounce } from "@/shared/hooks/useDebounce.js";
 import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
 import ToolBar from "@/widgets/quiz-toolbar/ui/ToolBar.jsx";
 import { API_CONFIG } from "@/shared/config/config.js";
+import { getPaginationRange } from "@/shared/libs/pagination.js";
 
 const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_RESULTS;
 
@@ -34,9 +35,12 @@ export default function Results() {
 			try {
 				if (!isInitialLoad) setIsLoadingMore(true);
 
-				const currentSkip = (pageToLoad - 1) * ITEMS_PER_PAGE;
-				const data = await getResults(currentSkip, ITEMS_PER_PAGE, searchParam, sortParam);
-				if (data.results.length < ITEMS_PER_PAGE) {
+				const { skip: currentSkip, limit: currentLimit } = getPaginationRange(
+					pageToLoad,
+					ITEMS_PER_PAGE,
+				);
+				const data = await getResults(currentSkip, currentLimit, searchParam, sortParam);
+				if (data.results.length < currentLimit) {
 					setHasMore(false);
 				}
 

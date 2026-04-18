@@ -8,6 +8,7 @@ import Avatar from "@/shared/ui/Avatar.jsx";
 import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
 import ModalDescription from "@/features/quizzes/components/modals/ModalDescription.jsx";
 import { API_CONFIG } from "@/shared/config/config.js";
+import { getPaginationRange } from "@/shared/libs/pagination.js";
 
 const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_PUBLIC_PROFILE;
 
@@ -47,8 +48,10 @@ export default function PublicProfile() {
 		try {
 			if (!isInitialLoad) setIsLoadingMore(true);
 
-			const currentLimit = ITEMS_PER_PAGE;
-			const currentSkip = (pageToLoad - 1) * ITEMS_PER_PAGE;
+			const { skip: currentSkip, limit: currentLimit } = getPaginationRange(
+				pageToLoad,
+				ITEMS_PER_PAGE,
+			);
 
 			const data = await getQuizzes(currentSkip, currentLimit, "", "newest", authorId);
 

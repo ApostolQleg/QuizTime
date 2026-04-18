@@ -7,6 +7,7 @@ import ModalDescription from "@/features/quizzes/components/modals/ModalDescript
 import ToolBar from "@/widgets/quiz-toolbar/ui/ToolBar.jsx";
 import { useNavigate } from "react-router-dom";
 import { API_CONFIG } from "@/shared/config/config.js";
+import { getPaginationRange } from "@/shared/libs/pagination.js";
 import { useToastStore } from "@/shared/ui/toast/toastStore.js";
 
 const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_QUIZZES;
@@ -48,21 +49,12 @@ export default function MyQuizzes() {
 			try {
 				if (!isInitialLoad) setIsLoadingMore(true);
 
-				let currentLimit = ITEMS_PER_PAGE;
-				let currentSkip = 0;
-
-				if (searchParam === "") {
-					if (pageToLoad === 1) {
-						currentLimit = ITEMS_PER_PAGE_FIRST;
-						currentSkip = 0;
-					} else {
-						currentLimit = ITEMS_PER_PAGE;
-						currentSkip = ITEMS_PER_PAGE_FIRST + (pageToLoad - 2) * ITEMS_PER_PAGE;
-					}
-				} else {
-					currentLimit = ITEMS_PER_PAGE;
-					currentSkip = (pageToLoad - 1) * ITEMS_PER_PAGE;
-				}
+				const { skip: currentSkip, limit: currentLimit } = getPaginationRange(
+					pageToLoad,
+					ITEMS_PER_PAGE,
+					ITEMS_PER_PAGE_FIRST,
+					searchParam === "",
+				);
 
 				const data = await getQuizzes(
 					currentSkip,
