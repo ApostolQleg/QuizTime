@@ -18,7 +18,7 @@ export default function PublicProfile() {
 	const { userId } = useParams();
 
 	const [user, setUser] = useState(null);
-	const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 	const [selectedQuiz, setSelectedQuiz] = useState(null);
 
 	useEffect(() => {
@@ -27,10 +27,11 @@ export default function PublicProfile() {
 				.then((data) => {
 					setUser(data.user);
 				})
-				.catch(() => {
+				.catch((err) => {
+					console.error(err);
 					navigate("/", { replace: true });
 				})
-				.finally(() => setIsLoadingProfile(false));
+				.finally(() => setIsLoading(false));
 		} else {
 			navigate("/", { replace: true });
 		}
@@ -75,7 +76,7 @@ export default function PublicProfile() {
 		handleLoadMore,
 	} = useInfiniteList(loadData, authorParams);
 
-	if (isLoadingProfile) return <Container className="text-center">Loading...</Container>;
+	if (isLoading) return <Container className="text-center">Loading...</Container>;
 	if (!user) return null;
 
 	return (
