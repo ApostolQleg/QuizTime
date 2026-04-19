@@ -56,10 +56,14 @@ export default function ModalChangePassword({ isOpen, onClose }) {
 				)}
 
 				<div className="flex flex-col gap-1">
-					<label className="text-sm font-bold text-(--col-text-muted)">
+					<label
+						htmlFor="current-password"
+						className="text-sm font-bold text-(--col-text-muted)"
+					>
 						Current Password
 					</label>
 					<Input
+						id="current-password"
 						type="password"
 						value={currentPassword}
 						onChange={(e) => setCurrentPassword(e.target.value)}
@@ -68,10 +72,14 @@ export default function ModalChangePassword({ isOpen, onClose }) {
 				</div>
 
 				<div className="flex flex-col gap-1">
-					<label className="text-sm font-bold text-(--col-text-muted)">
+					<label
+						htmlFor="new-password"
+						className="text-sm font-bold text-(--col-text-muted)"
+					>
 						New Password
 					</label>
 					<Input
+						id="new-password"
 						type="password"
 						value={newPassword}
 						onChange={(e) => setNewPassword(e.target.value)}
@@ -81,10 +89,14 @@ export default function ModalChangePassword({ isOpen, onClose }) {
 				</div>
 
 				<div className="flex flex-col gap-1">
-					<label className="text-sm font-bold text-(--col-text-muted)">
+					<label
+						htmlFor="confirm-new-password"
+						className="text-sm font-bold text-(--col-text-muted)"
+					>
 						Confirm New Password
 					</label>
 					<Input
+						id="confirm-new-password"
 						type="password"
 						value={confirmPassword}
 						onChange={(e) => setConfirmPassword(e.target.value)}

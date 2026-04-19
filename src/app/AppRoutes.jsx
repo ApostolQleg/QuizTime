@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import useAutoReload from "@/shared/hooks/useAutoReload.js";
 import { useAuth } from "@/features/auth/hooks/useAuth.js";
@@ -17,7 +17,6 @@ import NotFound from "@/pages/NotFound.jsx";
 import PublicProfile from "@/pages/PublicProfile.jsx";
 
 export default function AppRoutes() {
-	const { pathname } = useLocation();
 	const token = useAuth((state) => state.token);
 	const checkSession = useAuth((state) => state.checkSession);
 
@@ -31,7 +30,7 @@ export default function AppRoutes() {
 
 	useEffect(() => {
 		window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-	}, [pathname]);
+	}, []);
 
 	useEffect(() => {
 		if (!token) return;

@@ -32,6 +32,7 @@ export default function Toast({ id, message, image = systemIcon, isExiting }) {
 				<p className="flex-1 p-1 text-sm">{message}</p>
 
 				<button
+					type="button"
 					onClick={() => dismissToast(id)}
 					className="shrink-0 p-1 text-(--col-text-muted) transition-colors hover:text-(--col-text-main)"
 					aria-label="Close"

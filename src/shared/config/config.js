@@ -36,8 +36,8 @@ export const SORT_OPTIONS = [
 	{ id: "za", label: "Alphabetical (Z-A)" },
 ];
 
-// const API_URL = "http://localhost:3000/api";
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "http://localhost:3000/api";
+// const API_URL = import.meta.env.VITE_API_URL;
 
 export const URL_CONFIG = {
 	API_URL: API_URL,

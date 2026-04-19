@@ -74,6 +74,7 @@ export default function Header() {
 							</Link>
 
 							<button
+								type="button"
 								onClick={handleLogoutClick}
 								className="px-4 py-2 rounded-lg border border-(--col-border) text-(--col-text-muted) 
                                    hover:bg-(--col-fail-bg) hover:text-(--col-fail) hover:border-(--col-fail) 

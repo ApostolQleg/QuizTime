@@ -32,9 +32,9 @@ export default function Grid({
 						</Link>
 					)}
 
-					{items.map((item, index) => (
+					{items.map((item) => (
 						<QuizCard
-							key={`${item._id}-${index}`}
+							key={item._id}
 							item={item}
 							isResultsPage={isResultsPage}
 							onClick={() => onCardClick(item)}
@@ -52,6 +52,7 @@ export default function Grid({
 			{hasMore && items.length > 0 && (
 				<div className="flex justify-center pb-4">
 					<button
+						type="button"
 						onClick={onLoadMore}
 						disabled={isLoadingMore}
 						className="button px-8 py-3 text-lg"

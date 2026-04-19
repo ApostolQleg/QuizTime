@@ -78,9 +78,15 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 	return (
 		<form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full max-w-lg">
 			<div className="flex flex-col gap-2">
-				<label className="text-sm font-bold text-(--col-text-muted)">Nickname</label>
+				<label
+					htmlFor="profile-nickname"
+					className="text-sm font-bold text-(--col-text-muted)"
+				>
+					Nickname
+				</label>
 				<div className="w-full flex flex-row items-center gap-4">
 					<Input
+						id="profile-nickname"
 						className="flex-1"
 						value={nickname}
 						onChange={(e) => setNickname(e.target.value)}
@@ -97,7 +103,7 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 			</div>
 
 			<div className="flex flex-col gap-3">
-				<label className="text-sm font-bold text-(--col-text-muted)">Avatar Source</label>
+				<p className="text-sm font-bold text-(--col-text-muted)">Avatar Source</p>
 
 				<div className="flex gap-4 p-1 bg-(--col-bg-input) rounded-lg border border-(--col-border)">
 					<button

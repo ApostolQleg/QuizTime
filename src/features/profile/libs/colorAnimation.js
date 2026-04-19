@@ -1,5 +1,5 @@
-import getHue from "./getHue.js";
 import { COLOR_ANIMATION_CONFIG } from "@/shared/config/config.js";
+import getHue from "./getHue.js";
 
 export function startColorAnimation(
 	onUpdateReactState,
@@ -9,7 +9,7 @@ export function startColorAnimation(
 	initialColor,
 ) {
 	const startHue = getHue(initialColor);
-	let targetHue = iterator.next().value;
+	const targetHue = iterator.next().value;
 
 	let delta = targetHue - startHue;
 

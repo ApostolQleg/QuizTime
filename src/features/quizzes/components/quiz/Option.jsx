@@ -35,18 +35,18 @@ export default function Option({ questionId, optionId, questionIndex, disabled }
 	const isCorrect = option.isCorrect;
 
 	return (
-		<label
+		<div
 			className={`${disabled ? (isCorrect ? "option-true" : selected ? "option-false" : "") : ""} flex flex-row gap-2 text-(--col-text-muted)`}
 		>
 			<Radio
 				id={id}
+				label={text}
 				name={name}
 				value={value}
 				checked={selected}
 				disabled={disabled}
 				onChange={() => selectAnswer(questionIndex, option.id)}
 			/>
-			{text}
-		</label>
+		</div>
 	);
 }

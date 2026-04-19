@@ -128,10 +128,14 @@ export default function Register() {
 				<div className="w-full flex flex-col gap-5 animate-fade-in">
 					<form onSubmit={handleSendCode} className="flex flex-col gap-4">
 						<div className="flex flex-col gap-1">
-							<label className="text-sm font-semibold text-(--col-text-muted)">
+							<label
+								htmlFor="register-email"
+								className="text-sm font-semibold text-(--col-text-muted)"
+							>
 								Email
 							</label>
 							<Input
+								id="register-email"
 								type="email"
 								name="email"
 								placeholder="name@example.com"
@@ -186,10 +190,14 @@ export default function Register() {
 					className="w-full flex flex-col gap-6 animate-fade-in"
 				>
 					<div className="flex flex-col gap-2">
-						<label className="text-sm font-semibold text-(--col-text-muted)">
+						<label
+							htmlFor="register-code"
+							className="text-sm font-semibold text-(--col-text-muted)"
+						>
 							Verification Code
 						</label>
 						<input
+							id="register-code"
 							className="input w-full text-lg text-center tracking-widest"
 							style={{
 								border: "none",
@@ -240,10 +248,14 @@ export default function Register() {
 					</div>
 
 					<div className="flex flex-col gap-1">
-						<label className="text-sm font-semibold text-(--col-text-muted)">
+						<label
+							htmlFor="register-password"
+							className="text-sm font-semibold text-(--col-text-muted)"
+						>
 							Set your password
 						</label>
 						<Input
+							id="register-password"
 							type="password"
 							name="password"
 							value={formData.password}
@@ -255,10 +267,14 @@ export default function Register() {
 					</div>
 
 					<div className="flex flex-col gap-1">
-						<label className="text-sm font-semibold text-(--col-text-muted)">
+						<label
+							htmlFor="register-confirm-password"
+							className="text-sm font-semibold text-(--col-text-muted)"
+						>
 							Confirm your password
 						</label>
 						<Input
+							id="register-confirm-password"
 							type="password"
 							name="confirmPassword"
 							value={formData.confirmPassword}

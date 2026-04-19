@@ -72,8 +72,7 @@ export default function Results() {
 	);
 
 	return (
-		<>
-			<div className="flex flex-col items-center justify-between gap-3">
+		<div className="flex flex-col items-center justify-between gap-3">
 				<ToolBar
 					search={{ value: searchQuery, onChange: setSearchQuery }}
 					sort={{ value: sortOption, onChange: setSortOption }}
@@ -91,6 +90,5 @@ export default function Results() {
 					emptyMessage={emptyMessage}
 				/>
 			</div>
-		</>
 	);
 }

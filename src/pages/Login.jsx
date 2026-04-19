@@ -87,10 +87,14 @@ export default function Login() {
 				<div className="flex-1 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-(--col-border) pb-8 md:pb-0 md:pr-12">
 					<form onSubmit={handleSubmit} className="w-full max-w-xs flex flex-col gap-5">
 						<div className="flex flex-col gap-2">
-							<label className="text-sm font-semibold text-(--col-text-muted) ml-1">
+							<label
+								htmlFor="login-email"
+								className="text-sm font-semibold text-(--col-text-muted) ml-1"
+							>
 								Email
 							</label>
 							<Input
+								id="login-email"
 								type="email"
 								name="email"
 								placeholder="Your email"
@@ -102,10 +106,14 @@ export default function Login() {
 						</div>
 
 						<div className="flex flex-col gap-2">
-							<label className="text-sm font-semibold text-(--col-text-muted) ml-1">
+							<label
+								htmlFor="login-password"
+								className="text-sm font-semibold text-(--col-text-muted) ml-1"
+							>
 								Password
 							</label>
 							<Input
+								id="login-password"
 								type="password"
 								name="password"
 								placeholder="Your password"
