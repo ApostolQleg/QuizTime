@@ -1,5 +1,9 @@
-import { useAuthStore } from "@/features/auth/stores/authStore.js";
+import {
+	useAuthActions,
+	useAuthSessionState,
+	useAuthUserState,
+} from "@/features/auth/stores/authStore.js";
 
-export const useAuth = (selector = (state) => state) => {
-	return useAuthStore(selector);
-};
+export { useAuthUserState };
+export { useAuthSessionState };
+export { useAuthActions };

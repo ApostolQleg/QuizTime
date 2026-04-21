@@ -1,12 +1,8 @@
 import Option from "./Option.jsx";
-import { useQuizSessionStore } from "@/features/quizzes/stores/quizSessionStore.js";
+import { useQuizSessionQuestionState } from "@/features/quizzes/stores/quizSessionStore.js";
 
 export default function Question({ questionId, index }) {
-	const question = useQuizSessionStore((state) =>
-		state.quizData?.questions?.find((item) => item.id === questionId),
-	);
-	const hasError = useQuizSessionStore((state) => Boolean(state.errors[index]));
-	const mode = useQuizSessionStore((state) => state.mode);
+	const { question, hasError, mode } = useQuizSessionQuestionState(questionId, index);
 
 	if (!question) {
 		return null;

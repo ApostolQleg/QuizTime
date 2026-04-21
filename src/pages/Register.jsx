@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "@/features/auth/hooks/useAuth.js";
+import { useAuthActions } from "@/features/auth/hooks/useAuth.js";
 import { GoogleLogin } from "@react-oauth/google";
 import {
 	registerUser,
@@ -12,17 +12,17 @@ import Input from "@/shared/ui/Input.jsx";
 import Button from "@/shared/ui/Button.jsx";
 import { QUIZ_CONSTRAINTS } from "@/shared/config/config.js";
 import getGoogleAuthErrorMessage from "@/features/auth/libs/getGoogleAuthErrorMessage.js";
-import { useToastStore } from "@/shared/ui/toast/toastStore.js";
+import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
 export default function Register() {
 	const navigate = useNavigate();
-	const login = useAuth((state) => state.login);
+	const { login } = useAuthActions();
 
 	const [step, setStep] = useState(1);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
 
-	const addToast = useToastStore((state) => state.addToast);
+	const { addToast } = useToastActions();
 
 	const [formData, setFormData] = useState({
 		email: "",

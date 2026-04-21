@@ -6,33 +6,34 @@ import {
 } from "@/features/results/api/results.api.js";
 import { getQuizById } from "@/features/quizzes/api/quizzes.api.js";
 import { useEffect } from "react";
-import { useAuth } from "@/features/auth/hooks/useAuth.js";
+import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import Question from "@/features/quizzes/components/quiz/Question.jsx";
-import { useQuizSessionStore } from "@/features/quizzes/stores/quizSessionStore.js";
+import {
+	useQuizSessionActions,
+	useQuizSessionViewState,
+} from "@/features/quizzes/stores/quizSessionStore.js";
 import Button from "@/shared/ui/Button.jsx";
 import Container from "@/shared/ui/Container.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
-import { useToastStore } from "@/shared/ui/toast/toastStore.js";
+import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
 export default function Quiz() {
 	const navigate = useNavigate();
 	const { quizId, resultIdParam } = useParams();
-	const user = useAuth((state) => state.user);
-	const loading = useQuizSessionStore((state) => state.loading);
-	const quizData = useQuizSessionStore((state) => state.quizData);
-	const resultData = useQuizSessionStore((state) => state.resultData);
-	const answers = useQuizSessionStore((state) => state.answers);
-	const alertInfo = useQuizSessionStore((state) => state.alertInfo);
-	const loadQuizForPlay = useQuizSessionStore((state) => state.loadQuizForPlay);
-	const loadResultForView = useQuizSessionStore((state) => state.loadResultForView);
-	const setValidationErrors = useQuizSessionStore((state) => state.setValidationErrors);
-	const setGuestResult = useQuizSessionStore((state) => state.setGuestResult);
-	const setAlertInfo = useQuizSessionStore((state) => state.setAlertInfo);
-	const closeAlert = useQuizSessionStore((state) => state.closeAlert);
-	const setLoading = useQuizSessionStore((state) => state.setLoading);
-	const resetSession = useQuizSessionStore((state) => state.resetSession);
+	const { user } = useAuthUserState();
+	const { loading, quizData, resultData, answers, alertInfo } = useQuizSessionViewState();
+	const {
+		loadQuizForPlay,
+		loadResultForView,
+		setValidationErrors,
+		setGuestResult,
+		setAlertInfo,
+		closeAlert,
+		setLoading,
+		resetSession,
+	} = useQuizSessionActions();
 
-	const addToast = useToastStore((state) => state.addToast);
+	const { addToast } = useToastActions();
 
 	const isResultView = Boolean(resultIdParam) || Boolean(resultData);
 

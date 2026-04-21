@@ -8,14 +8,18 @@ import {
 import { useEffect } from "react";
 import Question from "@/features/quizzes/components/edit/QuestionEditor.jsx";
 import useQuizEditorValidation from "@/features/quizzes/hooks/useQuizEditorValidation.js";
-import { useQuizEditorStore } from "@/features/quizzes/stores/quizEditorStore.js";
+import {
+	useQuizEditorContentState,
+	useQuizEditorMetaState,
+	useQuizEditorStore,
+} from "@/features/quizzes/stores/quizEditorStore.js";
 import Button from "@/shared/ui/Button.jsx";
 import Container from "@/shared/ui/Container.jsx";
 import Input from "@/shared/ui/Input.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import Textarea from "@/shared/ui/Textarea.jsx";
 import { QUIZ_CONSTRAINTS } from "@/shared/config/config.js";
-import { useToastStore } from "@/shared/ui/toast/toastStore.js";
+import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
 export default function Edit() {
 	const navigate = useNavigate();
@@ -23,46 +27,33 @@ export default function Edit() {
 	const location = useLocation();
 
 	const isManagePage = location.pathname.startsWith("/manage");
-	const loading = useQuizEditorStore((state) => state.loading);
-	const alertInfo = useQuizEditorStore((state) => state.alertInfo);
-	const title = useQuizEditorStore((state) => state.title);
-	const description = useQuizEditorStore((state) => state.description);
-	const counter = useQuizEditorStore((state) => state.counter);
-	const errors = useQuizEditorStore((state) => state.errors);
-	const questions = useQuizEditorStore((state) => state.questions);
-	const initEditor = useQuizEditorStore((state) => state.initEditor);
-	const loadQuiz = useQuizEditorStore((state) => state.loadQuiz);
-	const resetEditor = useQuizEditorStore((state) => state.resetEditor);
-	const setTitle = useQuizEditorStore((state) => state.setTitle);
-	const clearTitle = useQuizEditorStore((state) => state.clearTitle);
-	const setDescription = useQuizEditorStore((state) => state.setDescription);
-	const addQuestion = useQuizEditorStore((state) => state.addQuestion);
+	const { loading, alertInfo } = useQuizEditorMetaState();
+	const { title, description, counter, errors, questions } = useQuizEditorContentState();
+	const editorActions = useQuizEditorStore.getState().actions;
 	const { validate, showSaveError, closeAlert } = useQuizEditorValidation();
-	const addToast = useToastStore((state) => state.addToast);
+	const { addToast } = useToastActions();
 
 	useEffect(() => {
-		resetEditor();
-		initEditor(isManagePage);
-	}, [isManagePage, initEditor, resetEditor]);
+		editorActions.resetEditor();
+		editorActions.initEditor(isManagePage);
+	}, [editorActions, isManagePage]);
 
 	useEffect(() => {
 		if (isManagePage && quizId) {
 			getQuizById(quizId)
 				.then((foundQuiz) => {
-					loadQuiz(foundQuiz.quiz);
+					editorActions.loadQuiz(foundQuiz.quiz);
 				})
 				.catch((err) => {
 					console.error(err);
 					navigate("/not-found");
 				});
 		}
-	}, [isManagePage, quizId, loadQuiz, navigate]);
+	}, [editorActions, isManagePage, quizId, navigate]);
 
 	const handleSaveQuiz = async () => {
 		const isValid = validate();
 		if (!isValid) return;
-
-		const { title, description, questions } = useQuizEditorStore.getState();
 
 		try {
 			const quizPayload = {
@@ -104,7 +95,7 @@ export default function Edit() {
 							0,
 							QUIZ_CONSTRAINTS.TITLE_MAX_LENGTH,
 						);
-						setTitle(newValue);
+						editorActions.setTitle(newValue);
 					}}
 					maxLength={QUIZ_CONSTRAINTS.TITLE_MAX_LENGTH}
 				/>
@@ -112,14 +103,14 @@ export default function Edit() {
 				<div className="font-bold m-1 text-xs sm:text-lg text-(--col-text-muted)">
 					{counter}/{QUIZ_CONSTRAINTS.TITLE_MAX_LENGTH}
 				</div>
-				<Button onClick={clearTitle}>Clear</Button>
+				<Button onClick={editorActions.clearTitle}>Clear</Button>
 			</div>
 
 			<Textarea
 				placeholder="Enter quiz description here..."
 				className={`resize-y w-full font-bold text-xs lg:text-lg ${errors.description ? "error" : ""}`}
 				value={description}
-				onChange={(event) => setDescription(event.target.value)}
+				onChange={(event) => editorActions.setDescription(event.target.value)}
 			/>
 
 			<div className="flex flex-col gap-4">
@@ -129,7 +120,7 @@ export default function Edit() {
 			</div>
 
 			<Button
-				onClick={addQuestion}
+				onClick={editorActions.addQuestion}
 				className="bg-(--col-bg-input) hover:bg-(--col-border) shadow-none"
 			>
 				Add Question

@@ -1,13 +1,13 @@
 import logoImage from "@/shared/assets/logo-icon.png";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "@/features/auth/hooks/useAuth.js";
+import { useAuthActions, useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import { useState } from "react";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import Avatar from "@/shared/ui/Avatar.jsx";
 
 export default function Header() {
-	const user = useAuth((state) => state.user);
-	const logout = useAuth((state) => state.logout);
+	const { user } = useAuthUserState();
+	const { logout } = useAuthActions();
 	const navigate = useNavigate();
 
 	const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);

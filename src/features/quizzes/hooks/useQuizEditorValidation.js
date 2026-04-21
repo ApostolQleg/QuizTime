@@ -1,10 +1,11 @@
 import { useCallback } from "react";
-import { useQuizEditorStore } from "@/features/quizzes/stores/quizEditorStore.js";
+import {
+	useQuizEditorActions,
+	useQuizEditorStore,
+} from "@/features/quizzes/stores/quizEditorStore.js";
 
 export function useQuizEditorValidation() {
-	const setErrors = useQuizEditorStore((state) => state.setErrors);
-	const setAlertInfo = useQuizEditorStore((state) => state.setAlertInfo);
-	const closeAlert = useQuizEditorStore((state) => state.closeAlert);
+	const { setErrors, setAlertInfo, closeAlert } = useQuizEditorActions();
 
 	const validate = useCallback(() => {
 		const { title, description, questions } = useQuizEditorStore.getState();

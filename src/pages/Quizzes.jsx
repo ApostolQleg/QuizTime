@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { getQuizzes } from "@/features/quizzes/api/quizzes.api.js";
-import { useAuth } from "@/features/auth/hooks/useAuth.js";
+import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import { useDebounce } from "@/shared/hooks/useDebounce.js";
 import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
 import ModalDescription from "@/features/quizzes/components/modals/ModalDescription.jsx";
@@ -8,13 +8,13 @@ import ToolBar from "@/widgets/quiz-toolbar/ui/ToolBar.jsx";
 import { API_CONFIG } from "@/shared/config/config.js";
 import { getPaginationRange } from "@/shared/libs/pagination.js";
 import { useInfiniteList } from "@/shared/hooks/useInfiniteList.js";
-import { useToastStore } from "@/shared/ui/toast/toastStore.js";
+import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
 const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_QUIZZES;
 const ITEMS_PER_PAGE_AUTH = API_CONFIG.ITEMS_PER_PAGE_QUIZZES_AUTH;
 
 export default function Quizzes() {
-	const user = useAuth((state) => state.user);
+	const { user } = useAuthUserState();
 	const [selectedQuiz, setSelectedQuiz] = useState(null);
 
 	const [searchQuery, setSearchQuery] = useState("");
@@ -22,7 +22,7 @@ export default function Quizzes() {
 
 	const [sortOption, setSortOption] = useState("newest");
 
-	const addToast = useToastStore((state) => state.addToast);
+	const { addToast } = useToastActions();
 
 	const loadData = useCallback(
 		async ({ pageToLoad }) => {

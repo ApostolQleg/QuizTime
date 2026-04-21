@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "@/features/auth/hooks/useAuth.js";
+import { useAuthActions } from "@/features/auth/hooks/useAuth.js";
 import { GoogleLogin } from "@react-oauth/google";
 import { loginUser, loginWithGoogle } from "@/features/auth/api/auth.api.js";
 import Container from "@/shared/ui/Container.jsx";
 import Input from "@/shared/ui/Input.jsx";
 import getGoogleAuthErrorMessage from "@/features/auth/libs/getGoogleAuthErrorMessage.js";
-import { useToastStore } from "@/shared/ui/toast/toastStore.js";
+import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
 export default function Login() {
-	const addToast = useToastStore((state) => state.addToast);
+	const { addToast } = useToastActions();
 
 	const [formData, setFormData] = useState({
 		email: "",
@@ -20,7 +20,7 @@ export default function Login() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const navigate = useNavigate();
-	const login = useAuth((state) => state.login);
+	const { login } = useAuthActions();
 
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });

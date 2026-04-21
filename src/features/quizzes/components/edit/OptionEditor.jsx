@@ -1,21 +1,14 @@
 import Input from "@/shared/ui/Input.jsx";
 import Radio from "@/shared/ui/Radio.jsx";
 import Button from "@/shared/ui/Button.jsx";
-import { useQuizEditorStore } from "@/features/quizzes/stores/quizEditorStore.js";
-
-const EMPTY_ERRORS = {};
+import {
+	useQuizEditorActions,
+	useQuizEditorOptionState,
+} from "@/features/quizzes/stores/quizEditorStore.js";
 
 export default function Option({ questionId, optionId }) {
-	const option = useQuizEditorStore((state) => {
-		const question = state.questions.find((item) => item.id === questionId);
-		return question?.options.find((item) => item.id === optionId);
-	});
-	const errors = useQuizEditorStore(
-		(state) => state.errors.questions?.[questionId]?.options?.[optionId] || EMPTY_ERRORS,
-	);
-	const deleteOption = useQuizEditorStore((state) => state.deleteOption);
-	const updateOptionText = useQuizEditorStore((state) => state.updateOptionText);
-	const setCorrectOption = useQuizEditorStore((state) => state.setCorrectOption);
+	const { option, errors } = useQuizEditorOptionState(questionId, optionId);
+	const { deleteOption, updateOptionText, setCorrectOption } = useQuizEditorActions();
 
 	if (!option) {
 		return null;

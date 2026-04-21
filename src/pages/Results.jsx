@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getResults } from "@/features/results/api/results.api.js";
-import { useAuth } from "@/features/auth/hooks/useAuth.js";
+import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import { useDebounce } from "@/shared/hooks/useDebounce.js";
 import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
 import ToolBar from "@/widgets/quiz-toolbar/ui/ToolBar.jsx";
@@ -13,7 +13,7 @@ const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_RESULTS;
 
 export default function Results() {
 	const navigate = useNavigate();
-	const user = useAuth((state) => state.user);
+	const { user } = useAuthUserState();
 
 	const [searchQuery, setSearchQuery] = useState("");
 	const debouncedQuery = useDebounce(searchQuery, 500);
@@ -73,22 +73,22 @@ export default function Results() {
 
 	return (
 		<div className="flex flex-col items-center justify-between gap-3">
-				<ToolBar
-					search={{ value: searchQuery, onChange: setSearchQuery }}
-					sort={{ value: sortOption, onChange: setSortOption }}
-					placeholder="Search for results..."
-				/>
-				<Grid
-					items={items}
-					loading={loading}
-					hasMore={hasMore}
-					onLoadMore={handleLoadMore}
-					isLoadingMore={isLoadingMore}
-					showAddButton={false}
-					isResultsPage={true}
-					onCardClick={(item) => navigate(`/result/${item.quizId}/${item._id}`)}
-					emptyMessage={emptyMessage}
-				/>
-			</div>
+			<ToolBar
+				search={{ value: searchQuery, onChange: setSearchQuery }}
+				sort={{ value: sortOption, onChange: setSortOption }}
+				placeholder="Search for results..."
+			/>
+			<Grid
+				items={items}
+				loading={loading}
+				hasMore={hasMore}
+				onLoadMore={handleLoadMore}
+				isLoadingMore={isLoadingMore}
+				showAddButton={false}
+				isResultsPage={true}
+				onCardClick={(item) => navigate(`/result/${item.quizId}/${item._id}`)}
+				emptyMessage={emptyMessage}
+			/>
+		</div>
 	);
 }

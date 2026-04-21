@@ -1,18 +1,17 @@
 import Radio from "@/shared/ui/Radio.jsx";
-import { useQuizSessionStore } from "@/features/quizzes/stores/quizSessionStore.js";
+import {
+	useQuizSessionActions,
+	useQuizSessionOptionState,
+} from "@/features/quizzes/stores/quizSessionStore.js";
 
 const EMPTY_SELECTED = [];
 
 export default function Option({ questionId, optionId, questionIndex, disabled }) {
-	const question = useQuizSessionStore((state) =>
-		state.quizData?.questions?.find((item) => item.id === questionId),
+	const { question, mode, answers, resultAnswers } = useQuizSessionOptionState(
+		questionId,
+		questionIndex,
 	);
-	const mode = useQuizSessionStore((state) => state.mode);
-	const answers = useQuizSessionStore((state) => state.answers);
-	const resultAnswers = useQuizSessionStore(
-		(state) => state.resultData?.answers || EMPTY_SELECTED,
-	);
-	const selectAnswer = useQuizSessionStore((state) => state.selectAnswer);
+	const { selectAnswer } = useQuizSessionActions();
 
 	if (!question) {
 		return null;
