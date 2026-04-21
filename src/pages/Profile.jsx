@@ -1,6 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/features/auth/hooks/useAuth.js";
-import { useProfilePageStore } from "@/features/profile/stores/profilePageStore.js";
+import {
+	useAuthActions,
+	useAuthUserState,
+	useAuthSessionState,
+} from "@/features/auth/hooks/useAuth.js";
+import {
+	useProfilePageActions as useProfilePageStoreActions,
+	useProfilePageIdentityState,
+	useProfilePageModalState,
+	useProfilePageStatusState,
+} from "@/features/profile/stores/profilePageStore.js";
 import useProfilePageActions from "@/features/profile/hooks/useProfilePageActions.js";
 
 import Container from "@/shared/ui/Container.jsx";
@@ -9,26 +18,20 @@ import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import ModalChangePassword from "@/features/profile/components/ModalChangePassword.jsx";
 import Button from "@/shared/ui/Button.jsx";
 
-import { useToastStore } from "@/shared/ui/toast/toastStore.js";
+import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
 export default function Profile() {
 	const navigate = useNavigate();
-	const authUser = useAuth((state) => state.user);
-	const logout = useAuth((state) => state.logout);
-	const login = useAuth((state) => state.login);
-	const token = useAuth((state) => state.token);
-	const isSessionChecking = useAuth((state) => state.isSessionChecking);
-	const user = useProfilePageStore((state) => state.user);
-	const isLoading = useProfilePageStore((state) => state.isLoading);
-	const isSaving = useProfilePageStore((state) => state.isSaving);
-	const isDeleteModalOpen = useProfilePageStore((state) => state.isDeleteModalOpen);
-	const isPasswordModalOpen = useProfilePageStore((state) => state.isPasswordModalOpen);
-	const openDeleteModal = useProfilePageStore((state) => state.openDeleteModal);
-	const closeDeleteModal = useProfilePageStore((state) => state.closeDeleteModal);
-	const openPasswordModal = useProfilePageStore((state) => state.openPasswordModal);
-	const closePasswordModal = useProfilePageStore((state) => state.closePasswordModal);
+	const { user: authUser } = useAuthUserState();
+	const { logout, login } = useAuthActions();
+	const { token, isSessionChecking } = useAuthSessionState();
+	const { user } = useProfilePageIdentityState();
+	const { isLoading, isSaving } = useProfilePageStatusState();
+	const { isDeleteModalOpen, isPasswordModalOpen } = useProfilePageModalState();
+	const { openDeleteModal, closeDeleteModal, openPasswordModal, closePasswordModal } =
+		useProfilePageStoreActions();
 
-	const addToast = useToastStore((state) => state.addToast);
+	const { addToast } = useToastActions();
 	const { saveProfile, removeAccount } = useProfilePageActions({
 		navigate,
 		login,

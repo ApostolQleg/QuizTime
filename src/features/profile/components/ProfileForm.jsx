@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { linkGoogleAccount } from "@/features/auth/api/auth.api.js";
-import { useAuth } from "@/features/auth/hooks/useAuth.js";
+import { useAuthActions, useAuthSessionState } from "@/features/auth/hooks/useAuth.js";
 import Input from "@/shared/ui/Input.jsx";
 import Button from "@/shared/ui/Button.jsx";
 import ColorGenerator from "./ColorGenerator.jsx";
 import Avatar from "@/shared/ui/Avatar.jsx";
 import { getNicknameArray } from "../api/user.api.js";
 import { QUIZ_CONSTRAINTS } from "@/shared/config/config.js";
-import { useToastStore } from "@/shared/ui/toast/toastStore.js";
+import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default function ProfileForm({ user, onSave, isLoading }) {
-	const login = useAuth((state) => state.login);
-	const token = useAuth((state) => state.token);
+	const { login } = useAuthActions();
+	const { token } = useAuthSessionState();
 
 	const [hasGoogleAccount, setHasGoogleAccount] = useState(!!user.googleId);
 	const [linkError, setLinkError] = useState(null);
@@ -26,7 +26,7 @@ export default function ProfileForm({ user, onSave, isLoading }) {
 
 	const [generatedColor, setGeneratedColor] = useState(user.themeColor || "#4f46e5");
 
-	const addToast = useToastStore((state) => state.addToast);
+	const { addToast } = useToastActions();
 
 	const hasChanges =
 		nickname !== user.nickname ||
