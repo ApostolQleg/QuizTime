@@ -50,7 +50,7 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 
 					<div className="text-sm">
 						{quiz.authorName ? (
-							<div className="flex items-center gap-2 mt-1">
+							<div className="flex items-center gap-2 mt-1 pb-4 border-(--col-border) border-b">
 								<span>Author:</span>
 
 								<button
@@ -80,7 +80,24 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 						)}
 					</div>
 
-					<div className="text-2xl w-full break-all leading-relaxed border-t pt-4 text-(--col-text-muted) border-(--col-border)">
+					{quiz.category && quiz.tags && (
+						<div className="border-b border-(--col-border) pb-4">
+							<div className="font-bold text-xl px-2 py-1 rounded-full mb-2">
+								Category: {quiz.category}
+							</div>
+							<div className="flex flex-wrap gap-1 mt-2 px-2">
+								{quiz.tags.map((tag) => (
+									<span
+										key={tag}
+										className="inline-block bg-indigo-200 text-indigo-800 text-xs px-2 py-1 rounded-full mb-2"
+									>
+										{tag}
+									</span>
+								))}
+							</div>
+						</div>
+					)}
+					<div className="text-2xl w-full break-all leading-relaxed text-(--col-text-muted)">
 						{quiz.description}
 					</div>
 				</div>

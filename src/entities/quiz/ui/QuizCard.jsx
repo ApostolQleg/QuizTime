@@ -6,6 +6,17 @@ export default function QuizCard({ item, isResultsPage, onClick }) {
 			<div className="font-bold text-lg mb-2 pt-4 px-2">
 				{isResultsPage ? item.quizTitle : item.title}
 			</div>
+			<div className="">{item.category}</div>
+			<div className="flex flex-wrap gap-1 mt-2 px-2">
+				{item.tags?.map((tag) => (
+					<span
+						key={tag}
+						className="inline-block bg-indigo-200 text-indigo-800 text-xs px-2 py-1 rounded-full mb-2"
+					>
+						{tag}
+					</span>
+				))}
+			</div>
 
 			<div className="text-sm opacity-90 text-indigo-100 pb-4 px-2 w-full">
 				{isResultsPage ? (

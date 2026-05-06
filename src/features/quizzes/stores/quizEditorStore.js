@@ -18,6 +18,8 @@ const initialErrors = {
 
 const initialState = {
 	title: "",
+	category: "",
+	tags: [{ id: crypto.randomUUID(), text: "" }],
 	description: "",
 	questions: [DEFAULT_QUESTION],
 	counter: 0,
@@ -41,6 +43,10 @@ const useQuizEditorStore = create((set) => ({
 
 		clearTitle: () => set({ title: "", counter: 0 }),
 
+		setCategory: (category) => set({ category }),
+
+		setTags: (tags) => set({ tags }),
+
 		setDescription: (description) => set({ description }),
 
 		setErrors: (errors) => set({ errors }),
@@ -53,10 +59,32 @@ const useQuizEditorStore = create((set) => ({
 			set({
 				title: quiz.title,
 				description: quiz.description,
+				category: quiz.category,
+				tags:
+					quiz.tags && quiz.tags.length > 0
+						? quiz.tags.map((tagText) => ({ id: crypto.randomUUID(), text: tagText }))
+						: [{ id: crypto.randomUUID(), text: "" }],
 				questions: quiz.questions,
 				counter: quiz.title.length,
 				loading: false,
 			}),
+
+		addTag: () =>
+			set((state) => ({
+				tags: [...state.tags, { id: crypto.randomUUID(), text: '' }],
+			})),
+
+		updateTag: (index, updatedTag) =>
+			set((state) => {
+				const newTags = [...state.tags];
+				newTags[index] = updatedTag;
+				return { tags: newTags };
+			}),
+
+		deleteTag: (id) =>
+			set((state) => ({
+				tags: state.tags.filter((tag) => tag.id !== id),
+			})),
 
 		addQuestion: () =>
 			set((state) => {
@@ -155,6 +183,8 @@ export const useQuizEditorContentState = () =>
 	useQuizEditorStore(
 		useShallow((state) => ({
 			title: state.title,
+			category: state.category,
+			tags: state.tags,
 			description: state.description,
 			counter: state.counter,
 			errors: state.errors,

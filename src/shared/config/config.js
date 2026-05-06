@@ -43,3 +43,20 @@ export const URL_CONFIG = {
 	API_URL: API_URL,
 	AUTH_URL: API_URL.replace("/api", "/auth"),
 };
+
+export const QUIZ_CATEGORIES = [
+    "Programming",
+    "Music",
+    "Gaming",
+    "History",
+    "Science",
+    "Literature",
+    "Other"
+];
+
+export const QUIZ_TAGS = [
+	"Test", "Dev",
+    "Easy", "Medium", "Hard", "Expert",
+    "Fun", "Educational", "Trivia", "Challenge", "Quick",
+    "Interview", "Exam", "Logic", "Math"
+];
