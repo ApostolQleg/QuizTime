@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { deleteUser, updateUser } from "@/features/profile/api/user.api.js";
+import { deleteUser, updateUser, verifySession } from "@/features/profile/api/user.api.js";
 import { useProfilePageActions as useProfilePageStoreActions } from "@/features/profile/stores/profilePageStore.js";
 
 export function useProfilePageActions({
@@ -36,6 +36,18 @@ export function useProfilePageActions({
 		setIsLoading(false);
 	}, [authUser, isSessionChecking, navigate, setIsLoading, setUser, token]);
 
+	const fetchProfile = useCallback(async () => {
+        try {
+            const response = await verifySession();
+			const freshUser = response.user || response.data?.user || response;
+        	setUser(freshUser); 
+            
+    		login(freshUser, token); 
+        } catch (error) {
+            console.error("Failed to fetch fresh profile data:", error);
+        }
+    }, [setUser, login, token]);
+
 	const saveProfile = useCallback(
 		async (formData) => {
 			setIsSaving(true);
@@ -69,6 +81,7 @@ export function useProfilePageActions({
 	return {
 		saveProfile,
 		removeAccount,
+		fetchProfile
 	};
 }
 

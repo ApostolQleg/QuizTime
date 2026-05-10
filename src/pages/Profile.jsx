@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import {
 	useAuthActions,
 	useAuthSessionState,
@@ -32,7 +33,7 @@ export default function Profile() {
 		useProfilePageStoreActions();
 
 	const { addToast } = useToastActions();
-	const { saveProfile, removeAccount } = useProfilePageActions({
+	const { saveProfile, removeAccount, fetchProfile } = useProfilePageActions({
 		navigate,
 		login,
 		logout,
@@ -41,6 +42,12 @@ export default function Profile() {
 		isSessionChecking,
 		addToast,
 	});
+
+	useEffect(() => {
+		if (typeof fetchProfile === "function") {
+			fetchProfile();
+		}
+	}, [fetchProfile]);
 
 	if (isLoading) return <Container className="text-center">Loading...</Container>;
 	if (!user) return null;
