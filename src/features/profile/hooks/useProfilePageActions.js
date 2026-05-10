@@ -1,5 +1,5 @@
-import { useCallback, useEffect } from "react";
-import { deleteUser, updateUser } from "@/features/profile/api/user.api.js";
+import { useCallback, useEffect, useRef } from "react";
+import { deleteUser, updateUser, verifySession } from "@/features/profile/api/user.api.js";
 import { useProfilePageActions as useProfilePageStoreActions } from "@/features/profile/stores/profilePageStore.js";
 
 export function useProfilePageActions({
@@ -12,6 +12,12 @@ export function useProfilePageActions({
 	addToast,
 }) {
 	const { setUser, setIsLoading, setIsSaving, closeDeleteModal } = useProfilePageStoreActions();
+
+	const latestTokenRef = useRef(token);
+
+	useEffect(() => {
+		latestTokenRef.current = token;
+	}, [token]);
 
 	useEffect(() => {
 		if (!token) {
@@ -35,6 +41,34 @@ export function useProfilePageActions({
 		setUser(authUser);
 		setIsLoading(false);
 	}, [authUser, isSessionChecking, navigate, setIsLoading, setUser, token]);
+
+	const fetchProfile = useCallback(async () => {
+		const requestToken = latestTokenRef.current;
+
+		try {
+			const response = await verifySession();
+			const freshUser = response?.user;
+			if (!freshUser) {
+				return;
+			}
+
+			if (latestTokenRef.current !== requestToken || !latestTokenRef.current) {
+				console.warn("Token changed or removed during flight. Ignoring response.");
+				return;
+			}
+
+			setUser(freshUser);
+			login(freshUser, latestTokenRef.current);
+		} catch (error) {
+			const status = error?.response?.status || error?.status;
+			if (status === 401) {
+				console.warn("Session expired or invalid. Logging out.");
+				logout();
+			} else {
+				console.error("Failed to fetch fresh profile data:", error);
+			}
+		}
+	}, [setUser, login, logout]);
 
 	const saveProfile = useCallback(
 		async (formData) => {
@@ -69,6 +103,7 @@ export function useProfilePageActions({
 	return {
 		saveProfile,
 		removeAccount,
+		fetchProfile,
 	};
 }
 
