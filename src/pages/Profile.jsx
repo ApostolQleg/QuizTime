@@ -44,11 +44,11 @@ export default function Profile() {
 	});
 
 	useEffect(() => {
- 		if (isSessionChecking || !token) return;
- 		if (typeof fetchProfile === "function") {
- 			fetchProfile();
- 		}
- 	}, [fetchProfile, isSessionChecking, token]);
+		if (isSessionChecking || !token) return;
+		if (typeof fetchProfile === "function") {
+			fetchProfile();
+		}
+	}, [fetchProfile, isSessionChecking, token]);
 
 	if (isLoading) return <Container className="text-center">Loading...</Container>;
 	if (!user) return null;
@@ -60,7 +60,7 @@ export default function Profile() {
 			</h1>
 
 			<div className="w-full max-w-lg">
-				<QuizStatsCard passedCount={user?.stats?.quizzesPassedCount || 0} />
+				<QuizStatsCard passedCount={user?.stats?.quizzesPassedCount ?? 0} />
 			</div>
 
 			<ProfileForm
