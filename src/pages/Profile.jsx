@@ -16,6 +16,7 @@ import {
 import Button from "@/shared/ui/Button.jsx";
 import Container from "@/shared/ui/Container.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
+import { QuizStatsCard } from "@/features/profile/components/StatsCard.jsx";
 
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
@@ -49,6 +50,10 @@ export default function Profile() {
 			<h1 className="text-3xl font-bold text-(--col-text-accent) drop-shadow-md">
 				My Profile
 			</h1>
+
+			<div className="w-full max-w-lg ">
+				<QuizStatsCard passedCount={user?.stats?.quizzesPassedCount || 0} />
+			</div>
 
 			<ProfileForm
 				key={user._id + (user.themeColor || "")}
