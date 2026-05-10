@@ -37,16 +37,19 @@ export function useProfilePageActions({
 	}, [authUser, isSessionChecking, navigate, setIsLoading, setUser, token]);
 
 	const fetchProfile = useCallback(async () => {
-        try {
-            const response = await verifySession();
-			const freshUser = response.user || response.data?.user || response;
-        	setUser(freshUser); 
-            
-    		login(freshUser, token); 
-        } catch (error) {
-            console.error("Failed to fetch fresh profile data:", error);
-        }
-    }, [setUser, login, token]);
+		try {
+			const response = await verifySession();
+			const freshUser = response?.user;
+ 			if (!freshUser) {
+ 				return;
+ 			}
+			
+			setUser(freshUser);
+			login(freshUser, token);
+		} catch (error) {
+			console.error("Failed to fetch fresh profile data:", error);
+		}
+	}, [setUser, login, token]);
 
 	const saveProfile = useCallback(
 		async (formData) => {
@@ -81,7 +84,7 @@ export function useProfilePageActions({
 	return {
 		saveProfile,
 		removeAccount,
-		fetchProfile
+		fetchProfile,
 	};
 }
 

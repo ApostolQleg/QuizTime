@@ -1,5 +1,5 @@
 export const QuizStatsCard = ({ passedCount }) => {
-	const displayCount = passedCount !== undefined ? passedCount : "...";
+	const displayCount = passedCount ?? "...";
 
 	return (
 		<div className="bg-white shadow-md rounded-xl p-6 flex items-center gap-5 border border-gray-100">
@@ -24,9 +24,7 @@ export const QuizStatsCard = ({ passedCount }) => {
 				<h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
 					Completed Quizzes
 				</h3>
-				<p className="text-3xl font-extrabold text-gray-900 mt-1">
-					{displayCount}
-				</p>
+				<p className="text-3xl font-extrabold text-gray-900 mt-1">{displayCount}</p>
 			</div>
 		</div>
 	);

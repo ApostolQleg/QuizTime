@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
 	useAuthActions,
 	useAuthSessionState,
@@ -7,6 +7,7 @@ import {
 } from "@/features/auth/hooks/useAuth.js";
 import ModalChangePassword from "@/features/profile/components/ModalChangePassword.jsx";
 import ProfileForm from "@/features/profile/components/ProfileForm.jsx";
+import { QuizStatsCard } from "@/features/profile/components/StatsCard.jsx";
 import useProfilePageActions from "@/features/profile/hooks/useProfilePageActions.js";
 import {
 	useProfilePageIdentityState,
@@ -17,7 +18,6 @@ import {
 import Button from "@/shared/ui/Button.jsx";
 import Container from "@/shared/ui/Container.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
-import { QuizStatsCard } from "@/features/profile/components/StatsCard.jsx";
 
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
@@ -44,10 +44,11 @@ export default function Profile() {
 	});
 
 	useEffect(() => {
-		if (typeof fetchProfile === "function") {
-			fetchProfile();
-		}
-	}, [fetchProfile]);
+ 		if (isSessionChecking || !token) return;
+ 		if (typeof fetchProfile === "function") {
+ 			fetchProfile();
+ 		}
+ 	}, [fetchProfile, isSessionChecking, token]);
 
 	if (isLoading) return <Container className="text-center">Loading...</Container>;
 	if (!user) return null;
@@ -58,7 +59,7 @@ export default function Profile() {
 				My Profile
 			</h1>
 
-			<div className="w-full max-w-lg ">
+			<div className="w-full max-w-lg">
 				<QuizStatsCard passedCount={user?.stats?.quizzesPassedCount || 0} />
 			</div>
 
