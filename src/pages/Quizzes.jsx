@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
-import { getQuizList, invalidateQuizCache } from "@/features/quizzes/api/quizzes.api.js";
+import { getQuizList, invalidateQuizCache, invalidateQuizListCache } from "@/features/quizzes/api/quizzes.api.js";
 import ModalDescription from "@/features/quizzes/components/modals/ModalDescription.jsx";
 import {
 	useQuizzesListActions,
@@ -93,6 +93,7 @@ export default function Quizzes() {
 				if (searchQuery === "" && sortOption === "newest") {
 					setItems([newQuiz, ...items]);
 				}
+				invalidateQuizListCache();
 			},
 			[items, searchQuery, sortOption, setItems],
 		),
@@ -107,6 +108,7 @@ export default function Quizzes() {
 					setSelectedQuiz(updatedQuiz);
 				}
 				invalidateQuizCache(updatedQuiz._id);
+				invalidateQuizListCache();
 			},
 			[items, setItems, selectedQuiz],
 		),
@@ -121,6 +123,7 @@ export default function Quizzes() {
 					setSelectedQuiz(null);
 				}
 				invalidateQuizCache(deletedQuizId);
+				invalidateQuizListCache();
 			},
 			[removeItem, selectedQuiz],
 		),
