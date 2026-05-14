@@ -27,7 +27,7 @@ export const withLogger = (
 		};
 
 		if (level === LogLevel.DEBUG || level === LogLevel.INFO) {
-			console.log(`[${timestamp}] [${level}] Input for ${actionName}:`, args);
+			printLog(level, `Input for ${actionName}`, args);
 		}
 
 		try {
