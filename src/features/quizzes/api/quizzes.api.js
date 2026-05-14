@@ -67,7 +67,7 @@ export const invalidateQuizListCache = () => {
 	if (quizListCache.size > 0) {
 		quizListCache.clear();
 	}
-}
+};
 
 const proxiedGetQuizList = new Proxy(rawGetQuizList, {
 	apply: async (target, thisArg, argList) => {
@@ -83,8 +83,8 @@ const proxiedGetQuizList = new Proxy(rawGetQuizList, {
 
 		quizListCache.set(cacheKey, response);
 		return response;
-	}
-})
+	},
+});
 
 export const getQuizList = withLogger(proxiedGetQuizList, {
 	level: LogLevel.INFO,
