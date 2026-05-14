@@ -14,14 +14,33 @@ export const withLogger = (
 
 		const printLog = (msgLevel, message, data = undefined) => {
 			if (format === "json") {
-				console[msgLevel === "ERROR" ? "error" : "log"](
-					JSON.stringify({ timestamp, level: msgLevel, action: actionName, message, data })
-				);
+				try {
+					console[msgLevel === "ERROR" ? "error" : "log"](
+						JSON.stringify({
+							timestamp,
+							level: msgLevel,
+							action: actionName,
+							message,
+							data,
+						}),
+					);
+				} catch (serializationError) {
+					console[msgLevel === "ERROR" ? "error" : "log"](
+						JSON.stringify({
+							timestamp,
+							level: msgLevel,
+							action: actionName,
+							message,
+							data: `[Unserializable Data]: ${serializationError.message}`,
+						}),
+					);
+				}
 			} else {
+				const prefix = `[${timestamp}] [${msgLevel}] [${actionName}]`;
 				if (data !== undefined) {
-					console[msgLevel === "ERROR" ? "error" : "log"](`[${timestamp}] [${msgLevel}] ${message}`, data);
+					console[msgLevel === "ERROR" ? "error" : "log"](`${prefix} ${message}`, data);
 				} else {
-					console[msgLevel === "ERROR" ? "error" : "log"](`[${timestamp}] [${msgLevel}] ${message}`);
+					console[msgLevel === "ERROR" ? "error" : "log"](`${prefix} ${message}`);
 				}
 			}
 		};

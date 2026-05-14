@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserProfile } from "@/features/profile/api/user.api.js";
-import { getQuizList, invalidateQuizCache, invalidateQuizListCache } from "@/features/quizzes/api/quizzes.api.js";
+import {
+	getQuizList,
+	invalidateQuizCache,
+	invalidateQuizListCache,
+} from "@/features/quizzes/api/quizzes.api.js";
 import ModalDescription from "@/features/quizzes/components/modals/ModalDescription.jsx";
 import {
 	useQuizzesListActions,
