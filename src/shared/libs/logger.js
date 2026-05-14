@@ -6,14 +6,47 @@ export const LogLevel = {
 
 export const withLogger = (
 	apiFunction,
-	{ level = LogLevel.INFO, actionName = "API Call" } = {},
+	{ level = LogLevel.INFO, actionName = "API Call", format = "text" } = {},
 ) => {
 	return async (...args) => {
 		const timestamp = new Date().toISOString();
 		const start = performance.now();
 
+		const printLog = (msgLevel, message, data = undefined) => {
+			if (format === "json") {
+				try {
+					console[msgLevel === "ERROR" ? "error" : "log"](
+						JSON.stringify({
+							timestamp,
+							level: msgLevel,
+							action: actionName,
+							message,
+							data,
+						}),
+					);
+				} catch (serializationError) {
+					console[msgLevel === "ERROR" ? "error" : "log"](
+						JSON.stringify({
+							timestamp,
+							level: msgLevel,
+							action: actionName,
+							message,
+							data: `[Unserializable Data]: ${serializationError.message}`,
+						}),
+					);
+				}
+			} else {
+				const prefix = `[${timestamp}] [${msgLevel}] [${actionName}]`;
+				if (data !== undefined) {
+					console[msgLevel === "ERROR" ? "error" : "log"](`${prefix} ${message}`, data);
+				} else {
+					console[msgLevel === "ERROR" ? "error" : "log"](`${prefix} ${message}`);
+				}
+			}
+		};
+
 		if (level === LogLevel.DEBUG || level === LogLevel.INFO) {
-			console.log(`[${timestamp}] [${level}] Input for ${actionName}:`, args);
+			printLog(level, `Input for ${actionName}`, args);
 		}
 
 		try {
@@ -22,23 +55,15 @@ export const withLogger = (
 
 			if (level === LogLevel.DEBUG) {
 				const logData = result?.data !== undefined ? result.data : result;
-				console.log(
-					`[${timestamp}] [${level}] Success ${actionName} (${executionTime}ms). Result:`,
-					logData,
-				);
+				printLog(level, `Success (${executionTime}ms). Result:`, logData);
 			} else if (level === LogLevel.INFO) {
-				console.log(
-					`[${timestamp}] [${level}] Success ${actionName} (${executionTime}ms).`,
-				);
+				printLog(level, `Success (${executionTime}ms).`);
 			}
 
 			return result;
 		} catch (error) {
 			const executionTime = (performance.now() - start).toFixed(2);
-			console.error(
-				`[${timestamp}] [ERROR] Failed ${actionName} (${executionTime}ms):`,
-				error.message,
-			);
+			printLog("ERROR", `Failed (${executionTime}ms)`, error.message);
 			throw error;
 		}
 	};

@@ -1,6 +1,7 @@
 import client from "@/shared/api/apiClient.js";
+import { LogLevel, withLogger } from "@/shared/libs/logger.js";
 
-export function getResults(skip = 0, limit = 36, search = "", sort = "newest") {
+function rawGetResults(skip = 0, limit = 36, search = "", sort = "newest") {
 	return client.get("/results", {
 		params: {
 			skip,
@@ -11,9 +12,9 @@ export function getResults(skip = 0, limit = 36, search = "", sort = "newest") {
 	});
 }
 
-export const getResultById = (id) => client.get(`/results/${id}`);
+const rawGetResultById = (id) => client.get(`/results/${id}`);
 
-export async function saveResult(resultData) {
+async function rawSaveResult(resultData) {
 	try {
 		return await client.post("/results", resultData);
 	} catch (error) {
@@ -23,3 +24,21 @@ export async function saveResult(resultData) {
 		throw error;
 	}
 }
+
+export const getResults = withLogger(rawGetResults, {
+	level: LogLevel.INFO,
+	actionName: "getResults",
+	format: "json",
+});
+
+export const getResultById = withLogger(rawGetResultById, {
+	level: LogLevel.INFO,
+	actionName: "getResultById",
+	format: "json",
+});
+
+export const saveResult = withLogger(rawSaveResult, {
+	level: LogLevel.INFO,
+	actionName: "saveResult",
+	format: "json",
+});
