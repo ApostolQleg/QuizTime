@@ -2,8 +2,7 @@ import { formatDateTime } from "@/shared/libs/formatDateTime.js";
 import { getDateFromObjectId } from "@/shared/libs/getDateFromObjectId.js";
 
 export default function QuizCard({ item, isResultsPage, onClick }) {
-	const rawDate = getDateFromObjectId(item._id);
-	const date = formatDateTime(rawDate);
+	const date = isResultsPage ? formatDateTime(getDateFromObjectId(item._id)) : "";
 
 	return (
 		<button type="button" className="quiz-card flex flex-col justify-between" onClick={onClick}>
