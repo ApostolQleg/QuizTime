@@ -13,17 +13,23 @@ const rawGetQuizList = (skip = 0, limit = 36, search = "", sort = "newest", auth
 	});
 };
 
-const rawCreateQuiz = (data) => client.post("/quizzes", data);
+const rawCreateQuiz = async (data) => {
+	const response = await client.post("/quizzes", data);
+	invalidateQuizListCache();
+	return response;
+};
 
 const rawUpdateQuiz = async (id, data) => {
 	const response = await client.put(`/quizzes/${id}`, data);
 	invalidateQuizCache(id);
+	invalidateQuizListCache();
 	return response;
 };
 
 const rawDeleteQuiz = async (id) => {
 	const response = await client.delete(`/quizzes/${id}`);
 	invalidateQuizCache(id);
+	invalidateQuizListCache();
 	return response;
 };
 
@@ -55,7 +61,32 @@ const proxiedGetQuizById = new Proxy(rawGetQuizById, {
 	},
 });
 
-export const getQuizList = withLogger(rawGetQuizList, {
+const quizListCache = new Map();
+
+export const invalidateQuizListCache = () => {
+	if (quizListCache.size > 0) {
+		quizListCache.clear();
+	}
+}
+
+const proxiedGetQuizList = new Proxy(rawGetQuizList, {
+	apply: async (target, thisArg, argList) => {
+		const cacheKey = JSON.stringify(argList);
+
+		if (quizListCache.has(cacheKey)) {
+			console.log(`[Proxy] Load quiz list from cache (Key: ${cacheKey})`);
+			return quizListCache.get(cacheKey);
+		}
+
+		console.log(`[Proxy] Load quiz list from server`);
+		const response = await target.apply(thisArg, argList);
+
+		quizListCache.set(cacheKey, response);
+		return response;
+	}
+})
+
+export const getQuizList = withLogger(proxiedGetQuizList, {
 	level: LogLevel.INFO,
 	actionName: "getQuizList",
 });
