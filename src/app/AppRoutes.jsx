@@ -11,7 +11,7 @@ import PublicProfile from "@/pages/PublicProfile.jsx";
 import Quiz from "@/pages/Quiz.jsx";
 import Quizzes from "@/pages/Quizzes.jsx";
 import Register from "@/pages/Register.jsx";
-import Result from "@/pages/Result";
+import Result from "@/pages/Result.jsx";
 import Results from "@/pages/Results.jsx";
 import useAutoReload from "@/shared/hooks/useAutoReload.js";
 

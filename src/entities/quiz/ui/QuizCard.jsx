@@ -1,5 +1,5 @@
 import { formatDateTime } from "@/shared/libs/formatDateTime.js";
-import { getDateFromObjectId } from "@/shared/libs/getDateFromObjectId";
+import { getDateFromObjectId } from "@/shared/libs/getDateFromObjectId.js";
 
 export default function QuizCard({ item, isResultsPage, onClick }) {
 	const rawDate = getDateFromObjectId(item._id);
