@@ -11,7 +11,7 @@ import Container from "@/shared/ui/Container.jsx";
 
 export default function Result() {
 	const navigate = useNavigate();
-	const { resultIdParam } = useParams();
+	const { quizId, resultIdParam } = useParams();
 	const { loading, quizData, resultData } = useQuizSessionViewState();
 	const { loadResultForView, setLoading, resetSession } = useQuizSessionActions();
 
@@ -30,14 +30,25 @@ export default function Result() {
 				} catch (error) {
 					console.error("Failed to load result data", error);
 					navigate("/not-found");
-				} finally {
-					setLoading(false);
 				}
+
+				setLoading(false);
 			};
 
 			loadData();
 		}
 	}, [resultIdParam, hasRealResult, navigate, loadResultForView, resetSession, setLoading]);
+
+	useEffect(() => {
+		if (isGuestMode) {
+			if (!quizData || !resultData) {
+				setLoading(false);
+				navigate(`/quiz/${quizId}`);
+			} else {
+				setLoading(false);
+			}
+		}
+	}, [isGuestMode, quizData, resultData, quizId, navigate, setLoading]);
 
 	if (loading) {
 		return <Container className="text-center text-(--col-text-main)">Loading...</Container>;
