@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	useAuthActions,
@@ -6,6 +7,7 @@ import {
 } from "@/features/auth/hooks/useAuth.js";
 import ModalChangePassword from "@/features/profile/components/ModalChangePassword.jsx";
 import ProfileForm from "@/features/profile/components/ProfileForm.jsx";
+import { QuizStatsCard } from "@/features/profile/components/StatsCard.jsx";
 import useProfilePageActions from "@/features/profile/hooks/useProfilePageActions.js";
 import {
 	useProfilePageIdentityState,
@@ -31,7 +33,7 @@ export default function Profile() {
 		useProfilePageStoreActions();
 
 	const { addToast } = useToastActions();
-	const { saveProfile, removeAccount } = useProfilePageActions({
+	const { saveProfile, removeAccount, fetchProfile } = useProfilePageActions({
 		navigate,
 		login,
 		logout,
@@ -41,6 +43,13 @@ export default function Profile() {
 		addToast,
 	});
 
+	useEffect(() => {
+		if (isSessionChecking || !token) return;
+		if (typeof fetchProfile === "function") {
+			fetchProfile();
+		}
+	}, [fetchProfile, isSessionChecking, token]);
+
 	if (isLoading) return <Container className="text-center">Loading...</Container>;
 	if (!user) return null;
 
@@ -49,6 +58,10 @@ export default function Profile() {
 			<h1 className="text-3xl font-bold text-(--col-text-accent) drop-shadow-md">
 				My Profile
 			</h1>
+
+			<div className="w-full max-w-lg">
+				<QuizStatsCard passedCount={user?.stats?.quizzesPassedCount ?? 0} />
+			</div>
 
 			<ProfileForm
 				key={user._id + (user.themeColor || "")}
