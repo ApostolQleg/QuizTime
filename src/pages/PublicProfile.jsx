@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserProfile } from "@/features/profile/api/user.api.js";
-import { getQuizList, invalidateQuizCache } from "@/features/quizzes/api/quizzes.api.js";
+import { getQuizList, invalidateQuizCache, invalidateQuizListCache } from "@/features/quizzes/api/quizzes.api.js";
 import ModalDescription from "@/features/quizzes/components/modals/ModalDescription.jsx";
 import {
 	useQuizzesListActions,
@@ -101,6 +101,7 @@ export default function PublicProfile() {
 				if (newQuiz.authorId === userId) {
 					setItems([newQuiz, ...items]);
 				}
+				invalidateQuizListCache();
 			},
 			[items, setItems, userId],
 		),
@@ -118,6 +119,7 @@ export default function PublicProfile() {
 						setSelectedQuiz(updatedQuiz);
 					}
 					invalidateQuizCache(updatedQuiz._id);
+					invalidateQuizListCache();
 				}
 			},
 			[items, setItems, selectedQuiz, userId],
@@ -133,6 +135,7 @@ export default function PublicProfile() {
 					setSelectedQuiz(null);
 				}
 				invalidateQuizCache(deletedQuizId);
+				invalidateQuizListCache();
 			},
 			[removeItemLocally, selectedQuiz],
 		),
