@@ -7,7 +7,7 @@ import {
 	useQuizSessionActions,
 	useQuizSessionViewState,
 } from "@/features/quizzes/stores/quizSessionStore.js";
-import { getResultById, saveResult } from "@/features/results/api/results.api.js";
+import { saveResult } from "@/features/results/api/results.api.js";
 import Button from "@/shared/ui/Button.jsx";
 import Container from "@/shared/ui/Container.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
@@ -15,12 +15,11 @@ import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
 export default function Quiz() {
 	const navigate = useNavigate();
-	const { quizId, resultIdParam } = useParams();
+	const { quizId } = useParams();
 	const { user } = useAuthUserState();
-	const { loading, quizData, resultData, answers, alertInfo } = useQuizSessionViewState();
+	const { loading, quizData, answers, alertInfo } = useQuizSessionViewState();
 	const {
 		loadQuizForPlay,
-		loadResultForView,
 		setValidationErrors,
 		setGuestResult,
 		setAlertInfo,
@@ -30,8 +29,6 @@ export default function Quiz() {
 	} = useQuizSessionActions();
 
 	const { addToast } = useToastActions();
-
-	const isResultView = Boolean(resultIdParam) || Boolean(resultData);
 	const currentQuizId = quizData?._id ?? quizId;
 
 	useEffect(() => {
@@ -40,15 +37,10 @@ export default function Quiz() {
 
 		const loadData = async () => {
 			try {
-				if (resultIdParam) {
-					const data = await getResultById(resultIdParam);
-					loadResultForView(data.result);
-				} else {
-					const data = await getQuizById(quizId);
-					loadQuizForPlay(data.quiz);
-				}
+				const data = await getQuizById(quizId);
+				loadQuizForPlay(data.quiz);
 			} catch (error) {
-				console.error("Failed to load data", error);
+				console.error("Failed to load quiz", error);
 				navigate("/not-found");
 			} finally {
 				setLoading(false);
@@ -56,15 +48,7 @@ export default function Quiz() {
 		};
 
 		loadData();
-	}, [
-		quizId,
-		resultIdParam,
-		navigate,
-		loadQuizForPlay,
-		loadResultForView,
-		resetSession,
-		setLoading,
-	]);
+	}, [quizId, navigate, loadQuizForPlay, resetSession, setLoading]);
 
 	const handleSubmit = async () => {
 		if (!quizData) return;
@@ -106,7 +90,6 @@ export default function Quiz() {
 			quizId: currentQuizId,
 			answers,
 			summary,
-			createdAt: Date.now(),
 		};
 
 		if (user) {
@@ -125,7 +108,7 @@ export default function Quiz() {
 				questions: quizData.questions,
 			};
 			setGuestResult(localResult);
-			window.scrollTo({ top: 0, behavior: "smooth" });
+			navigate(`/result/${currentQuizId}/guest`);
 		}
 	};
 
@@ -136,22 +119,10 @@ export default function Quiz() {
 	if (!quizData) return null;
 
 	return (
-		<Container className={"flex flex-col items-center gap-6"}>
+		<Container className="flex flex-col items-center gap-6">
 			<div className="text-3xl font-bold text-center drop-shadow-md pb-2 border-b w-full text-(--col-text-accent) border-(--col-border)">
 				{quizData.title}
 			</div>
-			{isResultView && resultData && (
-				<div className="flex flex-col items-center gap-2">
-					<div className="text-xl font-semibold px-6 py-2 rounded-full border text-(--col-success) bg-(--col-success-glow) border-(--col-success)">
-						Result: {resultData.summary?.score} / {quizData.questions.length}
-					</div>
-					{!user && !resultIdParam && (
-						<div className="text-xs text-yellow-500 opacity-80">
-							(Guest Mode: Result not saved to history)
-						</div>
-					)}
-				</div>
-			)}
 
 			<div className="w-full flex flex-col gap-6">
 				{quizData.questions.map((question, index) => (
@@ -159,21 +130,9 @@ export default function Quiz() {
 				))}
 			</div>
 
-			{!isResultView ? (
-				<Button
-					onClick={handleSubmit}
-					className="w-full md:w-auto min-w-50 text-lg shadow-xl"
-				>
-					Submit
-				</Button>
-			) : (
-				<Button
-					onClick={() => navigate(resultIdParam ? "/results" : "/")}
-					className="w-full md:w-auto"
-				>
-					{resultIdParam ? "Back to Results" : "Back to Home"}
-				</Button>
-			)}
+			<Button onClick={handleSubmit} className="w-full md:w-auto min-w-50 text-lg shadow-xl">
+				Submit
+			</Button>
 
 			<ModalConfirm
 				isOpen={alertInfo.isOpen}

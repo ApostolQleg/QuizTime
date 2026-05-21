@@ -1,6 +1,9 @@
 import { formatDateTime } from "@/shared/libs/formatDateTime.js";
+import { getDateFromObjectId } from "@/shared/libs/getDateFromObjectId.js";
 
 export default function QuizCard({ item, isResultsPage, onClick }) {
+	const date = isResultsPage ? formatDateTime(getDateFromObjectId(item._id)) : "";
+
 	return (
 		<button type="button" className="quiz-card flex flex-col justify-between" onClick={onClick}>
 			<div className="font-bold text-lg mb-2 pt-4 px-2">
@@ -26,9 +29,7 @@ export default function QuizCard({ item, isResultsPage, onClick }) {
 						<div>
 							Score: {item.summary?.score ?? 0}/{item.summary?.total ?? 0}
 						</div>
-						<div className="text-xs mt-1 opacity-70">
-							{item.createdAt ? formatDateTime(item.createdAt) : ""}
-						</div>
+						<div className="text-xs mt-1 opacity-70">{date ? date : ""}</div>
 					</>
 				) : (
 					<div className="flex flex-col gap-1">

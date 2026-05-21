@@ -11,6 +11,7 @@ import PublicProfile from "@/pages/PublicProfile.jsx";
 import Quiz from "@/pages/Quiz.jsx";
 import Quizzes from "@/pages/Quizzes.jsx";
 import Register from "@/pages/Register.jsx";
+import Result from "@/pages/Result.jsx";
 import Results from "@/pages/Results.jsx";
 import useAutoReload from "@/shared/hooks/useAutoReload.js";
 
@@ -51,7 +52,7 @@ export default function AppRoutes() {
 				<Route path="/help" element={<Help />} />
 				<Route path="/profile" element={<Profile />} />
 				<Route path="/quiz/:quizId" element={<Quiz />} />
-				<Route path="/result/:quizId/:resultIdParam" element={<Quiz />} />
+				<Route path="/result/:quizId/:resultIdParam" element={<Result />} />
 				<Route path="/create" element={<Edit />} />
 				<Route path="/manage/:quizId" element={<Edit />} />
 				<Route path="/user/:userId" element={<PublicProfile />} />
