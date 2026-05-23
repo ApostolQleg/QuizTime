@@ -68,7 +68,7 @@ export default function Edit() {
 				addToast("Your quiz has been created.");
 			}
 
-			navigate("/");
+			navigate("/quizzes");
 		} catch (error) {
 			console.error("Error saving quiz: ", error);
 			showSaveError("Failed to save quiz. Please try again later.");

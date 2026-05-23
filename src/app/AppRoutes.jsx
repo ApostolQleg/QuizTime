@@ -7,13 +7,16 @@ import Login from "@/pages/Login.jsx";
 import MyQuizzes from "@/pages/MyQuizzes.jsx";
 import NotFound from "@/pages/NotFound.jsx";
 import Profile from "@/pages/Profile.jsx";
-import PublicProfile from "@/pages/PublicProfile.jsx";
 import Quiz from "@/pages/Quiz.jsx";
 import Quizzes from "@/pages/Quizzes.jsx";
 import Register from "@/pages/Register.jsx";
 import Result from "@/pages/Result.jsx";
 import Results from "@/pages/Results.jsx";
+import Settings from "@/pages/Settings.jsx";
+import Welcome from "@/pages/Welcome.jsx";
 import useAutoReload from "@/shared/hooks/useAutoReload.js";
+import CleanLayout from "./layouts/CleanLayout";
+import MainLayout from "./layouts/MainLayout";
 
 export default function AppRoutes() {
 	const { token } = useAuthSessionState();
@@ -44,19 +47,24 @@ export default function AppRoutes() {
 	return (
 		<div key={refreshKey} className="flex-1 flex flex-col w-full">
 			<Routes>
-				<Route exact path="/" element={<Quizzes />} />
-				<Route path="/my-quizzes" element={<MyQuizzes />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/register" element={<Register />} />
-				<Route path="/results" element={<Results />} />
-				<Route path="/help" element={<Help />} />
-				<Route path="/profile" element={<Profile />} />
-				<Route path="/quiz/:quizId" element={<Quiz />} />
-				<Route path="/result/:quizId/:resultIdParam" element={<Result />} />
-				<Route path="/create" element={<Edit />} />
-				<Route path="/manage/:quizId" element={<Edit />} />
-				<Route path="/user/:userId" element={<PublicProfile />} />
-				<Route path="*" element={<NotFound />} />
+				<Route element={<CleanLayout />}>
+					<Route exact path="/" element={<Welcome />} />{" "}
+					<Route path="*" element={<NotFound />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<Register />} />
+				</Route>
+				<Route element={<MainLayout />}>
+					<Route path="/help" element={<Help />} />
+					<Route path="/quizzes" element={<Quizzes />} />
+					<Route path="/my-quizzes" element={<MyQuizzes />} />
+					<Route path="/results" element={<Results />} />
+					<Route path="/settings" element={<Settings />} />
+					<Route path="/quiz/:quizId" element={<Quiz />} />{" "}
+					<Route path="/result/:quizId/:resultIdParam" element={<Result />} />
+					<Route path="/create" element={<Edit />} />
+					<Route path="/manage/:quizId" element={<Edit />} />
+					<Route path="/user/:userId" element={<Profile />} />
+				</Route>
 			</Routes>
 		</div>
 	);

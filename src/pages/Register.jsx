@@ -65,7 +65,7 @@ export default function Register() {
 			const data = await loginWithGoogle(credentialResponse.credential);
 			login(data.user, data.token);
 			addToast("Registration successful. Welcome to QuizTime!");
-			navigate("/");
+			navigate("/quizzes");
 		} catch (err) {
 			setError(getGoogleAuthErrorMessage(err));
 		} finally {
@@ -98,7 +98,7 @@ export default function Register() {
 
 			login(data.user, data.token);
 			addToast("Registration successful. Welcome to QuizTime!");
-			navigate("/");
+			navigate("/quizzes");
 		} catch (err) {
 			setError(err.message || "Registration failed");
 		} finally {

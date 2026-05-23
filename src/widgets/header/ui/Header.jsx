@@ -26,7 +26,7 @@ export default function Header() {
 		<>
 			<header className="sticky top-0 z-40 flex flex-row items-center justify-between gap-4 px-6 py-4 w-full shadow-2xl shadow-black/50 bg-(--col-bg-card) text-(--col-text-main) border-b border-(--col-border)">
 				<Link
-					to="/"
+					to="/quizzes"
 					className="flex items-center gap-3 hover:opacity-80 transition-opacity group"
 				>
 					<img
@@ -46,7 +46,7 @@ export default function Header() {
 					{user ? (
 						<div className="flex items-center gap-4 sm:gap-6">
 							<Link
-								to="/profile"
+								to="/settings"
 								className="flex items-center gap-3 group hover:opacity-90 transition-all"
 								title="Go to Profile"
 							>
@@ -120,7 +120,10 @@ export default function Header() {
 
 			{/* NAVIGATION */}
 			<nav className="justify-center flex flex-row space-x-8 text-lg sm:text-xl my-6 font-medium text-(--col-text-muted)">
-				<Link to="/" className="nav-link hover:text-(--col-text-accent) transition-colors">
+				<Link
+					to="/quizzes"
+					className="nav-link hover:text-(--col-text-accent) transition-colors"
+				>
 					Quizzes
 				</Link>
 				<Link

@@ -39,7 +39,7 @@ export default function Login() {
 			});
 			login(data.user, data.token);
 			addToast("Logged in successfully.");
-			navigate("/");
+			navigate("/quizzes");
 		} catch (err) {
 			setError(err.message || "Invalid credentials");
 		} finally {
@@ -59,7 +59,7 @@ export default function Login() {
 			const data = await loginWithGoogle(credentialResponse.credential);
 			login(data.user, data.token);
 			addToast("Logged in successfully.");
-			navigate("/");
+			navigate("/quizzes");
 		} catch (err) {
 			if (err.message === "USER_NOT_FOUND") {
 				navigate("/register");

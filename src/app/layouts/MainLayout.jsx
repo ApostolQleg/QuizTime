@@ -1,0 +1,15 @@
+import { Outlet } from "react-router";
+import Footer from "@/widgets/footer/ui/Footer.jsx";
+import Header from "@/widgets/header/ui/Header.jsx";
+
+export default function MainLayout() {
+	return (
+		<div className="min-h-screen flex flex-col bg-(--col-bg-main) text-(--col-text-main)">
+			<Header />
+			<main className="flex-1 flex flex-col">
+				<Outlet></Outlet>
+			</main>
+			<Footer />
+		</div>
+	);
+}
