@@ -59,6 +59,7 @@ export default function Sidebar() {
 					</Link>
 					<Link
 						to="/quizzes"
+						onClick={handleToggle}
 						className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors"
 					>
 						Quizzes
@@ -67,12 +68,14 @@ export default function Sidebar() {
 						<>
 							<Link
 								to={"/my-quizzes"}
+								onClick={handleToggle}
 								className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors"
 							>
 								My Quizzes
 							</Link>
 							<Link
 								to="/results"
+								onClick={handleToggle}
 								className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors"
 							>
 								Results
@@ -82,6 +85,7 @@ export default function Sidebar() {
 
 					<Link
 						to="/help"
+						onClick={handleToggle}
 						className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors"
 					>
 						Help
@@ -91,6 +95,7 @@ export default function Sidebar() {
 						<>
 							<Link
 								to={"/settings"}
+								onClick={handleToggle}
 								className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors"
 							>
 								Settings
