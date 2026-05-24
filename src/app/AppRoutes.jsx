@@ -1,38 +1,42 @@
-import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+
 import { useAuthActions, useAuthSessionState } from "@/features/auth/hooks/useAuth.js";
-import Edit from "@/pages/Edit.jsx";
-import Help from "@/pages/Help.jsx";
-import Login from "@/pages/Login.jsx";
-import MyQuizzes from "@/pages/MyQuizzes.jsx";
-import NotFound from "@/pages/NotFound.jsx";
-import Profile from "@/pages/Profile.jsx";
-import Quiz from "@/pages/Quiz.jsx";
-import Quizzes from "@/pages/Quizzes.jsx";
-import Register from "@/pages/Register.jsx";
-import Result from "@/pages/Result.jsx";
-import Results from "@/pages/Results.jsx";
-import Settings from "@/pages/Settings.jsx";
-import Welcome from "@/pages/Welcome.jsx";
 import useAutoReload from "@/shared/hooks/useAutoReload.js";
 import CleanLayout from "./layouts/CleanLayout";
 import MainLayout from "./layouts/MainLayout";
 
+const Edit = lazy(() => import("@/pages/Edit.jsx"));
+const Help = lazy(() => import("@/pages/Help.jsx"));
+const Login = lazy(() => import("@/pages/Login.jsx"));
+const MyQuizzes = lazy(() => import("@/pages/MyQuizzes.jsx"));
+const NotFound = lazy(() => import("@/pages/NotFound.jsx"));
+const Profile = lazy(() => import("@/pages/Profile.jsx"));
+const Quiz = lazy(() => import("@/pages/Quiz.jsx"));
+const Quizzes = lazy(() => import("@/pages/Quizzes.jsx"));
+const Register = lazy(() => import("@/pages/Register.jsx"));
+const Result = lazy(() => import("@/pages/Result.jsx"));
+const Results = lazy(() => import("@/pages/Results.jsx"));
+const Settings = lazy(() => import("@/pages/Settings.jsx"));
+const Welcome = lazy(() => import("@/pages/Welcome.jsx"));
+
+const ProtectedRoute = ({ token, children }) => {
+	if (!token) {
+		return <Navigate to="/login" replace />;
+	}
+	return children;
+};
+
 export default function AppRoutes() {
 	const { token } = useAuthSessionState();
 	const { checkSession } = useAuthActions();
-
-	const [refreshKey, setRefreshKey] = useState(0);
-
-	const handleSoftRefresh = () => {
-		setRefreshKey((prev) => prev + 1);
-	};
-
-	useAutoReload(handleSoftRefresh);
+	const location = useLocation();
 
 	useEffect(() => {
-		window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-	}, []);
+		if (location.pathname) {
+			window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+		}
+	}, [location.pathname]);
 
 	useEffect(() => {
 		if (!token) return;
@@ -44,28 +48,49 @@ export default function AppRoutes() {
 		});
 	}, [token, checkSession]);
 
+	const handleSoftRefresh = () => {
+		if (token) {
+			checkSession({ force: true });
+		}
+	};
+
+	useAutoReload(handleSoftRefresh);
+
 	return (
-		<div key={refreshKey} className="flex-1 flex flex-col w-full">
-			<Routes>
-				<Route element={<CleanLayout />}>
-					<Route exact path="/" element={<Welcome />} />{" "}
-					<Route path="*" element={<NotFound />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/register" element={<Register />} />
-				</Route>
-				<Route element={<MainLayout />}>
-					<Route path="/help" element={<Help />} />
-					<Route path="/quizzes" element={<Quizzes />} />
-					<Route path="/my-quizzes" element={<MyQuizzes />} />
-					<Route path="/results" element={<Results />} />
-					<Route path="/settings" element={<Settings />} />
-					<Route path="/quiz/:quizId" element={<Quiz />} />{" "}
-					<Route path="/result/:quizId/:resultIdParam" element={<Result />} />
-					<Route path="/create" element={<Edit />} />
-					<Route path="/manage/:quizId" element={<Edit />} />
-					<Route path="/user/:userId" element={<Profile />} />
-				</Route>
-			</Routes>
+		<div className="flex-1 flex flex-col w-full">
+			<Suspense
+				fallback={
+					<div className="flex-1 flex items-center justify-center text-(--col-text-main)"></div>
+				}
+			>
+				<Routes>
+					<Route element={<CleanLayout />}>
+						<Route path="/" element={<Welcome />} />
+						<Route path="/login" element={<Login />} />
+						<Route path="/register" element={<Register />} />
+						<Route path="*" element={<NotFound />} />
+					</Route>
+
+					<Route
+						element={
+							<ProtectedRoute token={token}>
+								<MainLayout />
+							</ProtectedRoute>
+						}
+					>
+						<Route path="/quizzes" element={<Quizzes />} />
+						<Route path="/my-quizzes" element={<MyQuizzes />} />
+						<Route path="/results" element={<Results />} />
+						<Route path="/quiz/:quizId" element={<Quiz />} />
+						<Route path="/result/:quizId/:resultIdParam" element={<Result />} />
+						<Route path="/create" element={<Edit />} />
+						<Route path="/manage/:quizId" element={<Edit />} />
+						<Route path="/help" element={<Help />} />
+						<Route path="/settings" element={<Settings />} />
+						<Route path="/user/:userId" element={<Profile />} />
+					</Route>
+				</Routes>
+			</Suspense>
 		</div>
 	);
 }
