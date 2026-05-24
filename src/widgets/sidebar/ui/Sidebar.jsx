@@ -4,6 +4,7 @@ import { useAuthActions, useAuthUserState } from "@/features/auth/hooks/useAuth.
 import logoImage from "@/shared/assets/logo-icon.png";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import { useSidebarActions, useSidebarState } from "../stores/SidebarStore.js";
+import Avatar from "@/shared/ui/Avatar.jsx";
 
 export default function Sidebar() {
 	const { user } = useAuthUserState();
@@ -57,6 +58,75 @@ export default function Sidebar() {
 							</span>
 						</span>
 					</Link>
+
+					{!user && (
+						<div className="flex gap-3">
+							<Link
+								to="/register"
+								className="button px-4 py-2 text-sm shadow-md transition-shadow"
+								style={{
+									backgroundColor: "var(--col-primary)",
+									boxShadow: "0 4px 10px -2px var(--col-primary-glow)",
+								}}
+							>
+								Sign Up
+							</Link>
+							<span className="text-(--col-text-muted) self-center text-xs">or</span>
+							<Link
+								to="/login"
+								className="button px-4 py-2 text-sm bg-transparent border border-(--col-border) hover:bg-(--col-bg-input) shadow-none transition-colors"
+								style={{
+									backgroundColor: "transparent",
+									boxShadow: "none",
+								}}
+							>
+								Log In
+							</Link>
+						</div>
+					)}
+
+					{user && (
+						<div className="flex flex-row gap-4">
+							<div className="flex items-center gap-4 sm:gap-6">
+								<Link
+									onClick={handleToggle}
+									to={`/user/${user._id}`}
+									className="flex items-center gap-3 group hover:opacity-90 transition-all"
+									title="Go to Profile"
+								>
+									<div className="relative group-hover:scale-105 transition-transform duration-300">
+										<Avatar
+											src={user.avatarUrl}
+											name={user.nickname}
+											type={user.avatarType}
+											color={user.themeColor}
+											size="sm"
+										/>
+									</div>
+									<div className="hidden sm:flex flex-col items-end leading-tight">
+										<span
+											className="font-bold max-w-37.5 truncate transition-colors duration-300"
+											style={{
+												color: user.themeColor || "var(--col-primary)",
+											}}
+										>
+											{user.nickname}
+										</span>
+									</div>
+								</Link>
+							</div>
+							<button
+								type="button"
+								onClick={handleLogoutClick}
+								className="px-4 py-2 rounded-lg border border-(--col-border) text-(--col-text-muted) 
+                                   hover:bg-(--col-fail-bg) hover:text-(--col-fail) hover:border-(--col-fail) 
+                                   transition-all duration-300 text-xs sm:text-sm font-semibold shadow-sm cursor-pointer"
+							>
+								Sign Out
+							</button>
+						</div>
+					)}
+
 					<Link
 						to="/quizzes"
 						onClick={handleToggle}
@@ -80,6 +150,13 @@ export default function Sidebar() {
 							>
 								Results
 							</Link>
+							<Link
+								to={"/settings"}
+								onClick={handleToggle}
+								className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors"
+							>
+								Settings
+							</Link>
 						</>
 					)}
 
@@ -90,27 +167,6 @@ export default function Sidebar() {
 					>
 						Help
 					</Link>
-
-					{user && (
-						<>
-							<Link
-								to={"/settings"}
-								onClick={handleToggle}
-								className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors"
-							>
-								Settings
-							</Link>
-							<button
-								type="button"
-								onClick={handleLogoutClick}
-								className="px-4 py-2 rounded-lg border border-(--col-border) text-(--col-text-muted) 
-                                   hover:bg-(--col-fail-bg) hover:text-(--col-fail) hover:border-(--col-fail) 
-                                   transition-all duration-300 text-xs sm:text-sm font-semibold shadow-sm cursor-pointer"
-							>
-								Sign Out
-							</button>
-						</>
-					)}
 				</div>
 
 				<ModalConfirm
