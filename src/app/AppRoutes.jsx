@@ -3,8 +3,8 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
 import { useAuthActions, useAuthSessionState } from "@/features/auth/hooks/useAuth.js";
 import useAutoReload from "@/shared/hooks/useAutoReload.js";
-import CleanLayout from "./layouts/CleanLayout";
-import MainLayout from "./layouts/MainLayout";
+import CleanLayout from "./layouts/CleanLayout.jsx";
+import MainLayout from "./layouts/MainLayout.jsx";
 
 const Create = lazy(() => import("@/pages/Create.jsx"));
 const Manage = lazy(() => import("@/pages/Manage.jsx"));
