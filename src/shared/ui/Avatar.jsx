@@ -5,7 +5,7 @@ export default function Avatar({ src, name, type = "google", color, size = "md",
 
 	const sizeClasses = {
 		sm: "w-8 h-8 text-xs",
-		md: "w-10 h-10 text-sm",
+		md: "w-14 h-14 text-sm",
 		lg: "w-20 h-20 text-2xl",
 		xl: "w-32 h-32 text-4xl",
 	};

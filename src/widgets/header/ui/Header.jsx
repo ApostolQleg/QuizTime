@@ -56,7 +56,7 @@ export default function Header() {
 							className="flex items-center gap-3 group hover:opacity-90 transition-all"
 							title="Go to Profile"
 						>
-							<div className="hidden sm:flex flex-col items-end leading-tight">
+							<div className="flex flex-col items-end leading-tight">
 								<span
 									className="font-bold max-w-37.5 truncate transition-colors duration-300"
 									style={{ color: user.themeColor || "var(--col-primary)" }}
