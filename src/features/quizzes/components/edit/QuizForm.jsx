@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { createQuiz, getQuizById, updateQuiz } from "@/features/quizzes/api/quizzes.api.js";
 import Question from "@/features/quizzes/components/edit/QuestionEditor.jsx";
 import useQuizEditorValidation from "@/features/quizzes/hooks/useQuizEditorValidation.js";
 import {
@@ -14,68 +11,15 @@ import Container from "@/shared/ui/Container.jsx";
 import Input from "@/shared/ui/Input.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import Textarea from "@/shared/ui/Textarea.jsx";
-import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
-export default function Edit() {
-	const navigate = useNavigate();
-	const { quizId } = useParams();
-	const location = useLocation();
-
-	const isManagePage = location.pathname.startsWith("/manage");
+export default function QuizForm({ onSave, isEditing = false }) {
 	const { loading, alertInfo } = useQuizEditorMetaState();
 	const { title, category, tags, description, counter, errors, questions } =
 		useQuizEditorContentState();
 	const editorActions = useQuizEditorActions();
-	const { validate, showSaveError, closeAlert } = useQuizEditorValidation();
-	const { addToast } = useToastActions();
+	const { closeAlert } = useQuizEditorValidation();
 
-	useEffect(() => {
-		editorActions.resetEditor();
-		editorActions.initEditor(isManagePage);
-	}, [editorActions, isManagePage]);
-
-	useEffect(() => {
-		if (isManagePage && quizId) {
-			getQuizById(quizId)
-				.then((foundQuiz) => {
-					editorActions.loadQuiz(foundQuiz.quiz);
-				})
-				.catch((err) => {
-					console.error(err);
-					navigate("/not-found");
-				});
-		}
-	}, [editorActions, isManagePage, quizId, navigate]);
-
-	const handleSaveQuiz = async () => {
-		const isValid = validate();
-		if (!isValid) return;
-
-		try {
-			const quizPayload = {
-				title,
-				category,
-				tags: tags.map((tag) => tag.text.trim()).filter((t) => t !== ""),
-				description,
-				questions,
-			};
-
-			if (isManagePage) {
-				await updateQuiz(quizId, quizPayload);
-				addToast("Your quiz has been updated.");
-			} else {
-				await createQuiz(quizPayload);
-				addToast("Your quiz has been created.");
-			}
-
-			navigate("/quizzes");
-		} catch (error) {
-			console.error("Error saving quiz: ", error);
-			showSaveError("Failed to save quiz. Please try again later.");
-		}
-	};
-
-	if (loading) {
+	if (loading && isEditing) {
 		return <Container className="text-center text-(--col-text-main)">Loading...</Container>;
 	}
 
@@ -115,7 +59,6 @@ export default function Edit() {
 						<option value="" disabled>
 							Select a category...
 						</option>
-
 						{QUIZ_CATEGORIES.map((category) => (
 							<option key={category} value={category}>
 								{category}
@@ -128,7 +71,6 @@ export default function Edit() {
 					<span className="font-bold text-xs sm:text-sm text-(--col-text-muted)">
 						Tags (select multiple):
 					</span>
-
 					<select
 						className={`w-full p-3 rounded-xl border bg-(--col-bg-input) border-(--col-border) text-(--col-text-muted) font-bold text-xs lg:text-sm focus:ring-(--col-primary-glow) focus:border focus:border-(--col-primary) focus:ring-2 focus:ring-opacity-50 ${errors.tags ? "error" : ""}`}
 						value=""
@@ -144,7 +86,6 @@ export default function Edit() {
 						<option value="" disabled>
 							Select a tag to add...
 						</option>
-
 						{QUIZ_TAGS.map((tagText) => {
 							const isAlreadySelected = tags.some((t) => t.text === tagText);
 							return (
@@ -201,9 +142,10 @@ export default function Edit() {
 				Add Question
 			</Button>
 
-			<Button className="self-center mt-auto min-w-full shadow-xl" onClick={handleSaveQuiz}>
-				Save Quiz
+			<Button className="self-center mt-auto min-w-full shadow-xl" onClick={onSave}>
+				{isEditing ? "Save Changes" : "Create Quiz"}
 			</Button>
+
 			<ModalConfirm
 				isOpen={alertInfo.isOpen}
 				onClose={closeAlert}

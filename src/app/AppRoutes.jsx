@@ -6,7 +6,8 @@ import useAutoReload from "@/shared/hooks/useAutoReload.js";
 import CleanLayout from "./layouts/CleanLayout";
 import MainLayout from "./layouts/MainLayout";
 
-const Edit = lazy(() => import("@/pages/Edit.jsx"));
+const Create = lazy(() => import("@/pages/Create.jsx"));
+const Manage = lazy(() => import("@/pages/Manage.jsx"));
 const Help = lazy(() => import("@/pages/Help.jsx"));
 const Login = lazy(() => import("@/pages/Login.jsx"));
 const MyQuizzes = lazy(() => import("@/pages/MyQuizzes.jsx"));
@@ -83,8 +84,8 @@ export default function AppRoutes() {
 						<Route path="/results" element={<Results />} />
 						<Route path="/quiz/:quizId" element={<Quiz />} />
 						<Route path="/result/:quizId/:resultIdParam" element={<Result />} />
-						<Route path="/create" element={<Edit />} />
-						<Route path="/manage/:quizId" element={<Edit />} />
+						<Route path="/create" element={<Create />} />
+						<Route path="/manage/:quizId" element={<Manage />} />
 						<Route path="/help" element={<Help />} />
 						<Route path="/settings" element={<Settings />} />
 						<Route path="/user/:userId" element={<Profile />} />
