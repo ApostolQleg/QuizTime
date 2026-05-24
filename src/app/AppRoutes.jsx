@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Outlet, Navigate, Route, Routes, useLocation } from "react-router-dom";
 
 import { useAuthActions, useAuthSessionState } from "@/features/auth/hooks/useAuth.js";
 import useAutoReload from "@/shared/hooks/useAutoReload.js";
@@ -25,7 +25,7 @@ const ProtectedRoute = ({ token, children }) => {
 	if (!token) {
 		return <Navigate to="/login" replace />;
 	}
-	return children;
+	return children ? children : <Outlet />;
 };
 
 export default function AppRoutes() {
@@ -72,23 +72,20 @@ export default function AppRoutes() {
 						<Route path="*" element={<NotFound />} />
 					</Route>
 
-					<Route
-						element={
-							<ProtectedRoute token={token}>
-								<MainLayout />
-							</ProtectedRoute>
-						}
-					>
+					<Route element={<MainLayout />}>
 						<Route path="/quizzes" element={<Quizzes />} />
-						<Route path="/my-quizzes" element={<MyQuizzes />} />
-						<Route path="/results" element={<Results />} />
 						<Route path="/quiz/:quizId" element={<Quiz />} />
 						<Route path="/result/:quizId/:resultIdParam" element={<Result />} />
-						<Route path="/create" element={<Create />} />
-						<Route path="/manage/:quizId" element={<Manage />} />
 						<Route path="/help" element={<Help />} />
-						<Route path="/settings" element={<Settings />} />
 						<Route path="/user/:userId" element={<Profile />} />
+
+						<Route element={<ProtectedRoute token={token} />}>
+							<Route path="/my-quizzes" element={<MyQuizzes />} />
+							<Route path="/results" element={<Results />} />
+							<Route path="/create" element={<Create />} />
+							<Route path="/manage/:quizId" element={<Manage />} />
+							<Route path="/settings" element={<Settings />} />
+						</Route>
 					</Route>
 				</Routes>
 			</Suspense>
