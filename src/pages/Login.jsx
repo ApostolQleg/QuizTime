@@ -84,7 +84,7 @@ export default function Login() {
 			)}
 
 			<div className="flex flex-col md:flex-row w-full items-stretch justify-between gap-8 md:gap-0 animate-fade-in">
-				<div className="flex-1 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-(--col-border) pb-8 md:pb-0 md:pr-12">
+				<div className="flex-1 flex flex-col items-center justify-center">
 					<form onSubmit={handleSubmit} className="w-full max-w-xs flex flex-col gap-5">
 						<div className="flex flex-col gap-2">
 							<label
@@ -129,24 +129,28 @@ export default function Login() {
 							className="button w-full mt-2 justify-center text-lg py-3 shadow-lg"
 							disabled={isLoading}
 						>
-							{isLoading ? "Signing In..." : "Sign In"}
+							{isLoading ? "Logging In..." : "Log In"}
 						</button>
 					</form>
 				</div>
 
-				<div className="relative hidden md:flex items-center justify-center">
-					<div className="absolute bg-(--col-bg-card) p-3 text-(--col-text-muted) font-bold text-sm z-10 rounded-full border border-(--col-border)">
+				<div className="hidden md:flex flex-col items-center px-8">
+					<div className="flex-1 w-px bg-(--col-border)"></div>
+					<div className="flex items-center justify-center shrink-0 w-11 h-11 bg-(--col-bg-card) text-(--col-text-muted) font-bold text-sm rounded-full border border-(--col-border) my-4">
 						OR
 					</div>
+					<div className="flex-1 w-px bg-(--col-border)"></div>
 				</div>
 
-				<div className="md:hidden flex items-center justify-center -my-4 relative z-10">
-					<span className="bg-(--col-bg-card) px-4 text-(--col-text-muted) font-bold text-sm">
+				<div className="flex md:hidden items-center w-full px-4 my-2">
+					<div className="flex-1 h-px bg-(--col-border)"></div>
+					<div className="flex items-center justify-center shrink-0 w-11 h-11 bg-(--col-bg-card) text-(--col-text-muted) font-bold text-sm rounded-full border border-(--col-border) mx-4">
 						OR
-					</span>
+					</div>
+					<div className="flex-1 h-px bg-(--col-border)"></div>
 				</div>
 
-				<div className="flex-1 flex flex-col items-center justify-center pt-8 md:pt-0 md:pl-12">
+				<div className="flex-1 flex flex-col items-center justify-center">
 					<div className="w-full max-w-xs flex flex-col items-center gap-6">
 						<p className="text-sm text-(--col-text-muted) text-center">
 							Log in quickly with your Google account

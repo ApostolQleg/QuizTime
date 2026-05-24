@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
-import { Outlet, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 
 import { useAuthActions, useAuthSessionState } from "@/features/auth/hooks/useAuth.js";
 import useAutoReload from "@/shared/hooks/useAutoReload.js";

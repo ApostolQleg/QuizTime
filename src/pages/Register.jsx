@@ -113,73 +113,85 @@ export default function Register() {
 	};
 
 	return (
-		<Container className="flex flex-col items-center justify-center gap-6 max-w-md mx-auto">
+		<Container className="flex flex-col items-center justify-center gap-6">
 			<h2 className="text-3xl font-bold text-(--col-text-accent) drop-shadow-md text-center">
 				{renderTitle()}
 			</h2>
 
 			{error && (
-				<div className="w-full p-3 text-center border rounded-lg bg-(--col-fail-bg) border-(--col-fail) text-(--col-text-main)">
+				<div className="w-full max-w-md p-3 text-center border rounded-lg bg-(--col-fail-bg) border-(--col-fail) text-(--col-text-main)">
 					{error}
 				</div>
 			)}
 
 			{step === 1 && (
-				<div className="w-full flex flex-col gap-5 animate-fade-in">
-					<form onSubmit={handleSendCode} className="flex flex-col gap-4">
-						<div className="flex flex-col gap-1">
-							<label
-								htmlFor="register-email"
-								className="text-sm font-semibold text-(--col-text-muted)"
-							>
-								Email
-							</label>
-							<Input
-								id="register-email"
-								type="email"
-								name="email"
-								placeholder="name@example.com"
-								value={formData.email}
-								onChange={handleChange}
-								required
+				<div className="flex flex-col md:flex-row w-full items-stretch justify-between gap-8 md:gap-0 animate-fade-in">
+					<div className="flex-1 flex flex-col items-center justify-center">
+						<form
+							onSubmit={handleSendCode}
+							className="w-full max-w-xs flex flex-col gap-5"
+						>
+							<div className="flex flex-col gap-2">
+								<label
+									htmlFor="register-email"
+									className="text-sm font-semibold text-(--col-text-muted) ml-1"
+								>
+									Email
+								</label>
+								<Input
+									id="register-email"
+									type="email"
+									name="email"
+									placeholder="name@example.com"
+									value={formData.email}
+									onChange={handleChange}
+									required
+									disabled={isLoading}
+								/>
+							</div>
+							<Button
+								type="submit"
 								disabled={isLoading}
-								className="text-lg"
-							/>
+								className="w-full mt-2 justify-center text-lg py-3 shadow-lg"
+							>
+								{isLoading ? "Sending..." : "Send Verification Code"}
+							</Button>
+						</form>
+					</div>
+
+					<div className="hidden md:flex flex-col items-center px-8">
+						<div className="flex-1 w-px bg-(--col-border)"></div>
+						<div className="flex items-center justify-center shrink-0 w-11 h-11 bg-(--col-bg-card) text-(--col-text-muted) font-bold text-sm rounded-full border border-(--col-border) my-4">
+							OR
 						</div>
-						<Button
-							type="submit"
-							disabled={isLoading}
-							className="justify-center text-lg w-full"
-						>
-							{isLoading ? "Sending..." : "Send Verification Code"}
-						</Button>
-					</form>
-
-					<div className="flex items-center w-full my-1">
-						<div className="h-px bg-(--col-border) flex-1" />
-						<span className="px-4 text-xs text-(--col-text-muted)">OR</span>
-						<div className="h-px bg-(--col-border) flex-1" />
+						<div className="flex-1 w-px bg-(--col-border)"></div>
 					</div>
 
-					<div className="w-full flex justify-center">
-						<GoogleLogin
-							onSuccess={handleGoogleSuccess}
-							onError={() => setError("Google Sign-Up Failed")}
-							theme="filled_blue"
-							shape="pill"
-							size="large"
-							text="signup_with"
-						/>
+					<div className="flex md:hidden items-center w-full px-4 my-2">
+						<div className="flex-1 h-px bg-(--col-border)"></div>
+						<div className="flex items-center justify-center shrink-0 w-11 h-11 bg-(--col-bg-card) text-(--col-text-muted) font-bold text-sm rounded-full border border-(--col-border) mx-4">
+							OR
+						</div>
+						<div className="flex-1 h-px bg-(--col-border)"></div>
 					</div>
 
-					<div className="text-(--col-text-muted) text-sm mt-2 text-center">
-						Already have an account?{" "}
-						<Link
-							to="/login"
-							className="font-bold text-(--col-primary) hover:underline"
-						>
-							Sign In
-						</Link>
+					<div className="flex-1 flex flex-col items-center justify-center">
+						<div className="w-full max-w-xs flex flex-col items-center gap-6">
+							<p className="text-sm text-(--col-text-muted) text-center">
+								Sign up quickly with your Google account
+							</p>
+							<div className="transform transition-transform hover:scale-105">
+								<GoogleLogin
+									onSuccess={handleGoogleSuccess}
+									onError={() => setError("Google Sign-Up Failed")}
+									theme="filled_blue"
+									shape="pill"
+									size="large"
+									text="signup_with"
+									width="280"
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
 			)}
@@ -187,12 +199,12 @@ export default function Register() {
 			{step === 2 && (
 				<form
 					onSubmit={handleVerifyCodeNext}
-					className="w-full flex flex-col gap-6 animate-fade-in"
+					className="w-full max-w-xs mx-auto flex flex-col gap-6 animate-fade-in"
 				>
 					<div className="flex flex-col gap-2">
 						<label
 							htmlFor="register-code"
-							className="text-sm font-semibold text-(--col-text-muted)"
+							className="text-sm font-semibold text-(--col-text-muted) ml-1"
 						>
 							Verification Code
 						</label>
@@ -220,7 +232,10 @@ export default function Register() {
 					</div>
 
 					<div className="flex flex-col gap-3">
-						<Button type="submit" className="justify-center text-lg w-full">
+						<Button
+							type="submit"
+							className="w-full mt-2 justify-center text-lg py-3 shadow-lg"
+						>
 							Next
 						</Button>
 						<button
@@ -240,17 +255,17 @@ export default function Register() {
 			{step === 3 && (
 				<form
 					onSubmit={handleFinalRegister}
-					className="w-full flex flex-col gap-4 animate-fade-in"
+					className="w-full max-w-xs mx-auto flex flex-col gap-5 animate-fade-in"
 				>
 					<div className="p-3 mb-2 bg-(--col-bg-input-darker) rounded-lg border border-(--col-border)">
 						<p className="text-xs text-(--col-text-muted)">Registering as</p>
 						<p className="text-sm font-bold truncate">{formData.email}</p>
 					</div>
 
-					<div className="flex flex-col gap-1">
+					<div className="flex flex-col gap-2">
 						<label
 							htmlFor="register-password"
-							className="text-sm font-semibold text-(--col-text-muted)"
+							className="text-sm font-semibold text-(--col-text-muted) ml-1"
 						>
 							Set your password
 						</label>
@@ -262,14 +277,13 @@ export default function Register() {
 							onChange={handleChange}
 							required
 							minLength={QUIZ_CONSTRAINTS.PASSWORD_MIN_LENGTH}
-							className="text-lg"
 						/>
 					</div>
 
-					<div className="flex flex-col gap-1">
+					<div className="flex flex-col gap-2">
 						<label
 							htmlFor="register-confirm-password"
-							className="text-sm font-semibold text-(--col-text-muted)"
+							className="text-sm font-semibold text-(--col-text-muted) ml-1"
 						>
 							Confirm your password
 						</label>
@@ -280,15 +294,14 @@ export default function Register() {
 							value={formData.confirmPassword}
 							onChange={handleChange}
 							required
-							className="text-lg"
 						/>
 					</div>
 
-					<div className="flex flex-col gap-3 mt-4">
+					<div className="flex flex-col gap-3 mt-2">
 						<Button
 							type="submit"
 							disabled={isLoading}
-							className="justify-center text-lg w-full"
+							className="w-full justify-center text-lg py-3 shadow-lg"
 						>
 							{isLoading ? "Creating Account..." : "Create Account"}
 						</Button>
@@ -296,12 +309,21 @@ export default function Register() {
 						<button
 							type="button"
 							onClick={() => setStep(2)}
-							className="text-sm text-center text-(--col-text-muted) hover:text-(--col-primary) underline bg-transparent border-none cursor-pointer"
+							className="text-sm text-center text-(--col-text-muted) hover:text-(--col-primary) underline bg-transparent border-none cursor-pointer mt-1"
 						>
 							Back
 						</button>
 					</div>
 				</form>
+			)}
+
+			{step === 1 && (
+				<div className="text-(--col-text-muted) text-sm mt-4">
+					Already have an account?{" "}
+					<Link to="/login" className="font-bold text-(--col-primary) hover:underline">
+						Log In
+					</Link>
+				</div>
 			)}
 		</Container>
 	);
