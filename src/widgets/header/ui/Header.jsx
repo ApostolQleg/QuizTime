@@ -3,11 +3,11 @@ import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import logoImage from "@/shared/assets/logo-icon.png";
 import menuImage from "@/shared/assets/menu-icon.png";
 import Avatar from "@/shared/ui/Avatar.jsx";
-import { useSidebarActions, useSidebarState } from "@/widgets/sidebar/stores/SidebarStore";
+import { useSidebarActions, useSidebarState } from "@/widgets/sidebar/stores/SidebarStore.js";
 
 export default function Header() {
 	const { user } = useAuthUserState();
-	const { isOpened} = useSidebarState();
+	const { isOpened } = useSidebarState();
 	const { setIsOpened } = useSidebarActions();
 
 	const handleToggleSidebar = () => {
