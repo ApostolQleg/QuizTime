@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthActions, useAuthUserState } from "@/features/auth/hooks/useAuth.js";
+import logoImage from "@/shared/assets/logo-icon.png";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 
 export default function Sidebar() {
@@ -21,9 +22,24 @@ export default function Sidebar() {
 	};
 
 	return (
-		<>
-			<div className="fixed top-0 right-0 h-screen w-sm bg-amber-500 p-4 flex flex-col gap-4 shadow-lg z-50">
-				<p className="font-bold text-lg border-b border-amber-600 pb-2">Sidebar</p>
+		<div className="fixed z-50 top-0 w-screen h-screen bg-[rgba(2,6,23,0.2)] backdrop-blur-xs">
+			<div className="fixed top-0 left-0 h-screen w-sm bg-(--col-bg-card) p-4 flex flex-col gap-4 shadow-lg z-50">
+				<Link
+					to="/"
+					className="flex items-center gap-3 hover:opacity-80 transition-opacity group"
+				>
+					<img
+						src={logoImage}
+						alt="QuizTime Logo"
+						className="h-10 w-10 sm:h-12 sm:w-12 object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+					/>
+					<span className="text-xl sm:text-3xl tracking-wide drop-shadow-lg font-bold">
+						QuizTime
+						<span className="text-(--col-text-accent) text-sm align-top opacity-80 hidden sm:inline ml-1 font-normal">
+							bitches!
+						</span>
+					</span>
+				</Link>
 				<Link
 					to="/quizzes"
 					className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors"
@@ -83,6 +99,6 @@ export default function Sidebar() {
 				message="Are you sure you want to sign out of your account?"
 				confirmLabel="Sign Out"
 			/>
-		</>
+		</div>
 	);
 }
