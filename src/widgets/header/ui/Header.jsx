@@ -1,59 +1,62 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuthActions, useAuthUserState } from "@/features/auth/hooks/useAuth.js";
+import { Link } from "react-router-dom";
+import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import logoImage from "@/shared/assets/logo-icon.png";
+import menuImage from "@/shared/assets/menu-icon.png";
 import Avatar from "@/shared/ui/Avatar.jsx";
-import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
+import Sidebar from "@/widgets/sidebar/ui/Sidebar";
 
 export default function Header() {
 	const { user } = useAuthUserState();
-	const { logout } = useAuthActions();
-	const navigate = useNavigate();
+	const [isOpenedSidebar, setIsOpenedSidebar] = useState(false);
 
-	const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-
-	const handleLogoutClick = () => {
-		setIsLogoutModalOpen(true);
-	};
-
-	const confirmLogout = () => {
-		logout();
-		navigate("/");
-		setIsLogoutModalOpen(false);
-	};
+	const toggleSidebar = () => setIsOpenedSidebar((prev) => !prev);
 
 	return (
 		<>
-			<header className="sticky top-0 z-40 flex flex-row items-center justify-between gap-4 px-6 py-4 w-full shadow-2xl shadow-black/50 bg-(--col-bg-card) text-(--col-text-main) border-b border-(--col-border)">
-				<Link
-					to="/quizzes"
-					className="flex items-center gap-3 hover:opacity-80 transition-opacity group"
-				>
-					<img
-						src={logoImage}
-						alt="QuizTime Logo"
-						className="h-10 w-10 sm:h-12 sm:w-12 object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
-					/>
-					<span className="text-xl sm:text-3xl tracking-wide drop-shadow-lg font-bold">
-						QuizTime
-						<span className="text-(--col-text-accent) text-sm align-top opacity-80 hidden sm:inline ml-1 font-normal">
-							bitches!
+			<header className="mb-3 sticky top-0 z-40 flex flex-row items-center justify-between p-4 w-full shadow-2xl shadow-black/50 bg-(--col-bg-card) text-(--col-text-main) border-b border-(--col-border)">
+				<div className="flex flex-row gap-2">
+					<button
+						type="button"
+						onClick={toggleSidebar}
+						className="flex items-center gap-3 hover:opacity-80 transition-opacity group"
+						aria-expanded={isOpenedSidebar}
+						aria-label="Toggle navigation menu"
+					>
+						<img
+							src={menuImage}
+							alt="Menu Icon"
+							className="h-10 w-10 sm:h-12 sm:w-12 object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+						/>
+					</button>
+
+					<Link
+						to="/quizzes"
+						className="flex items-center gap-3 hover:opacity-80 transition-opacity group"
+					>
+						<img
+							src={logoImage}
+							alt="QuizTime Logo"
+							className="h-10 w-10 sm:h-12 sm:w-12 object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+						/>
+						<span className="text-xl sm:text-3xl tracking-wide drop-shadow-lg font-bold">
+							QuizTime
+							<span className="text-(--col-text-accent) text-sm align-top opacity-80 hidden sm:inline ml-1 font-normal">
+								bitches!
+							</span>
 						</span>
-					</span>
-				</Link>
+					</Link>
+				</div>
 
 				<div className="text-base sm:text-lg font-medium">
 					{user ? (
 						<div className="flex items-center gap-4 sm:gap-6">
 							<Link
-								to="/settings"
+								to={`/user/${user._id}`}
 								className="flex items-center gap-3 group hover:opacity-90 transition-all"
 								title="Go to Profile"
 							>
 								<div className="hidden sm:flex flex-col items-end leading-tight">
-									<span className="text-[10px] uppercase tracking-wider text-(--col-text-muted)">
-										Welcome,
-									</span>
 									<span
 										className="font-bold max-w-37.5 truncate transition-colors duration-300"
 										style={{ color: user.themeColor || "var(--col-primary)" }}
@@ -72,16 +75,6 @@ export default function Header() {
 									/>
 								</div>
 							</Link>
-
-							<button
-								type="button"
-								onClick={handleLogoutClick}
-								className="px-4 py-2 rounded-lg border border-(--col-border) text-(--col-text-muted) 
-                                   hover:bg-(--col-fail-bg) hover:text-(--col-fail) hover:border-(--col-fail) 
-                                   transition-all duration-300 text-xs sm:text-sm font-semibold shadow-sm cursor-pointer"
-							>
-								Sign Out
-							</button>
 						</div>
 					) : (
 						<div className="flex flex-col sm:flex-row items-center gap-3 text-sm">
@@ -91,7 +84,7 @@ export default function Header() {
 							<div className="flex gap-3">
 								<Link
 									to="/register"
-									className="button px-4 py-2 text-sm shadow-md"
+									className="button px-4 py-2 text-sm shadow-md transition-shadow"
 									style={{
 										backgroundColor: "var(--col-primary)",
 										boxShadow: "0 4px 10px -2px var(--col-primary-glow)",
@@ -104,13 +97,13 @@ export default function Header() {
 								</span>
 								<Link
 									to="/login"
-									className="button px-4 py-2 text-sm bg-transparent border border-(--col-border) hover:bg-(--col-bg-input) shadow-none"
+									className="button px-4 py-2 text-sm bg-transparent border border-(--col-border) hover:bg-(--col-bg-input) shadow-none transition-colors"
 									style={{
 										backgroundColor: "transparent",
 										boxShadow: "none",
 									}}
 								>
-									Sign In
+									Log In
 								</Link>
 							</div>
 						</div>
@@ -118,44 +111,7 @@ export default function Header() {
 				</div>
 			</header>
 
-			{/* NAVIGATION */}
-			<nav className="justify-center flex flex-row space-x-8 text-lg sm:text-xl my-6 font-medium text-(--col-text-muted)">
-				<Link
-					to="/quizzes"
-					className="nav-link hover:text-(--col-text-accent) transition-colors"
-				>
-					Quizzes
-				</Link>
-				<Link
-					to="/results"
-					className="nav-link hover:text-(--col-text-accent) transition-colors"
-				>
-					Results
-				</Link>
-				{user && (
-					<Link
-						to={"/my-quizzes"}
-						className="nav-link hover:text-(--col-text-accent) transition-colors"
-					>
-						My Quizzes
-					</Link>
-				)}
-				<Link
-					to="/help"
-					className="nav-link hover:text-(--col-text-accent) transition-colors"
-				>
-					Help
-				</Link>
-			</nav>
-
-			<ModalConfirm
-				isOpen={isLogoutModalOpen}
-				onClose={() => setIsLogoutModalOpen(false)}
-				onConfirm={confirmLogout}
-				title="Sign Out?"
-				message="Are you sure you want to sign out of your account?"
-				confirmLabel="Sign Out"
-			/>
+			{isOpenedSidebar && <Sidebar onClose={() => setIsOpenedSidebar(false)} />}
 		</>
 	);
 }
