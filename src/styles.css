@@ -46,6 +46,17 @@
 		box-shadow: 0 10px 15px -3px var(--col-fail-glow);
 		cursor: pointer;
 	}
+	.auth-button {
+		@apply text-sm transition-all duration-300 flex items-center justify-center px-4 py-2 w-max font-semibold tracking-wide rounded-xl shadow-none;
+		@apply border border-(--col-border);
+		background-color: transparent;
+		color: var(--col-text-main);
+		cursor: pointer;
+	}
+	.auth-button:hover {
+		box-shadow: 0 4px 10px -2px var(--col-primary-glow);
+		background-color: var(--col-primary);
+	}
 	.button:hover {
 		background-color: var(--col-fail-hover);
 	}

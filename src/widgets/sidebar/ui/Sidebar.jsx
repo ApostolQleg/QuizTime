@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import logoImage from "@/shared/assets/logo-icon.png";
 import Avatar from "@/shared/ui/Avatar.jsx";
+import AuthActions from "@/shared/ui/auth/AuthActions.jsx";
 import { useSidebarActions, useSidebarState } from "../stores/SidebarStore.js";
 
 export default function Sidebar() {
@@ -32,7 +33,7 @@ export default function Sidebar() {
 						<img
 							src={logoImage}
 							alt="QuizTime Logo"
-							className="h-20 sm:h-24 object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+							className="h-24 object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
 						/>
 						<span className="text-4xl sm:text-5xl tracking-wide drop-shadow-lg font-bold">
 							QuizTime
@@ -40,35 +41,7 @@ export default function Sidebar() {
 					</Link>
 
 					<div className="flex flex-col gap-4 m-6">
-						{!user && (
-							<div className="flex gap-3">
-								<Link
-									to="/register"
-									onClick={handleToggle}
-									className="button px-4 py-2 text-sm shadow-md transition-shadow"
-									style={{
-										backgroundColor: "var(--col-primary)",
-										boxShadow: "0 4px 10px -2px var(--col-primary-glow)",
-									}}
-								>
-									Sign Up
-								</Link>
-								<span className="text-(--col-text-muted) self-center text-xs">
-									or
-								</span>
-								<Link
-									to="/login"
-									onClick={handleToggle}
-									className="button px-4 py-2 text-sm bg-transparent border border-(--col-border) hover:bg-(--col-bg-input) shadow-none transition-colors"
-									style={{
-										backgroundColor: "transparent",
-										boxShadow: "none",
-									}}
-								>
-									Log In
-								</Link>
-							</div>
-						)}
+						{!user && <AuthActions onClick={handleToggle} />}
 
 						{user && (
 							<div className="flex items-center gap-4 sm:gap-6">
@@ -89,7 +62,7 @@ export default function Sidebar() {
 									</div>
 									<div className="flex flex-col items-end leading-tight">
 										<span
-											className="font-bold max-w-50 truncate transition-colors duration-300 text-3xl sm:text-2xl"
+											className="font-bold max-w-50 truncate transition-colors duration-300 text-2xl"
 											style={{
 												color: user.themeColor || "var(--col-primary)",
 											}}

@@ -3,6 +3,7 @@ import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import logoImage from "@/shared/assets/logo-icon.png";
 import menuImage from "@/shared/assets/menu-icon.png";
 import Avatar from "@/shared/ui/Avatar.jsx";
+import AuthActions from "@/shared/ui/auth/AuthActions";
 import { useSidebarActions, useSidebarState } from "@/widgets/sidebar/stores/SidebarStore.js";
 
 export default function Header() {
@@ -81,29 +82,7 @@ export default function Header() {
 						<span className="text-(--col-text-muted) hidden lg:inline text-xs">
 							To save your progress
 						</span>
-						<div className="flex gap-3">
-							<Link
-								to="/register"
-								className="button px-4 py-2 text-sm shadow-md transition-shadow"
-								style={{
-									backgroundColor: "var(--col-primary)",
-									boxShadow: "0 4px 10px -2px var(--col-primary-glow)",
-								}}
-							>
-								Sign Up
-							</Link>
-							<span className="text-(--col-text-muted) self-center text-xs">or</span>
-							<Link
-								to="/login"
-								className="button px-4 py-2 text-sm bg-transparent border border-(--col-border) hover:bg-(--col-bg-input) shadow-none transition-colors"
-								style={{
-									backgroundColor: "transparent",
-									boxShadow: "none",
-								}}
-							>
-								Log In
-							</Link>
-						</div>
+						<AuthActions />
 					</div>
 				)}
 			</div>
