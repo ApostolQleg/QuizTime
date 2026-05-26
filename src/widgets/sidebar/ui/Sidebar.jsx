@@ -43,46 +43,27 @@ export default function Sidebar() {
 						{!user && <AuthActions onClick={handleToggle} />}
 						{user && <UserPreview onClick={handleToggle} variant="sidebar" />}
 
-						<Link
-							to="/quizzes"
-							onClick={handleToggle}
-							className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors text-2xl"
-						>
+						<SidebarItem to="/quizzes" onClick={handleToggle}>
 							Quizzes
-						</Link>
+						</SidebarItem>
+
 						{user && (
 							<>
-								<Link
-									to={"/my-quizzes"}
-									onClick={handleToggle}
-									className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors text-2xl"
-								>
+								<SidebarItem to="/my-quizzes" onClick={handleToggle}>
 									My Quizzes
-								</Link>
-								<Link
-									to="/results"
-									onClick={handleToggle}
-									className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors text-2xl"
-								>
+								</SidebarItem>
+								<SidebarItem to="/results" onClick={handleToggle}>
 									Results
-								</Link>
-								<Link
-									to={"/settings"}
-									onClick={handleToggle}
-									className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors text-2xl"
-								>
+								</SidebarItem>
+								<SidebarItem to="/settings" onClick={handleToggle}>
 									Settings
-								</Link>
+								</SidebarItem>
 							</>
 						)}
 
-						<Link
-							to="/help"
-							onClick={handleToggle}
-							className="text-(--col-text-main) hover:text-(--col-text-accent) transition-colors text-2xl"
-						>
+						<SidebarItem to="/help" onClick={handleToggle}>
 							Help
-						</Link>
+						</SidebarItem>
 					</div>
 				</div>
 			</>
