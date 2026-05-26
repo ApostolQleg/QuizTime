@@ -5,16 +5,16 @@ import {
 	useAuthSessionState,
 	useAuthUserState,
 } from "@/features/auth/hooks/useAuth.js";
-import ModalChangePassword from "@/features/profile/components/ModalChangePassword.jsx";
-import ProfileForm from "@/features/profile/components/ProfileForm.jsx";
-import { QuizStatsCard } from "@/features/profile/components/StatsCard.jsx";
-import useProfilePageActions from "@/features/profile/hooks/useProfilePageActions.js";
+import ModalChangePassword from "@/features/user/components/ModalChangePassword.jsx";
+import ProfileForm from "@/features/user/components/ProfileForm.jsx";
+import { QuizStatsCard } from "@/features/user/components/StatsCard.jsx";
+import useProfilePageActions from "@/features/user/hooks/useProfilePageActions.js";
 import {
 	useProfilePageIdentityState,
 	useProfilePageModalState,
 	useProfilePageStatusState,
 	useProfilePageActions as useProfilePageStoreActions,
-} from "@/features/profile/stores/profilePageStore.js";
+} from "@/features/user/stores/profilePageStore.js";
 import Button from "@/shared/ui/Button.jsx";
 import Container from "@/shared/ui/Container.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";

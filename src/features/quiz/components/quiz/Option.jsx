@@ -1,7 +1,7 @@
 import {
 	useQuizSessionActions,
 	useQuizSessionOptionState,
-} from "@/features/quizzes/stores/quizSessionStore.js";
+} from "@/features/quiz/stores/quizSessionStore.js";
 import Radio from "@/shared/ui/Radio.jsx";
 
 const EMPTY_SELECTED = [];

@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Question from "@/features/quizzes/components/quiz/Question.jsx";
+import Question from "@/features/quiz/components/quiz/Question.jsx";
 import {
 	useQuizSessionActions,
 	useQuizSessionViewState,
-} from "@/features/quizzes/stores/quizSessionStore.js";
-import { getResultById } from "@/features/results/api/results.api.js";
+} from "@/features/quiz/stores/quizSessionStore.js";
+import { getResultById } from "@/features/result/api/results.api.js";
 import Button from "@/shared/ui/Button.jsx";
 import Container from "@/shared/ui/Container.jsx";
 

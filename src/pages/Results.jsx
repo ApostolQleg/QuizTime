@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
-import { getResults } from "@/features/results/api/results.api.js";
+import { getResults } from "@/features/result/api/results.api.js";
 import {
 	useResultsListActions,
 	useResultsListState,
-} from "@/features/results/stores/resultsListStore.js";
+} from "@/features/result/stores/resultsListStore.js";
 import { API_CONFIG } from "@/shared/config/config.js";
 import { useDebounce } from "@/shared/hooks/useDebounce.js";
 import { useSSE } from "@/shared/hooks/useSSE.js";

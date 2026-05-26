@@ -1,7 +1,7 @@
 import {
 	useQuizEditorActions,
 	useQuizEditorOptionState,
-} from "@/features/quizzes/stores/quizEditorStore.js";
+} from "@/features/quiz/stores/quizEditorStore.js";
 import Button from "@/shared/ui/Button.jsx";
 import Input from "@/shared/ui/Input.jsx";
 import Radio from "@/shared/ui/Radio.jsx";

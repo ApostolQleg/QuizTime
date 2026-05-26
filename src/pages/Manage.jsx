@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getQuizById, updateQuiz } from "@/features/quizzes/api/quizzes.api.js";
-import QuizForm from "@/features/quizzes/components/edit/QuizForm.jsx";
-import useQuizEditorValidation from "@/features/quizzes/hooks/useQuizEditorValidation.js";
+import { getQuizById, updateQuiz } from "@/features/quiz/api/quizzes.api.js";
+import QuizForm from "@/features/quiz/components/edit/QuizForm.jsx";
+import useQuizEditorValidation from "@/features/quiz/hooks/useQuizEditorValidation.js";
 import {
 	useQuizEditorActions,
 	useQuizEditorContentState,
-} from "@/features/quizzes/stores/quizEditorStore.js";
+} from "@/features/quiz/stores/quizEditorStore.js";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
 export default function Manage() {

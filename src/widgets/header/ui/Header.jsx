@@ -3,7 +3,7 @@ import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import logoImage from "@/shared/assets/logo-icon.png";
 import menuImage from "@/shared/assets/menu-icon.png";
 import Avatar from "@/shared/ui/Avatar.jsx";
-import AuthActions from "@/shared/ui/auth/AuthActions";
+import AuthActions from "@/shared/ui/auth/AuthActions.jsx";
 import { useSidebarActions, useSidebarState } from "@/widgets/sidebar/stores/SidebarStore.js";
 
 export default function Header() {

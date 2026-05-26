@@ -1,4 +1,4 @@
-import { useQuizSessionQuestionState } from "@/features/quizzes/stores/quizSessionStore.js";
+import { useQuizSessionQuestionState } from "@/features/quiz/stores/quizSessionStore.js";
 import Option from "./Option.jsx";
 
 export default function Question({ questionId, index }) {

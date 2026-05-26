@@ -1,10 +1,10 @@
-import Question from "@/features/quizzes/components/edit/QuestionEditor.jsx";
-import useQuizEditorValidation from "@/features/quizzes/hooks/useQuizEditorValidation.js";
+import Question from "@/features/quiz/components/edit/QuestionEditor.jsx";
+import useQuizEditorValidation from "@/features/quiz/hooks/useQuizEditorValidation.js";
 import {
 	useQuizEditorActions,
 	useQuizEditorContentState,
 	useQuizEditorMetaState,
-} from "@/features/quizzes/stores/quizEditorStore.js";
+} from "@/features/quiz/stores/quizEditorStore.js";
 import { QUIZ_CATEGORIES, QUIZ_CONSTRAINTS, QUIZ_TAGS } from "@/shared/config/config.js";
 import Button from "@/shared/ui/Button.jsx";
 import Container from "@/shared/ui/Container.jsx";

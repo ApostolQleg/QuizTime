@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { changePassword } from "@/features/profile/api/user.api.js";
+import { changePassword } from "@/features/user/api/user.api.js";
 import Button from "@/shared/ui/Button.jsx";
 import Input from "@/shared/ui/Input.jsx";
 import Modal from "@/shared/ui/Modal.jsx";

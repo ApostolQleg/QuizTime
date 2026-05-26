@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { startColorAnimation } from "@/features/profile/libs/colorAnimation.js";
-import { generator } from "@/features/profile/libs/generator.js";
+import { startColorAnimation } from "@/features/user/libs/colorAnimation.js";
+import { generator } from "@/features/user/libs/generator.js";
 import { COLOR_ANIMATION_CONFIG } from "@/shared/config/config.js";
 import Button from "@/shared/ui/Button.jsx";
 

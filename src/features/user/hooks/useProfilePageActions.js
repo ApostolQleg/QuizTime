@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
-import { deleteUser, updateUser, verifySession } from "@/features/profile/api/user.api.js";
-import { useProfilePageActions as useProfilePageStoreActions } from "@/features/profile/stores/profilePageStore.js";
+import { deleteUser, updateUser, verifySession } from "@/features/user/api/user.api.js";
+import { useProfilePageActions as useProfilePageStoreActions } from "@/features/user/stores/profilePageStore.js";
 
 export function useProfilePageActions({
 	navigate,

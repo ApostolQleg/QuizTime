@@ -5,12 +5,12 @@ import {
 	getQuizList,
 	invalidateQuizCache,
 	invalidateQuizListCache,
-} from "@/features/quizzes/api/quizzes.api.js";
-import ModalDescription from "@/features/quizzes/components/modals/ModalDescription.jsx";
+} from "@/features/quiz/api/quizzes.api.js";
+import ModalDescription from "@/features/quiz/components/modals/ModalDescription.jsx";
 import {
 	useQuizzesListActions,
 	useQuizzesListState,
-} from "@/features/quizzes/stores/quizzesListStore.js";
+} from "@/features/quiz/stores/quizzesListStore.js";
 import { API_CONFIG } from "@/shared/config/config.js";
 import { useDebounce } from "@/shared/hooks/useDebounce.js";
 import { useSSE } from "@/shared/hooks/useSSE.js";

@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import {
 	getQuizEditorState,
 	useQuizEditorActions,
-} from "@/features/quizzes/stores/quizEditorStore.js";
+} from "@/features/quiz/stores/quizEditorStore.js";
 
 export function useQuizEditorValidation() {
 	const { setErrors, setAlertInfo, closeAlert } = useQuizEditorActions();
