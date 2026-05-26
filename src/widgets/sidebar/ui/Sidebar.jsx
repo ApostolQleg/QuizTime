@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
 import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import logoImage from "@/shared/assets/logo-icon.png";
-import Avatar from "@/shared/ui/Avatar.jsx";
 import AuthActions from "@/shared/ui/auth/AuthActions.jsx";
+import UserPreview from "@/shared/ui/user/UserPreview.jsx";
 import { useSidebarActions, useSidebarState } from "../stores/SidebarStore.js";
 
 export default function Sidebar() {
 	const { user } = useAuthUserState();
-
 	const { isOpened } = useSidebarState();
 	const { setIsOpened } = useSidebarActions();
 
@@ -42,37 +41,7 @@ export default function Sidebar() {
 
 					<div className="flex flex-col gap-4 m-6">
 						{!user && <AuthActions onClick={handleToggle} />}
-
-						{user && (
-							<div className="flex items-center gap-4 sm:gap-6">
-								<Link
-									onClick={handleToggle}
-									to={`/user/${user._id}`}
-									className="flex flex-1 items-center gap-3 group hover:opacity-90 transition-all"
-									title="Go to Profile"
-								>
-									<div className="relative group-hover:scale-105 transition-transform duration-300">
-										<Avatar
-											src={user.avatarUrl}
-											name={user.nickname}
-											type={user.avatarType}
-											color={user.themeColor}
-											size="md"
-										/>
-									</div>
-									<div className="flex flex-col items-end leading-tight">
-										<span
-											className="font-bold max-w-50 truncate transition-colors duration-300 text-2xl"
-											style={{
-												color: user.themeColor || "var(--col-primary)",
-											}}
-										>
-											{user.nickname}
-										</span>
-									</div>
-								</Link>
-							</div>
-						)}
+						{user && <UserPreview onClick={handleToggle} variant="sidebar" />}
 
 						<Link
 							to="/quizzes"
