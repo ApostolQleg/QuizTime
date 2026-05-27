@@ -14,8 +14,8 @@ import { getUserProfile } from "@/features/user/api/user.api.js";
 import { API_CONFIG } from "@/shared/config/config.js";
 import { useSSE } from "@/shared/hooks/useSSE.js";
 import { getPaginationRange } from "@/shared/libs/pagination.js";
-import Avatar from "@/shared/ui/Avatar.jsx";
 import Container from "@/shared/ui/Container.jsx";
+import Avatar from "@/shared/ui/user/Avatar.jsx";
 import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
 
 const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_PUBLIC_PROFILE;

@@ -3,10 +3,10 @@ import { useState } from "react";
 import { linkGoogleAccount } from "@/features/auth/api/auth.api.js";
 import { useAuthActions, useAuthSessionState } from "@/features/auth/hooks/useAuth.js";
 import { QUIZ_CONSTRAINTS } from "@/shared/config/config.js";
-import Avatar from "@/shared/ui/Avatar.jsx";
 import Button from "@/shared/ui/Button.jsx";
 import Input from "@/shared/ui/Input.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
+import Avatar from "@/shared/ui/user/Avatar.jsx";
 import { getNicknameArray } from "../api/user.api.js";
 import ColorGenerator from "./ColorGenerator.jsx";
 

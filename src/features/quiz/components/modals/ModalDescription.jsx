@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import { deleteQuiz, getQuizById } from "@/features/quiz/api/quizzes.api.js";
-import Avatar from "@/shared/ui/Avatar.jsx";
 import Button from "@/shared/ui/Button.jsx";
 import Modal from "@/shared/ui/Modal.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
+import Avatar from "@/shared/ui/user/Avatar.jsx";
 
 export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSuccess }) {
 	const { user } = useAuthUserState();
