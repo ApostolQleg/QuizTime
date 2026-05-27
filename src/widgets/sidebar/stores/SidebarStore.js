@@ -8,7 +8,9 @@ const initialState = {
 const useSidebarStore = create((set) => ({
 	...initialState,
 	actions: {
-		setIsOpened: (isOpened) => set({ isOpened }),
+		open: () => set({ isOpened: true }),
+		close: () => set({ isOpened: false }),
+		toggle: () => set((state) => ({ isOpened: !state.isOpened })),
 	},
 }));
 

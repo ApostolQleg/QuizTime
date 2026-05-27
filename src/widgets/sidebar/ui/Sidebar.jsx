@@ -4,29 +4,26 @@ import logoImage from "@/shared/assets/logo-icon.png";
 import AuthActions from "@/shared/ui/auth/AuthActions.jsx";
 import UserPreview from "@/shared/ui/user/UserPreview.jsx";
 import { useSidebarActions, useSidebarState } from "../stores/SidebarStore.js";
+import SidebarItem from "./SidebarItem.jsx";
 
 export default function Sidebar() {
 	const { user } = useAuthUserState();
 	const { isOpened } = useSidebarState();
-	const { setIsOpened } = useSidebarActions();
-
-	const handleToggle = () => {
-		setIsOpened(!isOpened);
-	};
+	const { close } = useSidebarActions();
 
 	if (isOpened) {
 		return (
 			<>
 				<button
 					type="button"
-					onClick={handleToggle}
+					onClick={close}
 					className="fixed z-50 top-0 w-screen h-screen bg-[rgba(2,6,23,0.2)] backdrop-blur-xs"
 				></button>
 
 				<div className="fixed top-0 left-0 h-screen w-xs sm:w-sm bg-(--col-bg-card) p-4 flex flex-col gap-2 shadow-lg z-50">
 					<Link
 						to="/"
-						onClick={handleToggle}
+						onClick={close}
 						className="flex items-center gap-3 hover:opacity-80 transition-opacity group mt-2"
 					>
 						<img
@@ -40,28 +37,28 @@ export default function Sidebar() {
 					</Link>
 
 					<div className="flex flex-col gap-4 m-6">
-						{!user && <AuthActions onClick={handleToggle} />}
-						{user && <UserPreview onClick={handleToggle} variant="sidebar" />}
+						{!user && <AuthActions onClick={close} />}
+						{user && <UserPreview onClick={close} variant="sidebar" />}
 
-						<SidebarItem to="/quizzes" onClick={handleToggle}>
+						<SidebarItem to="/quizzes" onClick={close}>
 							Quizzes
 						</SidebarItem>
 
 						{user && (
 							<>
-								<SidebarItem to="/my-quizzes" onClick={handleToggle}>
+								<SidebarItem to="/my-quizzes" onClick={close}>
 									My Quizzes
 								</SidebarItem>
-								<SidebarItem to="/results" onClick={handleToggle}>
+								<SidebarItem to="/results" onClick={close}>
 									Results
 								</SidebarItem>
-								<SidebarItem to="/settings" onClick={handleToggle}>
+								<SidebarItem to="/settings" onClick={close}>
 									Settings
 								</SidebarItem>
 							</>
 						)}
 
-						<SidebarItem to="/help" onClick={handleToggle}>
+						<SidebarItem to="/help" onClick={close}>
 							Help
 						</SidebarItem>
 					</div>

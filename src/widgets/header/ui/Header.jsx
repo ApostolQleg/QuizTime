@@ -4,23 +4,18 @@ import logoImage from "@/shared/assets/logo-icon.png";
 import menuImage from "@/shared/assets/menu-icon.png";
 import AuthActions from "@/shared/ui/auth/AuthActions.jsx";
 import UserPreview from "@/shared/ui/user/UserPreview";
-import { useSidebarActions, useSidebarState } from "@/widgets/sidebar/stores/SidebarStore.js";
+import { useSidebarActions } from "@/widgets/sidebar/stores/SidebarStore.js";
 
 export default function Header() {
 	const { user } = useAuthUserState();
-	const { isOpened } = useSidebarState();
-	const { setIsOpened } = useSidebarActions();
-
-	const handleToggleSidebar = () => {
-		setIsOpened(!isOpened);
-	};
+	const { open } = useSidebarActions();
 
 	return (
 		<header className="mb-3 sticky top-0 z-40 flex flex-row items-center justify-between p-4 w-full shadow-2xl shadow-black/50 bg-(--col-bg-card) text-(--col-text-main) border-b border-(--col-border)">
 			<div className="flex flex-row gap-2">
 				<button
 					type="button"
-					onClick={handleToggleSidebar}
+					onClick={open}
 					className="flex items-center gap-3 hover:opacity-80 transition-opacity group"
 					aria-label="Toggle navigation menu"
 				>
@@ -51,7 +46,7 @@ export default function Header() {
 
 			<div className="text-base sm:text-lg font-medium">
 				{user ? (
-					<UserPreview variant="header"/>
+					<UserPreview variant="header" />
 				) : (
 					<div className="flex flex-col sm:flex-row items-center gap-3 text-sm">
 						<span className="text-(--col-text-muted) hidden lg:inline text-xs">
