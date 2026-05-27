@@ -46,7 +46,7 @@ export default function Header() {
 
 			<div className="text-base sm:text-lg font-medium">
 				{user ? (
-					<UserPreview variant="header" />
+					<UserPreview user={user} variant="header" />
 				) : (
 					<div className="flex flex-col sm:flex-row items-center gap-3 text-sm">
 						<span className="text-(--col-text-muted) hidden lg:inline text-xs">

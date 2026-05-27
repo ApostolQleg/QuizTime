@@ -38,7 +38,7 @@ export default function Sidebar() {
 
 					<div className="flex flex-col gap-4 m-6">
 						{!user && <AuthActions onClick={close} />}
-						{user && <UserPreview onClick={close} variant="sidebar" />}
+						{user && <UserPreview user={user} onClick={close} variant="sidebar" />}
 
 						<SidebarItem to="/quizzes" onClick={close}>
 							Quizzes
