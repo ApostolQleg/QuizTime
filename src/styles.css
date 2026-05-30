@@ -31,6 +31,12 @@
 		font-weight: normal;
 		font-style: normal;
 	}
+	@font-face {
+		font-family: "Balsamiq Paint";
+		src: url("./shared/assets/fonts/BalsamiqPaint-Regular.ttf") format("truetype");
+		font-weight: normal;
+		font-style: normal;
+	}
 
 	html {
 		@apply h-full bg-(--col-bg-card) text-(--col-text-main);
@@ -39,7 +45,10 @@
 
 	body {
 		@apply m-0 p-0 h-full bg-(--col-bg-main) text-(--col-text-main) selection:bg-(--col-fail) selection:text-(--col-text-main);
-		font-family: "Balsamiq Sans", sans-serif;
+		font-family: "Balsamiq Paint", sans-serif;
+		-webkit-font-smoothing: none;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeSpeed;
 	}
 }
 
