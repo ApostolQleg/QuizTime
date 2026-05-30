@@ -1,4 +1,4 @@
-import systemIcon from "@/shared/assets/logo-icon.png";
+import systemIcon from "@/shared/assets/logo.png";
 
 import { TOAST_CONFIG } from "@/shared/config/config.js";
 import { useToastActions } from "./toastStore.js";

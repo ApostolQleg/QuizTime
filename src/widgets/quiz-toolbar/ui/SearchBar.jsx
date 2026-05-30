@@ -1,4 +1,4 @@
-import searchIcon from "@/shared/assets/search-icon.png";
+import searchIcon from "@/shared/assets/search.png";
 import Input from "@/shared/ui/Input.jsx";
 
 export default function SearchBar({ searchTerm, onSearchChange, placeholder = "Search..." }) {

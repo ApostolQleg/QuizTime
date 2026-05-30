@@ -1,4 +1,4 @@
-import teamlogo from "@/shared/assets/piska_team_blue.png";
+import teamlogo from "@/shared/assets/piska_team.png";
 
 export default function Footer() {
 	return (

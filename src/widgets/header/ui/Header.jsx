@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
-import logoImage from "@/shared/assets/logo-icon.png";
-import menuImage from "@/shared/assets/menu-icon.png";
+import logoImage from "@/shared/assets/logo.png";
+import menuImage from "@/shared/assets/menu.png";
 import AuthActions from "@/shared/ui/auth/AuthActions.jsx";
 import UserPreview from "@/shared/ui/user/UserPreview";
 import { useSidebarActions } from "@/widgets/sidebar/stores/SidebarStore.js";
