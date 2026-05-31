@@ -25,6 +25,18 @@
 		--col-success-glow: rgba(5, 150, 105, 0.3);
 		--col-success-bg: rgba(5, 150, 105, 0.1);
 	}
+	@font-face {
+		font-family: "Balsamiq Sans";
+		src: url("./shared/assets/fonts/BalsamiqSans-Regular.ttf") format("truetype");
+		font-weight: normal;
+		font-style: normal;
+	}
+	@font-face {
+		font-family: "Balsamiq Paint";
+		src: url("./shared/assets/fonts/BalsamiqPaint-Regular.ttf") format("truetype");
+		font-weight: normal;
+		font-style: normal;
+	}
 
 	html {
 		@apply h-full bg-(--col-bg-card) text-(--col-text-main);
@@ -32,22 +44,30 @@
 	}
 
 	body {
-		@apply m-0 p-0 box-border font-[Balsamiq_Sans] h-full selection:bg-(--col-fail) selection:text-(--col-text-main);
-		background-color: var(--col-bg-main);
-		color: var(--col-text-main);
+		@apply m-0 p-0 h-full bg-(--col-bg-main) text-(--col-text-main) selection:bg-(--col-fail) selection:text-(--col-text-main);
+		font-family: "Balsamiq Paint", sans-serif;
+		-webkit-font-smoothing: none;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeSpeed;
 	}
 }
 
 @layer utilities {
-	.button {
-		@apply text-xs lg:text-base transition-all duration-300 flex items-center justify-center px-6 py-3 w-max font-semibold tracking-wide rounded-xl shadow-lg;
-		background-color: var(--col-fail);
+	.button,
+	.passive-button {
+		@apply text-lg transition-all duration-300 flex items-center justify-center px-4 py-3 w-max font-semibold tracking-wide rounded-xl shadow-none;
+		@apply border border-(--col-border);
+		background-color: transparent;
 		color: var(--col-text-main);
-		box-shadow: 0 10px 15px -3px var(--col-fail-glow);
 		cursor: pointer;
 	}
-	.button:hover {
-		background-color: var(--col-fail-hover);
+	.button {
+		background-color: var(--col-fail);
+	}
+	.button:hover,
+	.passive-button:hover {
+		background-color: var(--col-fail);
+		box-shadow: 0 4px 10px -2px var(--col-fail-hover);
 	}
 
 	.quiz-card {
@@ -204,4 +224,17 @@
 
 .animate-shrink {
 	animation: shrink var(--toast-lifetime, 5000ms) linear forwards;
+}
+@keyframes introFade {
+	from {
+		opacity: 0;
+		transform: translateY(15px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+.animate-welcome {
+	animation: introFade 2s cubic-bezier(0.2, 1, 0.3, 1) forwards;
 }

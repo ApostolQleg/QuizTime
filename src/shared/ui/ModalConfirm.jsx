@@ -1,5 +1,5 @@
-import Button from "./Button";
-import Modal from "./Modal";
+import Button from "./Button.jsx";
+import Modal from "./Modal.jsx";
 
 export default function ModalConfirm({
 	isOpen,

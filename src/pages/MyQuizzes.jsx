@@ -5,12 +5,12 @@ import {
 	getQuizList,
 	invalidateQuizCache,
 	invalidateQuizListCache,
-} from "@/features/quizzes/api/quizzes.api.js";
-import ModalDescription from "@/features/quizzes/components/modals/ModalDescription.jsx";
+} from "@/features/quiz/api/quizzes.api.js";
+import ModalDescription from "@/features/quiz/components/modals/ModalDescription.jsx";
 import {
 	useQuizzesListActions,
 	useQuizzesListState,
-} from "@/features/quizzes/stores/quizzesListStore.js";
+} from "@/features/quiz/stores/quizzesListStore.js";
 import { API_CONFIG } from "@/shared/config/config.js";
 import { useDebounce } from "@/shared/hooks/useDebounce.js";
 import { useSSE } from "@/shared/hooks/useSSE.js";
@@ -122,6 +122,7 @@ export default function MyQuizzes() {
 					setItems([newQuiz, ...items]);
 				}
 				invalidateQuizListCache();
+				invalidateQuizListCache();
 			},
 			[items, searchQuery, sortOption, setItems, user?._id],
 		),
@@ -140,6 +141,7 @@ export default function MyQuizzes() {
 					}
 					invalidateQuizCache(updatedQuiz._id);
 					invalidateQuizListCache();
+					invalidateQuizListCache();
 				}
 			},
 			[items, setItems, selectedQuiz, user?._id],
@@ -155,6 +157,7 @@ export default function MyQuizzes() {
 					setSelectedQuiz(null);
 				}
 				invalidateQuizCache(deletedQuizId);
+				invalidateQuizListCache();
 				invalidateQuizListCache();
 			},
 			[removeItem, selectedQuiz],
