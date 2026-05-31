@@ -1,7 +1,7 @@
 import Button from "@/shared/ui/Button";
 import ModalConfirm from "@/shared/ui/ModalConfirm";
 import ModalChangePassword from "../ModalChangePassword";
-import ProfileForm from "../ProfileForm";
+import ProfileForm from "./ProfileForm";
 
 export default function ProfileSettings({
 	user,
