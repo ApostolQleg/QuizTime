@@ -7,7 +7,6 @@ import {
 } from "@/features/auth/hooks/useAuth.js";
 import ModalChangePassword from "@/features/user/components/ModalChangePassword.jsx";
 import ProfileForm from "@/features/user/components/ProfileForm.jsx";
-import { QuizStatsCard } from "@/features/user/components/StatsCard.jsx";
 import useProfilePageActions from "@/features/user/hooks/useProfilePageActions.js";
 import {
 	useProfilePageIdentityState,
@@ -58,10 +57,6 @@ export default function Settings() {
 			<h1 className="text-3xl font-bold text-(--col-text-accent) drop-shadow-md">
 				My Profile
 			</h1>
-
-			<div className="w-full max-w-lg">
-				<QuizStatsCard passedCount={user?.stats?.quizzesPassedCount ?? 0} />
-			</div>
 
 			<ProfileForm
 				key={user._id + (user.themeColor || "")}
