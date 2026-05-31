@@ -122,6 +122,7 @@ export default function MyQuizzes() {
 					setItems([newQuiz, ...items]);
 				}
 				invalidateQuizListCache();
+				invalidateQuizListCache();
 			},
 			[items, searchQuery, sortOption, setItems, user?._id],
 		),
@@ -140,6 +141,7 @@ export default function MyQuizzes() {
 					}
 					invalidateQuizCache(updatedQuiz._id);
 					invalidateQuizListCache();
+					invalidateQuizListCache();
 				}
 			},
 			[items, setItems, selectedQuiz, user?._id],
@@ -155,6 +157,7 @@ export default function MyQuizzes() {
 					setSelectedQuiz(null);
 				}
 				invalidateQuizCache(deletedQuizId);
+				invalidateQuizListCache();
 				invalidateQuizListCache();
 			},
 			[removeItem, selectedQuiz],

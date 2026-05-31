@@ -98,6 +98,7 @@ export default function Quizzes() {
 					setItems([newQuiz, ...items]);
 				}
 				invalidateQuizListCache();
+				invalidateQuizListCache();
 			},
 			[items, searchQuery, sortOption, setItems],
 		),
@@ -113,6 +114,7 @@ export default function Quizzes() {
 				}
 				invalidateQuizCache(updatedQuiz._id);
 				invalidateQuizListCache();
+				invalidateQuizListCache();
 			},
 			[items, setItems, selectedQuiz],
 		),
@@ -127,6 +129,7 @@ export default function Quizzes() {
 					setSelectedQuiz(null);
 				}
 				invalidateQuizCache(deletedQuizId);
+				invalidateQuizListCache();
 				invalidateQuizListCache();
 			},
 			[removeItem, selectedQuiz],
