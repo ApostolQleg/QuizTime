@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import {
 	getQuizList,
 	invalidateQuizCache,
@@ -17,6 +18,7 @@ import { getPaginationRange } from "@/shared/libs/pagination.js";
 import Container from "@/shared/ui/Container.jsx";
 import Avatar from "@/shared/ui/user/Avatar.jsx";
 import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
+import settingsIcon from "@/shared/assets/settings.png";
 
 const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_PUBLIC_PROFILE;
 
@@ -27,6 +29,8 @@ export default function Profile() {
 	const [user, setUser] = useState(null);
 	const [isProfileLoading, setIsProfileLoading] = useState(true);
 	const [selectedQuiz, setSelectedQuiz] = useState(null);
+
+	const currentUser = useAuthUserState();
 
 	const { items, loading: loadingQuizzes, page, hasMore } = useQuizzesListState();
 	const { setItems, appendItems, clear, setLoading, setPage, setHasMore } =
@@ -148,9 +152,22 @@ export default function Profile() {
 	if (isProfileLoading) return <Container className="text-center">Loading...</Container>;
 	if (!user) return null;
 
+	const isOwnProfile = currentUser?._id === user._id;
+
 	return (
 		<Container className="flex flex-col items-center gap-8 py-8">
-			<div className="flex flex-col items-center justify-center p-8 bg-(--col-bg-card) border border-(--col-border) rounded-3xl w-full max-w-4xl shadow-lg gap-5">
+			<div className="flex flex-col items-center justify-center p-8 bg-(--col-bg-card) border border-(--col-border) rounded-3xl w-full max-w-4xl shadow-lg gap-5 relative">
+				{isOwnProfile && (
+					<button
+						type="button"
+						onClick={() => navigate("/settings")}
+						aria-label="Settings"
+						className="absolute top-5 right-5 p-1 bg-transparent hover:opacity-80 transition-opacity cursor-pointer border-none flex items-center justify-center"
+					>
+						<img src={settingsIcon} alt="" className="w-10 h-10 object-contain" />
+					</button>
+				)}
+
 				<Avatar
 					src={user.avatarUrl}
 					type={user.avatarType}
@@ -163,15 +180,18 @@ export default function Profile() {
 					<h1 className="text-3xl sm:text-4xl font-extrabold text-(--col-text-main) tracking-tight">
 						{user.nickname}
 					</h1>
-					<span className="text-(--col-text-muted) font-medium px-4 py-1 bg-(--col-bg-input) rounded-full text-sm mt-2">
-						Quiz Creator
-					</span>
+
+					<div className="flex items-center gap-3 mt-2">
+						<span className="text-(--col-text-muted) font-medium px-4 py-1 bg-(--col-bg-input) rounded-full text-sm">
+							Quiz Creator
+						</span>
+					</div>
 				</div>
 			</div>
 
 			<div className="w-full max-w-7xl flex flex-col gap-6 mt-4">
 				<h2 className="text-2xl font-bold text-(--col-text-main) px-2 sm:px-4">
-					Quizzes by {user.nickname}
+					{isOwnProfile ? "My Quizzes" : `Quizzes by ${user.nickname}`}
 				</h2>
 
 				<Grid
@@ -183,7 +203,11 @@ export default function Profile() {
 					showAddButton={false}
 					isResultsPage={false}
 					onCardClick={setSelectedQuiz}
-					emptyMessage={`${user.nickname} hasn't published any quizzes yet.`}
+					emptyMessage={
+						isOwnProfile
+							? "You haven't published any quizzes yet."
+							: `${user.nickname} hasn't published any quizzes yet.`
+					}
 				/>
 			</div>
 
