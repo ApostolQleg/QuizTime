@@ -31,7 +31,7 @@ export default function Profile() {
 	const [isProfileLoading, setIsProfileLoading] = useState(true);
 	const [selectedQuiz, setSelectedQuiz] = useState(null);
 
-	const currentUser = useAuthUserState();
+	const { user: authUser } = useAuthUserState();
 
 	const { items, loading: loadingQuizzes, page, hasMore } = useQuizzesListState();
 	const { setItems, appendItems, clear, setLoading, setPage, setHasMore } =
@@ -153,7 +153,8 @@ export default function Profile() {
 	if (isProfileLoading) return <Container className="text-center">Loading...</Container>;
 	if (!user) return null;
 
-	const isOwnProfile = currentUser?._id === user._id;
+	const authUserId = authUser?._id;
+	const isOwnProfile = authUserId && authUserId === userId;
 
 	return (
 		<Container className="flex flex-col items-center gap-8 py-8">
