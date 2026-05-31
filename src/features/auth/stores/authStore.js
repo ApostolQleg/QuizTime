@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
-import { verifySession } from "@/features/profile/api/user.api.js";
+import { verifySession } from "@/features/user/api/user.api.js";
 import { isTokenExpired } from "@/shared/libs/jwt.js";
 
 let sessionCheckPromise = null;

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import azIcon from "@/shared/assets/sort-AZ-icon.png";
-import newoldIcon from "@/shared/assets/sort-newold-icon.png";
-import oldnewIcon from "@/shared/assets/sort-oldnew-icon.png";
-import zaIcon from "@/shared/assets/sort-ZA-icon.png";
+import azIcon from "@/shared/assets/sort-AZ.png";
+import newoldIcon from "@/shared/assets/sort-newold.png";
+import oldnewIcon from "@/shared/assets/sort-oldnew.png";
+import zaIcon from "@/shared/assets/sort-ZA.png";
 import { SORT_OPTIONS as BASE_SORT_OPTIONS } from "@/shared/config/config.js";
 
 const SORT_ICONS = {

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import QuizCard from "@/entities/quiz/ui/QuizCard.jsx";
-import addIcon from "@/shared/assets/plus-icon.png";
+import addIcon from "@/shared/assets/plus.png";
 import Container from "@/shared/ui/Container.jsx";
 
 export default function Grid({

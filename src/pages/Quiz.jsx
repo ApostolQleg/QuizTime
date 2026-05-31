@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
-import { getQuizById } from "@/features/quizzes/api/quizzes.api.js";
-import Question from "@/features/quizzes/components/quiz/Question.jsx";
+import { getQuizById } from "@/features/quiz/api/quizzes.api.js";
+import Question from "@/features/quiz/components/quiz/Question.jsx";
 import {
 	useQuizSessionActions,
 	useQuizSessionViewState,
-} from "@/features/quizzes/stores/quizSessionStore.js";
-import { saveResult } from "@/features/results/api/results.api.js";
+} from "@/features/quiz/stores/quizSessionStore.js";
+import { saveResult } from "@/features/result/api/results.api.js";
 import Button from "@/shared/ui/Button.jsx";
 import Container from "@/shared/ui/Container.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
