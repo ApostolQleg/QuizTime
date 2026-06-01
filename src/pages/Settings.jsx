@@ -10,9 +10,7 @@ import ProfileSettings from "@/features/user/components/settings/ProfileSettings
 import useProfilePageActions from "@/features/user/hooks/useProfilePageActions.js";
 import {
 	useProfilePageIdentityState,
-	useProfilePageModalState,
 	useProfilePageStatusState,
-	useProfilePageActions as useProfilePageStoreActions,
 } from "@/features/user/stores/profilePageStore.js";
 import Container from "@/shared/ui/Container.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
@@ -26,10 +24,6 @@ export default function Settings() {
 	const { token, isSessionChecking } = useAuthSessionState();
 	const { user } = useProfilePageIdentityState();
 	const { isLoading, isSaving } = useProfilePageStatusState();
-
-	const { isDeleteModalOpen, isPasswordModalOpen } = useProfilePageModalState();
-	const { openDeleteModal, closeDeleteModal, openPasswordModal, closePasswordModal } =
-		useProfilePageStoreActions();
 
 	const { addToast } = useToastActions();
 	const { saveProfile, removeAccount, fetchProfile } = useProfilePageActions({
@@ -90,13 +84,7 @@ export default function Settings() {
 							user={user}
 							saveProfile={saveProfile}
 							isSaving={isSaving}
-							openPasswordModal={openPasswordModal}
-							openDeleteModal={openDeleteModal}
-							isDeleteModalOpen={isDeleteModalOpen}
-							closeDeleteModal={closeDeleteModal}
 							removeAccount={removeAccount}
-							isPasswordModalOpen={isPasswordModalOpen}
-							closePasswordModal={closePasswordModal}
 						/>
 					)}
 
