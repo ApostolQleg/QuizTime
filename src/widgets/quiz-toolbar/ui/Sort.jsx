@@ -34,7 +34,7 @@ export default function Sort({ currentSort, onSortChange }) {
 	}, []);
 
 	return (
-		<div className="relative h-full flex items-center" ref={dropdownRef}>
+		<div className="relative h-full flex items-center ml-2" ref={dropdownRef}>
 			<button
 				onClick={() => setIsOpen(!isOpen)}
 				className="h-full p-3 border-none rounded-xl transition-all flex items-center justify-center cursor-pointer shadow-md"

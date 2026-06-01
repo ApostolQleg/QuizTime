@@ -93,24 +93,35 @@ export default function Results() {
 		</div>
 	);
 
+	if (loading && page === 1) {
+		return (
+			<div className="flex-1 flex items-center justify-center text-(--col-text-main) text-xl font-bold animate-pulse">
+				Loading results...
+			</div>
+		);
+	}
+
 	return (
-		<div className="flex flex-col items-center justify-between gap-3">
+		<>
 			<ToolBar
 				search={{ value: searchQuery, onChange: setSearchQuery }}
 				sort={{ value: sortOption, onChange: setSortOption }}
 				placeholder="Search for results..."
 			/>
-			<Grid
-				items={items}
-				loading={loading && page === 1}
-				hasMore={hasMore}
-				onLoadMore={handleLoadMore}
-				isLoadingMore={loading && page > 1}
-				showAddButton={false}
-				isResultsPage={true}
-				onCardClick={(item) => navigate(`/result/${item.quizId}/${item._id}`)}
-				emptyMessage={emptyMessage}
-			/>
-		</div>
+
+			<div className="mt-5">
+				<Grid
+					items={items}
+					loading={loading && page === 1}
+					hasMore={hasMore}
+					onLoadMore={handleLoadMore}
+					isLoadingMore={loading && page > 1}
+					showAddButton={false}
+					isResultsPage={true}
+					onCardClick={(item) => navigate(`/result/${item.quizId}/${item._id}`)}
+					emptyMessage={emptyMessage}
+				/>
+			</div>
+		</>
 	);
 }

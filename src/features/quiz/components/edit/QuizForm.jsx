@@ -7,7 +7,6 @@ import {
 } from "@/features/quiz/stores/quizEditorStore.js";
 import { QUIZ_CATEGORIES, QUIZ_CONSTRAINTS, QUIZ_TAGS } from "@/shared/config/config.js";
 import Button from "@/shared/ui/Button.jsx";
-import Container from "@/shared/ui/Container.jsx";
 import Input from "@/shared/ui/Input.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import Textarea from "@/shared/ui/Textarea.jsx";
@@ -20,11 +19,11 @@ export default function QuizForm({ onSave, isEditing = false }) {
 	const { closeAlert } = useQuizEditorValidation();
 
 	if (loading && isEditing) {
-		return <Container className="text-center text-(--col-text-main)">Loading...</Container>;
+		return <div className="text-center text-(--col-text-main)">Loading...</div>;
 	}
 
 	return (
-		<Container className={"flex flex-col gap-4 flex-1"}>
+		<div className="flex flex-col gap-4 flex-1">
 			<div className="w-full flex flex-col gap-4 p-4 rounded-xl border bg-(--col-bg-input-darker) border-(--col-border)">
 				<div className="flex flex-row items-center gap-3 w-full">
 					<Input
@@ -154,6 +153,6 @@ export default function QuizForm({ onSave, isEditing = false }) {
 				isAlert={true}
 				isDanger={true}
 			/>
-		</Container>
+		</div>
 	);
 }

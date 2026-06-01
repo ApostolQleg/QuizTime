@@ -7,7 +7,6 @@ import {
 } from "@/features/quiz/stores/quizSessionStore.js";
 import { getResultById } from "@/features/result/api/results.api.js";
 import Button from "@/shared/ui/Button.jsx";
-import Container from "@/shared/ui/Container.jsx";
 
 export default function Result() {
 	const navigate = useNavigate();
@@ -51,13 +50,13 @@ export default function Result() {
 	}, [isGuestMode, quizData, resultData, quizId, navigate, setLoading]);
 
 	if (loading) {
-		return <Container className="text-center text-(--col-text-main)">Loading...</Container>;
+		return <div className="text-center text-(--col-text-main)">Loading...</div>;
 	}
 
 	if (!quizData || !resultData) return null;
 
 	return (
-		<Container className="flex flex-col items-center gap-6">
+		<div className="flex flex-col items-center gap-6">
 			<div className="text-3xl font-bold text-center drop-shadow-md pb-2 border-b w-full text-(--col-text-accent) border-(--col-border)">
 				{quizData.title}
 			</div>
@@ -86,6 +85,6 @@ export default function Result() {
 			>
 				{hasRealResult ? "Back to Results" : "Back to Home"}
 			</Button>
-		</Container>
+		</div>
 	);
 }

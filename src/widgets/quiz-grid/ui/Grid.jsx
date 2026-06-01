@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import QuizCard from "@/entities/quiz/ui/QuizCard.jsx";
 import addIcon from "@/shared/assets/plus.png";
-import Container from "@/shared/ui/Container.jsx";
 
 export default function Grid({
 	items,
@@ -14,14 +13,10 @@ export default function Grid({
 	isResultsPage = false,
 	onCardClick,
 }) {
-	if (loading) {
-		return <Container className="text-center text-(--col-text-main)">Loading...</Container>;
-	}
-
 	return (
-		<Container>
+		<>
 			{(items.length > 0 || showAddButton) && (
-				<div className="grid gap-6 lg:gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 items-center justify-items-center mb-8">
+				<div className="w-full grid gap-6 lg:gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 items-center justify-items-center mb-8">
 					{showAddButton && (
 						<Link to="/create" id={`quiz-add`} className="quiz-card group">
 							<img
@@ -61,6 +56,6 @@ export default function Grid({
 					</button>
 				</div>
 			)}
-		</Container>
+		</>
 	);
 }

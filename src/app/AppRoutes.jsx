@@ -5,6 +5,7 @@ import { useAuthActions, useAuthSessionState } from "@/features/auth/hooks/useAu
 import useAutoReload from "@/shared/hooks/useAutoReload.js";
 import CleanLayout from "./layouts/CleanLayout.jsx";
 import MainLayout from "./layouts/MainLayout.jsx";
+import WorkspaceLayout from "./layouts/WorkspaceLayout.jsx";
 
 const Create = lazy(() => import("@/pages/Create.jsx"));
 const Manage = lazy(() => import("@/pages/Manage.jsx"));
@@ -73,18 +74,20 @@ export default function AppRoutes() {
 					</Route>
 
 					<Route element={<MainLayout />}>
-						<Route path="/quizzes" element={<Quizzes />} />
-						<Route path="/quiz/:quizId" element={<Quiz />} />
-						<Route path="/result/:quizId/:resultIdParam" element={<Result />} />
-						<Route path="/help" element={<Help />} />
-						<Route path="/user/:userId" element={<Profile />} />
+						<Route element={<WorkspaceLayout />}>
+							<Route path="/quizzes" element={<Quizzes />} />
+							<Route path="/quiz/:quizId" element={<Quiz />} />
+							<Route path="/result/:quizId/:resultIdParam" element={<Result />} />
+							<Route path="/help" element={<Help />} />
+							<Route path="/user/:userId" element={<Profile />} />
 
-						<Route element={<ProtectedRoute token={token} />}>
-							<Route path="/my-quizzes" element={<MyQuizzes />} />
-							<Route path="/results" element={<Results />} />
-							<Route path="/create" element={<Create />} />
-							<Route path="/manage/:quizId" element={<Manage />} />
-							<Route path="/settings" element={<Settings />} />
+							<Route element={<ProtectedRoute token={token} />}>
+								<Route path="/my-quizzes" element={<MyQuizzes />} />
+								<Route path="/results" element={<Results />} />
+								<Route path="/create" element={<Create />} />
+								<Route path="/manage/:quizId" element={<Manage />} />
+								<Route path="/settings" element={<Settings />} />
+							</Route>
 						</Route>
 					</Route>
 				</Routes>

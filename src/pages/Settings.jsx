@@ -12,7 +12,6 @@ import {
 	useProfilePageIdentityState,
 	useProfilePageStatusState,
 } from "@/features/user/stores/profilePageStore.js";
-import Container from "@/shared/ui/Container.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
 export default function Settings() {
@@ -43,7 +42,7 @@ export default function Settings() {
 		}
 	}, [fetchProfile, isSessionChecking, token]);
 
-	if (isLoading) return <Container className="text-center">Loading...</Container>;
+	if (isLoading) return <div className="text-center">Loading...</div>;
 	if (!user) return null;
 
 	const tabs = [
@@ -53,7 +52,7 @@ export default function Settings() {
 	];
 
 	return (
-		<Container className="flex flex-col gap-8 max-w-6xl w-full">
+		<div className="flex flex-col gap-8 max-w-6xl w-full">
 			<h1 className="text-3xl font-bold text-(--col-text-accent) drop-shadow-md">Settings</h1>
 
 			<div className="w-full flex flex-col md:flex-row gap-8 items-start">
@@ -95,6 +94,6 @@ export default function Settings() {
 					{(activeTab === "all" || activeTab === "other") && <OtherSettings />}
 				</main>
 			</div>
-		</Container>
+		</div>
 	);
 }

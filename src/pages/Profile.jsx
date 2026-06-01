@@ -17,7 +17,6 @@ import settingsIcon from "@/shared/assets/settings.png";
 import { API_CONFIG } from "@/shared/config/config.js";
 import { useSSE } from "@/shared/hooks/useSSE.js";
 import { getPaginationRange } from "@/shared/libs/pagination.js";
-import Container from "@/shared/ui/Container.jsx";
 import Avatar from "@/shared/ui/user/Avatar.jsx";
 import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
 
@@ -150,14 +149,14 @@ export default function Profile() {
 		),
 	);
 
-	if (isProfileLoading) return <Container className="text-center">Loading...</Container>;
+	if (isProfileLoading) return <div className="text-center">Loading...</div>;
 	if (!user) return null;
 
 	const authUserId = authUser?._id;
 	const isOwnProfile = authUserId && authUserId === userId;
 
 	return (
-		<Container className="flex flex-col items-center gap-8 py-8">
+		<div className="flex flex-col items-center gap-8 py-8">
 			<div className="flex flex-col items-center justify-center p-8 bg-(--col-bg-card) border border-(--col-border) rounded-3xl w-full max-w-4xl shadow-lg gap-5 relative">
 				{isOwnProfile && (
 					<button
@@ -223,6 +222,6 @@ export default function Profile() {
 					isOpen={!!selectedQuiz}
 				/>
 			)}
-		</Container>
+		</div>
 	);
 }

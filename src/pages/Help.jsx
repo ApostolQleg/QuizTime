@@ -1,8 +1,6 @@
-import Container from "@/shared/ui/Container.jsx";
-
 export default function Help() {
 	return (
-		<Container className="container-card gap-6 text-left">
+		<div className="container-card gap-6 text-left">
 			<div className="quiz-title border-none pb-0">How to use QuizTime</div>
 			<div className="space-y-8 text-(--col-text-main)">
 				<section>
@@ -104,6 +102,6 @@ export default function Help() {
 					</ul>
 				</section>
 			</div>
-		</Container>
+		</div>
 	);
 }

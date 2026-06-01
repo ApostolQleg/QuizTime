@@ -6,7 +6,7 @@ export default function ToolBar({ search, sort, placeholder = "Search..." }) {
 	const { value: sortOption = "newest", onChange: onSortChange } = sort || {};
 
 	return (
-		<div className="flex flex-row items-stretch justify-center gap-3 w-full max-w-xs sm:max-w-xl lg:max-w-2xl">
+		<div className="w-full flex flex-row items-center shrink-0">
 			<SearchBar
 				searchTerm={searchQuery}
 				onSearchChange={onSearchChange}

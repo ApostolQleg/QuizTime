@@ -166,14 +166,23 @@ export default function MyQuizzes() {
 
 	if (!user) return null;
 
+	if (loading && page === 1) {
+		return (
+			<div className="flex-1 flex items-center justify-center text-(--col-text-main) text-xl font-bold animate-pulse">
+				Loading quizzes...
+			</div>
+		);
+	}
+
 	return (
 		<>
-			<div className="flex flex-col items-center justify-between gap-3">
-				<ToolBar
-					search={{ value: searchQuery, onChange: setSearchQuery }}
-					sort={{ value: sortOption, onChange: setSortOption }}
-					placeholder="Search for quizzes..."
-				/>
+			<ToolBar
+				search={{ value: searchQuery, onChange: setSearchQuery }}
+				sort={{ value: sortOption, onChange: setSortOption }}
+				placeholder="Search for quizzes..."
+			/>
+
+			<div className="mt-5">
 				<Grid
 					items={items}
 					loading={loading && page === 1}

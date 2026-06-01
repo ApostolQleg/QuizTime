@@ -9,7 +9,6 @@ import {
 } from "@/features/quiz/stores/quizSessionStore.js";
 import { saveResult } from "@/features/result/api/results.api.js";
 import Button from "@/shared/ui/Button.jsx";
-import Container from "@/shared/ui/Container.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
@@ -113,13 +112,13 @@ export default function Quiz() {
 	};
 
 	if (loading) {
-		return <Container className="text-center text-(--col-text-main)">Loading...</Container>;
+		return <div className="text-center text-(--col-text-main) w-full py-10">Loading...</div>;
 	}
 
 	if (!quizData) return null;
 
 	return (
-		<Container className="flex flex-col items-center gap-6">
+		<div className="flex flex-col items-center gap-6 w-full">
 			<div className="text-3xl font-bold text-center drop-shadow-md pb-2 border-b w-full text-(--col-text-accent) border-(--col-border)">
 				{quizData.title}
 			</div>
@@ -137,11 +136,12 @@ export default function Quiz() {
 			<ModalConfirm
 				isOpen={alertInfo.isOpen}
 				onClose={closeAlert}
+				onConfirm={closeAlert}
 				title="Ooops!"
 				message={alertInfo.message}
 				isAlert={true}
 				isDanger={true}
 			/>
-		</Container>
+		</div>
 	);
 }
