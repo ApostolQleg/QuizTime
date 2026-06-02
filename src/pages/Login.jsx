@@ -22,7 +22,7 @@ export default function Login() {
 	const navigate = useNavigate();
 	const { login } = useAuthActions();
 
-	const handleChange = (e) => {
+	const updateFormField = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 		setError("");
 	};
@@ -99,7 +99,7 @@ export default function Login() {
 								name="email"
 								placeholder="Your email"
 								value={formData.email}
-								onChange={handleChange}
+								onChange={updateFormField}
 								required
 								disabled={isLoading}
 							/>
@@ -118,7 +118,7 @@ export default function Login() {
 								name="password"
 								placeholder="Your password"
 								value={formData.password}
-								onChange={handleChange}
+								onChange={updateFormField}
 								required
 								disabled={isLoading}
 							/>
@@ -136,7 +136,7 @@ export default function Login() {
 
 				<div className="hidden md:flex flex-col items-center px-8">
 					<div className="flex-1 w-px bg-(--col-border)"></div>
-					<div className="flex items-center justify-center shrink-0 w-11 h-11 bg-(--col-bg-card) text-(--col-text-muted) font-bold text-sm rounded-full border border-(--col-border) my-4">
+					<div className="flex items-center justify-center shrink-0 size-11 bg-(--col-bg-card) text-(--col-text-muted) font-bold text-sm rounded-full border border-(--col-border) my-4">
 						OR
 					</div>
 					<div className="flex-1 w-px bg-(--col-border)"></div>
@@ -144,7 +144,7 @@ export default function Login() {
 
 				<div className="flex md:hidden items-center w-full px-4 my-2">
 					<div className="flex-1 h-px bg-(--col-border)"></div>
-					<div className="flex items-center justify-center shrink-0 w-11 h-11 bg-(--col-bg-card) text-(--col-text-muted) font-bold text-sm rounded-full border border-(--col-border) mx-4">
+					<div className="flex items-center justify-center shrink-0 size-11 bg-(--col-bg-card) text-(--col-text-muted) font-bold text-sm rounded-full border border-(--col-border) mx-4">
 						OR
 					</div>
 					<div className="flex-1 h-px bg-(--col-border)"></div>

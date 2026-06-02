@@ -163,7 +163,7 @@ export default function ProfileSettings({ user, saveProfile, isSaving, removeAcc
 							}`}
 						>
 							{!hasGoogleAccount && avatarType !== "google" && (
-								<span className="w-1.5 h-1.5 rounded-full bg-(--col-primary) animate-pulse shrink-0"></span>
+								<span className="size-1.5 rounded-full bg-(--col-primary) animate-pulse shrink-0"></span>
 							)}
 							Google Photo
 						</button>
@@ -188,7 +188,7 @@ export default function ProfileSettings({ user, saveProfile, isSaving, removeAcc
 									{user.avatarUrl ? (
 										<Avatar src={user.avatarUrl} name={nickname} size="lg" />
 									) : (
-										<div className="w-20 h-20 rounded-full bg-(--col-bg-input) border border-(--col-border) flex items-center justify-center text-xl font-bold text-(--col-text-main)">
+										<div className="size-20 rounded-full bg-(--col-bg-input) border border-(--col-border) flex items-center justify-center text-xl font-bold text-(--col-text-main)">
 											{nickname?.charAt(0).toUpperCase() || "?"}
 										</div>
 									)}
@@ -198,7 +198,7 @@ export default function ProfileSettings({ user, saveProfile, isSaving, removeAcc
 								</div>
 							) : (
 								<div className="flex flex-col items-center justify-center p-5 border border-(--col-border) rounded-xl bg-(--col-bg-input-darker)/40 gap-3 text-center">
-									<div className="w-12 h-12 rounded-full bg-(--col-bg-input) border border-(--col-border) flex items-center justify-center font-bold opacity-60 text-lg text-(--col-text-main)">
+									<div className="size-12 rounded-full bg-(--col-bg-input) border border-(--col-border) flex items-center justify-center font-bold opacity-60 text-lg text-(--col-text-main)">
 										G
 									</div>
 									<div className="flex flex-col gap-1">
@@ -230,7 +230,7 @@ export default function ProfileSettings({ user, saveProfile, isSaving, removeAcc
 							<div className="flex flex-col items-center justify-center p-5 border border-(--col-border) rounded-xl bg-(--col-bg-input-darker)/40 gap-3 text-center">
 								<div
 									style={{ backgroundColor: generatedColor }}
-									className="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold text-(--col-text-main) border border-(--col-border) transition-transform duration-300 transform hover:scale-105"
+									className="size-20 rounded-full flex items-center justify-center text-2xl font-bold text-(--col-text-main) border border-(--col-border) transition-transform duration-300 transform hover:scale-105"
 								>
 									{nickname?.charAt(0).toUpperCase() || "?"}
 								</div>

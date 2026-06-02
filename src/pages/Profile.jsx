@@ -165,7 +165,7 @@ export default function Profile() {
 						aria-label="Settings"
 						className="absolute top-5 right-5 p-1 bg-transparent hover:opacity-80 transition-opacity cursor-pointer border-none flex items-center justify-center"
 					>
-						<img src={settingsIcon} alt="" className="w-10 h-10 object-contain" />
+						<img src={settingsIcon} alt="" className="size-10 object-contain" />
 					</button>
 				)}
 
@@ -200,12 +200,14 @@ export default function Profile() {
 
 				<Grid
 					items={items}
-					loading={loadingQuizzes && page === 1}
-					hasMore={hasMore}
+					view={{
+						loading: loadingQuizzes && page === 1,
+						hasMore,
+						isLoadingMore: loadingQuizzes && page > 1,
+						showAddButton: false,
+						isResultsPage: false,
+					}}
 					onLoadMore={handleLoadMore}
-					isLoadingMore={loadingQuizzes && page > 1}
-					showAddButton={false}
-					isResultsPage={false}
 					onCardClick={setSelectedQuiz}
 					emptyMessage={
 						isOwnProfile

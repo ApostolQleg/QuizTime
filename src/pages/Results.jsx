@@ -112,12 +112,14 @@ export default function Results() {
 			<div className="mt-5">
 				<Grid
 					items={items}
-					loading={loading && page === 1}
-					hasMore={hasMore}
+					view={{
+						loading: loading && page === 1,
+						hasMore,
+						isLoadingMore: loading && page > 1,
+						showAddButton: false,
+						isResultsPage: true,
+					}}
 					onLoadMore={handleLoadMore}
-					isLoadingMore={loading && page > 1}
-					showAddButton={false}
-					isResultsPage={true}
 					onCardClick={(item) => navigate(`/result/${item.quizId}/${item._id}`)}
 					emptyMessage={emptyMessage}
 				/>

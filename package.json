@@ -9,7 +9,8 @@
 		"lint": "biome lint",
 		"preview": "vite preview",
 		"test": "vitest run --passWithNoTests",
-		"test:watch": "vitest --passWithNoTests"
+		"test:watch": "vitest --passWithNoTests",
+		"doctor": "bunx react-doctor@latest"
 	},
 	"author": "ApostolQleg, dimpennn",
 	"license": "MIT",

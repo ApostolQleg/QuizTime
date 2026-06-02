@@ -15,7 +15,7 @@ export default function Radio({
 				name={name}
 				checked={checked}
 				onChange={onChange}
-				className="accent-(--col-primary) w-4 h-4 cursor-pointer"
+				className="accent-(--col-primary) size-4 cursor-pointer"
 				{...props}
 			/>
 			<label htmlFor={id} className="cursor-pointer text-(--col-text-main)">

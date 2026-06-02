@@ -14,6 +14,12 @@ import {
 } from "@/features/user/stores/profilePageStore.js";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
+const TABS = [
+	{ id: "all", label: "All" },
+	{ id: "profile", label: "Profile" },
+	{ id: "other", label: "Other" },
+];
+
 export default function Settings() {
 	const navigate = useNavigate();
 	const [activeTab, setActiveTab] = useState("all");
@@ -45,19 +51,13 @@ export default function Settings() {
 	if (isLoading) return <div className="text-center">Loading...</div>;
 	if (!user) return null;
 
-	const tabs = [
-		{ id: "all", label: "All" },
-		{ id: "profile", label: "Profile" },
-		{ id: "other", label: "Other" },
-	];
-
 	return (
 		<div className="flex flex-col gap-8 max-w-6xl w-full">
 			<h1 className="text-3xl font-bold text-(--col-text-accent) drop-shadow-md">Settings</h1>
 
 			<div className="w-full flex flex-col md:flex-row gap-8 items-start">
 				<aside className="w-full md:w-64 flex flex-row md:flex-col gap-2 p-1 bg-(--col-bg-input-darker) border border-(--col-border) rounded-2xl overflow-x-auto md:overflow-visible shrink-0">
-					{tabs.map((tab) => {
+					{TABS.map((tab) => {
 						const isActive = activeTab === tab.id;
 						return (
 							<button

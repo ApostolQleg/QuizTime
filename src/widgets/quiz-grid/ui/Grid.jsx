@@ -2,17 +2,9 @@ import { Link } from "react-router-dom";
 import QuizCard from "@/entities/quiz/ui/QuizCard.jsx";
 import addIcon from "@/shared/assets/plus.png";
 
-export default function Grid({
-	items,
-	loading,
-	hasMore,
-	onLoadMore,
-	isLoadingMore,
-	emptyMessage,
-	showAddButton = false,
-	isResultsPage = false,
-	onCardClick,
-}) {
+export default function Grid({ items, onLoadMore, emptyMessage, view, onCardClick }) {
+	const { loading, hasMore, isLoadingMore, showAddButton = false, isResultsPage = false } = view;
+
 	return (
 		<>
 			{(items.length > 0 || showAddButton) && (

@@ -17,7 +17,7 @@ export default function Welcome() {
 				</button>
 			</div>
 			<model-viewer
-				className="h-100 w-100"
+				className="size-100"
 				src="/3DModels/QuizTime_logo.glb"
 				alt="A descriptive 3D model text for accessibility"
 				auto-rotate

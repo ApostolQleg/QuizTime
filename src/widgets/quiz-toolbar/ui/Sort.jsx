@@ -44,7 +44,7 @@ export default function Sort({ currentSort, onSortChange }) {
 				<img
 					src={currentOption.icon}
 					alt={currentOption.label}
-					className="w-6 h-6 object-contain opacity-90 transition-transform hover:scale-110"
+					className="size-6 object-contain opacity-90 transition-transform hover:scale-110"
 				/>
 			</button>
 
@@ -67,12 +67,12 @@ export default function Sort({ currentSort, onSortChange }) {
 							<img
 								src={option.icon}
 								alt={option.label}
-								className="w-5 h-5 object-contain opacity-80"
+								className="size-5 object-contain opacity-80"
 							/>
 							<span className="font-bold text-sm flex-1">{option.label}</span>
 
 							{currentSort === option.id && (
-								<div className="w-2 h-2 rounded-full bg-(--col-primary) shadow-[0_0_8px_var(--col-primary-glow)]"></div>
+								<div className="size-2 rounded-full bg-(--col-primary) shadow-[0_0_8px_var(--col-primary-glow)]"></div>
 							)}
 						</button>
 					))}

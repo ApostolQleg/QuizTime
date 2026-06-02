@@ -155,12 +155,14 @@ export default function Quizzes() {
 			<div className="mt-5">
 				<Grid
 					items={items}
-					loading={loading && page === 1}
-					hasMore={hasMore}
+					view={{
+						loading: loading && page === 1,
+						hasMore,
+						isLoadingMore: loading && page > 1,
+						showAddButton: !!user && searchQuery === "",
+						isResultsPage: false,
+					}}
 					onLoadMore={handleLoadMore}
-					isLoadingMore={loading && page > 1}
-					showAddButton={!!user && searchQuery === ""}
-					isResultsPage={false}
 					onCardClick={setSelectedQuiz}
 					emptyMessage={
 						debouncedQuery

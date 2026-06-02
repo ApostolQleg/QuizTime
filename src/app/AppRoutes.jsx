@@ -29,16 +29,22 @@ const ProtectedRoute = ({ token, children }) => {
 	return children ? children : <Outlet />;
 };
 
+function SmoothScrollToTop() {
+	useEffect(() => {
+		window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+	}, []);
+
+	return null;
+}
+
 export default function AppRoutes() {
 	const { token } = useAuthSessionState();
 	const { checkSession } = useAuthActions();
 	const location = useLocation();
 
 	useEffect(() => {
-		if (location.pathname) {
-			window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-		}
-	}, [location.pathname]);
+		window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+	}, []);
 
 	useEffect(() => {
 		if (!token) return;
@@ -60,6 +66,7 @@ export default function AppRoutes() {
 
 	return (
 		<div className="flex-1 flex flex-col w-full">
+			<SmoothScrollToTop key={location.key} />
 			<Suspense
 				fallback={
 					<div className="flex-1 flex items-center justify-center text-(--col-text-main)"></div>

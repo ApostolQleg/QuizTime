@@ -12,8 +12,10 @@ export default function ColorGenerator({ onColorSelect, initialColor }) {
 	const stopAnimationRef = useRef(null);
 
 	useEffect(() => {
+		const stopAnimation = stopAnimationRef.current;
+
 		return () => {
-			if (stopAnimationRef.current) stopAnimationRef.current();
+			if (stopAnimation) stopAnimation();
 		};
 	}, []);
 
@@ -40,9 +42,9 @@ export default function ColorGenerator({ onColorSelect, initialColor }) {
 
 	return (
 		<div className="flex flex-col items-center gap-4 p-6 rounded-xl border border-(--col-border) bg-(--col-bg-input-darker)">
-			<div className="relative w-20 h-20 flex items-center justify-center">
+			<div className="relative size-20 flex items-center justify-center">
 				<div
-					className="w-20 h-20 rounded-full shadow-lg transition-transform duration-75 will-change-transform"
+					className="size-20 rounded-full shadow-lg transition-transform duration-75 will-change-transform"
 					style={{
 						backgroundColor: displayColor,
 						transform: `scale(${scale})`,
