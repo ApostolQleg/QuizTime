@@ -7,7 +7,12 @@ import {
 } from "@/features/auth/hooks/useAuth.js";
 import OtherSettings from "@/features/user/components/settings/OtherSettings.jsx";
 import ProfileSettings from "@/features/user/components/settings/ProfileSettings.jsx";
+import { useProfileFormAutosave } from "@/features/user/hooks/useProfileFormAutosave.js";
 import useProfilePageActions from "@/features/user/hooks/useProfilePageActions.js";
+import {
+	useProfileFormActions,
+	useProfileFormStatusState,
+} from "@/features/user/stores/profileFormStore.js";
 import {
 	useProfilePageIdentityState,
 	useProfilePageStatusState,
@@ -28,10 +33,12 @@ export default function Settings() {
 	const { logout, login } = useAuthActions();
 	const { token, isSessionChecking } = useAuthSessionState();
 	const { user } = useProfilePageIdentityState();
-	const { isLoading, isSaving } = useProfilePageStatusState();
+	const { isLoading } = useProfilePageStatusState();
+	const { initialize } = useProfileFormActions();
+	const { status } = useProfileFormStatusState();
 
 	const { addToast } = useToastActions();
-	const { saveProfile, removeAccount, fetchProfile } = useProfilePageActions({
+	const { fetchProfile } = useProfilePageActions({
 		navigate,
 		login,
 		logout,
@@ -40,6 +47,7 @@ export default function Settings() {
 		isSessionChecking,
 		addToast,
 	});
+	const { flushPendingSave } = useProfileFormAutosave();
 
 	useEffect(() => {
 		if (isSessionChecking || !token) return;
@@ -47,6 +55,20 @@ export default function Settings() {
 			fetchProfile();
 		}
 	}, [fetchProfile, isSessionChecking, token]);
+
+	useEffect(() => {
+		if (user) {
+			initialize(user);
+		}
+	}, [initialize, user]);
+
+	useEffect(() => {
+		return () => {
+			if (status === "dirty") {
+				void flushPendingSave({ force: true });
+			}
+		};
+	}, [flushPendingSave, status]);
 
 	if (isLoading) return <div className="text-center">Loading...</div>;
 	if (!user) return null;
@@ -78,14 +100,7 @@ export default function Settings() {
 				</aside>
 
 				<main className="flex-1 w-full bg-(--col-bg-input-darker)/30 border border-(--col-border)/50 rounded-2xl p-6 md:p-8 min-h-100">
-					{(activeTab === "all" || activeTab === "profile") && (
-						<ProfileSettings
-							user={user}
-							saveProfile={saveProfile}
-							isSaving={isSaving}
-							removeAccount={removeAccount}
-						/>
-					)}
+					{(activeTab === "all" || activeTab === "profile") && <ProfileSettings />}
 
 					{activeTab === "all" && (
 						<hr className="w-full border-(--col-border) opacity-50 my-10" />

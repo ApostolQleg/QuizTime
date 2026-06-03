@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useRef } from "react";
 import { deleteUser, updateUser, verifySession } from "@/features/user/api/user.api.js";
+import {
+	getProfileDraftSignature,
+	useProfileFormStore,
+} from "@/features/user/stores/profileFormStore.js";
 import { useProfilePageActions as useProfilePageStoreActions } from "@/features/user/stores/profilePageStore.js";
+
+let profilePageActionsRef = null;
 
 export function useProfilePageActions({
 	navigate,
@@ -73,13 +79,25 @@ export function useProfilePageActions({
 	const saveProfile = useCallback(
 		async (formData) => {
 			setIsSaving(true);
+			const requestSignature = getProfileDraftSignature(formData);
+
 			try {
 				const updated = await updateUser(formData);
-				setUser(updated.user);
-				login(updated.user, token);
-				addToast("Your profile has been updated successfully.");
+				const latestSignature = getProfileDraftSignature(
+					useProfileFormStore.getState().draftState,
+				);
+
+				if (latestSignature === requestSignature) {
+					const profileActions = useProfileFormStore.getState().actions;
+					profileActions.commit(updated.user);
+					setUser(updated.user);
+					login(updated.user, token);
+				}
+
+				return updated.user;
 			} catch (error) {
 				addToast(error.message || "Failed to update profile.");
+				throw error;
 			} finally {
 				setIsSaving(false);
 			}
@@ -100,11 +118,28 @@ export function useProfilePageActions({
 		}
 	}, [addToast, closeDeleteModal, logout, navigate]);
 
+	profilePageActionsRef = {
+		saveProfile,
+		removeAccount,
+		fetchProfile,
+	};
+
+	useEffect(
+		() => () => {
+			if (profilePageActionsRef?.saveProfile === saveProfile) {
+				profilePageActionsRef = null;
+			}
+		},
+		[saveProfile],
+	);
+
 	return {
 		saveProfile,
 		removeAccount,
 		fetchProfile,
 	};
 }
+
+export const getProfilePageActions = () => profilePageActionsRef;
 
 export default useProfilePageActions;
