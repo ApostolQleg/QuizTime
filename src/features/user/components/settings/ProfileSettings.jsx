@@ -1,7 +1,7 @@
-import SaveStatusIndicator from "./SaveStatusIndicator.jsx";
 import AvatarSetting from "./avatar/AvatarSetting.jsx";
 import DangerZoneSetting from "./danger-zone/DangerZoneSetting.jsx";
 import NicknameSetting from "./nickname/NicknameSetting.jsx";
+import SaveStatusIndicator from "./SaveStatusIndicator.jsx";
 import SessionSetting from "./session/SessionSetting.jsx";
 import ThemeColorSetting from "./theme-color/ThemeColorSetting.jsx";
 

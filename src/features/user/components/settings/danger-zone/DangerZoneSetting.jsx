@@ -1,8 +1,8 @@
 import ModalChangePassword from "@/features/user/components/ModalChangePassword.jsx";
 import { getProfilePageActions } from "@/features/user/hooks/useProfilePageActions.js";
 import {
-	useProfilePageActions as useProfilePageStoreActions,
 	useProfilePageModalState,
+	useProfilePageActions as useProfilePageStoreActions,
 } from "@/features/user/stores/profilePageStore.js";
 import Button from "@/shared/ui/Button.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";

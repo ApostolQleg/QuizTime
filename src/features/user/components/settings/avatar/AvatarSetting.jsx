@@ -9,8 +9,8 @@ import {
 	useProfileFormActions,
 	useProfileFormDraftState,
 } from "@/features/user/stores/profileFormStore.js";
-import Avatar from "@/shared/ui/user/Avatar.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
+import Avatar from "@/shared/ui/user/Avatar.jsx";
 
 export default function AvatarSetting() {
 	const draftState = useProfileFormDraftState();
