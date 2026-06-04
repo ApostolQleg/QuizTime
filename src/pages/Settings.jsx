@@ -17,13 +17,10 @@ import {
 	useProfilePageIdentityState,
 	useProfilePageStatusState,
 } from "@/features/user/stores/profilePageStore.js";
+import { PROFILE_SETTINGS_CONFIG } from "@/shared/config/config.js";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
-const TABS = [
-	{ id: "all", label: "All" },
-	{ id: "profile", label: "Profile" },
-	{ id: "other", label: "Other" },
-];
+const TABS = PROFILE_SETTINGS_CONFIG.page.tabs;
 
 export default function Settings() {
 	const navigate = useNavigate();
@@ -76,12 +73,15 @@ export default function Settings() {
 		};
 	}, [flushPendingSave]);
 
-	if (isLoading) return <div className="text-center">Loading...</div>;
+	if (isLoading)
+		return <div className="text-center">{PROFILE_SETTINGS_CONFIG.page.loadingLabel}</div>;
 	if (!user) return null;
 
 	return (
 		<div className="flex flex-col gap-8 max-w-6xl w-full">
-			<h1 className="text-3xl font-bold text-(--col-text-accent) drop-shadow-md">Settings</h1>
+			<h1 className="text-3xl font-bold text-(--col-text-accent) drop-shadow-md">
+				{PROFILE_SETTINGS_CONFIG.page.title}
+			</h1>
 
 			<div className="w-full flex flex-col md:flex-row gap-8 items-start">
 				<aside className="w-full md:w-64 flex flex-row md:flex-col gap-2 p-1 bg-(--col-bg-input-darker) border border-(--col-border) rounded-2xl overflow-x-auto md:overflow-visible shrink-0">

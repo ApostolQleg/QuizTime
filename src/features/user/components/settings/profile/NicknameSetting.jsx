@@ -4,6 +4,11 @@ import {
 	useProfileFormActions,
 	useProfileFormDraftState,
 } from "@/features/user/stores/profileFormStore.js";
+import {
+	PROFILE_CONFIG,
+	PROFILE_SETTINGS_CONFIG,
+	QUIZ_CONSTRAINTS,
+} from "@/shared/config/config.js";
 import Button from "@/shared/ui/Button.jsx";
 import Input from "@/shared/ui/Input.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
@@ -26,10 +31,10 @@ export default function NicknameSetting() {
 
 			for (const nickname of nicknames) {
 				updateField("nickname", nickname);
-				await sleep(70);
+				await sleep(PROFILE_CONFIG.NICKNAME_ROLL_DELAY_MS);
 			}
 
-			addToast("Nickname generated.");
+			addToast(PROFILE_SETTINGS_CONFIG.nickname.successToast);
 		} catch (error) {
 			console.error("Failed to get nicknames", error);
 		} finally {
@@ -44,10 +49,10 @@ export default function NicknameSetting() {
 					htmlFor="profile-nickname"
 					className="text-sm font-bold text-(--col-text-muted)"
 				>
-					Nickname
+					{PROFILE_SETTINGS_CONFIG.nickname.label}
 				</label>
 				<span className="text-xs text-(--col-text-muted)/80">
-					Set your public name or roll a random one.
+					{PROFILE_SETTINGS_CONFIG.nickname.helpText}
 				</span>
 			</div>
 
@@ -57,9 +62,9 @@ export default function NicknameSetting() {
 					className="flex-1"
 					value={draftState?.nickname ?? ""}
 					onChange={(event) => updateField("nickname", event.target.value)}
-					placeholder="Enter your nickname"
-					minLength={3}
-					maxLength={20}
+					placeholder={PROFILE_SETTINGS_CONFIG.nickname.placeholder}
+					minLength={QUIZ_CONSTRAINTS.NICKNAME_MIN_LENGTH}
+					maxLength={QUIZ_CONSTRAINTS.NICKNAME_MAX_LENGTH}
 					required
 					disabled={isRolling}
 				/>
@@ -69,7 +74,9 @@ export default function NicknameSetting() {
 					disabled={isRolling}
 					className="px-4 py-2 bg-(--col-bg-input) border border-(--col-border) hover:bg-(--col-border) text-(--col-text-main) shadow-none text-sm"
 				>
-					{isRolling ? "Rolling..." : "Random"}
+					{isRolling
+						? PROFILE_SETTINGS_CONFIG.nickname.randomButtonLabel.rolling
+						: PROFILE_SETTINGS_CONFIG.nickname.randomButtonLabel.idle}
 				</Button>
 			</div>
 		</section>

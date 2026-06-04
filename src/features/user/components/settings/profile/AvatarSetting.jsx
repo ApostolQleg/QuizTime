@@ -9,6 +9,7 @@ import {
 	useProfileFormActions,
 	useProfileFormDraftState,
 } from "@/features/user/stores/profileFormStore.js";
+import { PROFILE_CONFIG, PROFILE_SETTINGS_CONFIG } from "@/shared/config/config.js";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 import Avatar from "@/shared/ui/user/Avatar.jsx";
 
@@ -23,7 +24,7 @@ export default function AvatarSetting() {
 	const hasGoogleAccount = !!user?.googleId;
 	const avatarType = draftState?.avatarType ?? "generated";
 	const nickname = draftState?.nickname ?? "";
-	const themeColor = draftState?.themeColor ?? "#4f46e5";
+	const themeColor = draftState?.themeColor ?? PROFILE_CONFIG.DEFAULT_THEME_COLOR;
 
 	const handleGoogleLinkSuccess = async (credentialResponse) => {
 		try {
@@ -40,10 +41,10 @@ export default function AvatarSetting() {
 		<section className="flex flex-col gap-4 p-5 border border-(--col-border) bg-(--col-bg-input-darker)/20 rounded-2xl">
 			<div className="flex flex-col gap-1">
 				<span className="text-sm font-bold text-(--col-text-muted)">
-					Avatar Customization
+					{PROFILE_SETTINGS_CONFIG.avatar.label}
 				</span>
 				<span className="text-xs text-(--col-text-muted)/80">
-					Choose how your profile picture looks to other users.
+					{PROFILE_SETTINGS_CONFIG.avatar.helpText}
 				</span>
 			</div>
 
@@ -60,7 +61,7 @@ export default function AvatarSetting() {
 					{!hasGoogleAccount && avatarType !== "google" && (
 						<span className="size-1.5 rounded-full bg-(--col-primary) animate-pulse shrink-0" />
 					)}
-					Google Photo
+					{PROFILE_SETTINGS_CONFIG.avatar.options.google}
 				</button>
 				<button
 					type="button"
@@ -71,7 +72,7 @@ export default function AvatarSetting() {
 							: "bg-transparent border-transparent text-(--col-text-muted) hover:text-(--col-text-main)"
 					}`}
 				>
-					Pure Color
+					{PROFILE_SETTINGS_CONFIG.avatar.options.generated}
 				</button>
 			</div>
 
@@ -83,11 +84,12 @@ export default function AvatarSetting() {
 								<Avatar src={user.avatarUrl} name={nickname} size="lg" />
 							) : (
 								<div className="size-20 rounded-full bg-(--col-bg-input) border border-(--col-border) flex items-center justify-center text-xl font-bold text-(--col-text-main)">
-									{nickname?.charAt(0).toUpperCase() || "?"}
+									{nickname?.charAt(0).toUpperCase() ||
+										PROFILE_CONFIG.AVATAR_FALLBACK_INITIAL}
 								</div>
 							)}
 							<p className="text-xs text-(--col-text-muted)">
-								Active: synchronization with Google Profile Photo
+								{PROFILE_SETTINGS_CONFIG.avatar.google.connectedLabel}
 							</p>
 						</div>
 					) : (
@@ -97,10 +99,10 @@ export default function AvatarSetting() {
 							</div>
 							<div className="flex flex-col gap-1">
 								<p className="text-sm font-bold text-(--col-text-main)">
-									Connect Google Account
+									{PROFILE_SETTINGS_CONFIG.avatar.google.disconnectedTitle}
 								</p>
 								<p className="text-xs text-(--col-text-muted) max-w-xs mx-auto">
-									Link your account to import your official Google photo.
+									{PROFILE_SETTINGS_CONFIG.avatar.google.disconnectedText}
 								</p>
 							</div>
 							<div className="w-full flex justify-center">
@@ -110,7 +112,7 @@ export default function AvatarSetting() {
 									theme="filled_blue"
 									shape="pill"
 									size="medium"
-									text="continue_with"
+									text={PROFILE_SETTINGS_CONFIG.avatar.google.connectButtonText}
 								/>
 							</div>
 						</div>
@@ -120,11 +122,9 @@ export default function AvatarSetting() {
 						<div
 							style={{ backgroundColor: themeColor }}
 							className="size-20 rounded-full flex items-center justify-center text-2xl font-bold text-(--col-text-main) border border-(--col-border) transition-transform duration-300 transform hover:scale-105"
-						>
-							{nickname?.charAt(0).toUpperCase() || "?"}
-						</div>
+						/>
 						<p className="text-xs text-(--col-text-muted)">
-							Active: styling using your Profile Theme Color
+							{PROFILE_SETTINGS_CONFIG.avatar.generated.activeLabel}
 						</p>
 					</div>
 				)}

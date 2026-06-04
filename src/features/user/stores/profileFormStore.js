@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
-import { QUIZ_CONSTRAINTS } from "@/shared/config/config.js";
+import { QUIZ_CONSTRAINTS, PROFILE_CONFIG } from "@/shared/config/config.js";
 
-const DEFAULT_THEME_COLOR = "#4f46e5";
+const DEFAULT_THEME_COLOR = PROFILE_CONFIG.DEFAULT_THEME_COLOR;
 const MUTABLE_FIELDS = ["nickname", "avatarType", "themeColor"];
 
 const cloneProfileState = (user) => {

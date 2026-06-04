@@ -1,23 +1,7 @@
 import { useProfileFormStatusState } from "@/features/user/stores/profileFormStore.js";
+import { PROFILE_CONFIG } from "@/shared/config/config.js";
 
-const STATUS_META = {
-	saved: {
-		label: "Saved",
-		className: "border-(--col-border) bg-(--col-bg-input-darker)/80 text-(--col-text-main)",
-	},
-	dirty: {
-		label: "Unsaved changes...",
-		className: "border-amber-400/30 bg-amber-400/10 text-amber-200",
-	},
-	saving: {
-		label: "Saving...",
-		className: "border-sky-400/30 bg-sky-400/10 text-sky-200",
-	},
-	invalid: {
-		label: "Invalid Name",
-		className: "border-(--col-fail)/30 bg-(--col-fail-bg) text-(--col-fail)",
-	},
-};
+const STATUS_META = PROFILE_CONFIG.SAVE_STATUS_META;
 
 export default function SaveStatusIndicator() {
 	const { status } = useProfileFormStatusState();
