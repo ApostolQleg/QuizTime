@@ -8,7 +8,7 @@ import {
 	validateProfileDraft,
 } from "@/features/user/stores/profileFormStore.js";
 
-const SAVE_DELAY_MS = 5000;
+const SAVE_DELAY_MS = 1000;
 
 export function useProfileFormAutosave() {
 	const profilePageActions = getProfilePageActions();

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	useAuthActions,
@@ -62,13 +62,19 @@ export default function Settings() {
 		}
 	}, [initialize, user]);
 
+	const statusRef = useRef(status);
+
+	useEffect(() => {
+		statusRef.current = status;
+	}, [status]);
+
 	useEffect(() => {
 		return () => {
-			if (status === "dirty") {
+			if (statusRef.current === "dirty") {
 				void flushPendingSave({ force: true });
 			}
 		};
-	}, [flushPendingSave, status]);
+	}, [flushPendingSave]);
 
 	if (isLoading) return <div className="text-center">Loading...</div>;
 	if (!user) return null;
