@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	useAuthActions,
@@ -47,10 +47,8 @@ export default function Settings() {
 	const { flushPendingSave } = useProfileFormAutosave();
 
 	useEffect(() => {
-		if (isSessionChecking || !token) return;
-		if (typeof fetchProfile === "function") {
-			fetchProfile();
-		}
+		if (isSessionChecking || !token || typeof fetchProfile !== "function") return;
+		fetchProfile();
 	}, [fetchProfile, isSessionChecking, token]);
 
 	useEffect(() => {
@@ -59,19 +57,13 @@ export default function Settings() {
 		}
 	}, [initialize, user]);
 
-	const statusRef = useRef(status);
-
-	useEffect(() => {
-		statusRef.current = status;
-	}, [status]);
-
 	useEffect(() => {
 		return () => {
-			if (statusRef.current === "dirty") {
+			if (status === "dirty") {
 				void flushPendingSave({ force: true });
 			}
 		};
-	}, [flushPendingSave]);
+	}, [flushPendingSave, status]);
 
 	if (isLoading)
 		return <div className="text-center">{PROFILE_SETTINGS_CONFIG.page.loadingLabel}</div>;

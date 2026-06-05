@@ -1,57 +1,78 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { changePassword } from "@/features/user/api/user.api.js";
 import Button from "@/shared/ui/Button.jsx";
 import Input from "@/shared/ui/Input.jsx";
 import Modal from "@/shared/ui/Modal.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
-export default function ModalChangePassword({ isOpen, onClose }) {
-	const [currentPassword, setCurrentPassword] = useState("");
-	const [newPassword, setNewPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
+const initialState = {
+	currentPassword: "",
+	newPassword: "",
+	confirmPassword: "",
+	isLoading: false,
+	error: "",
+};
 
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState("");
+function reducer(state, action) {
+	switch (action.type) {
+		case "setField":
+			return { ...state, [action.field]: action.value, error: "" };
+		case "setLoading":
+			return { ...state, isLoading: action.value };
+		case "setError":
+			return { ...state, error: action.value };
+		case "reset":
+			return initialState;
+		default:
+			return state;
+	}
+}
+
+export default function ModalChangePassword({ isOpen, onClose }) {
+	const [state, dispatch] = useReducer(reducer, initialState);
 
 	const { addToast } = useToastActions();
 
 	const handleClose = () => {
-		setCurrentPassword("");
-		setNewPassword("");
-		setConfirmPassword("");
-		setError("");
+		dispatch({ type: "reset" });
 		onClose();
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setError("");
+		dispatch({ type: "setError", value: "" });
 
-		if (newPassword.length < 6) {
-			return setError("New password must be at least 6 characters");
+		if (state.newPassword.length < 6) {
+			return dispatch({
+				type: "setError",
+				value: "New password must be at least 6 characters",
+			});
 		}
-		if (newPassword !== confirmPassword) {
-			return setError("New passwords do not match");
+		if (state.newPassword !== state.confirmPassword) {
+			return dispatch({ type: "setError", value: "New passwords do not match" });
 		}
 
-		setIsLoading(true);
+		dispatch({ type: "setLoading", value: true });
 		try {
-			await changePassword({ currentPassword, newPassword });
+			await changePassword({
+				currentPassword: state.currentPassword,
+				newPassword: state.newPassword,
+			});
 			addToast("Your password has been changed successfully.");
 			handleClose();
 		} catch (err) {
-			setError(err.message || "Failed to change password");
+			dispatch({ type: "setError", value: err.message || "Failed to change password" });
 		} finally {
-			setIsLoading(false);
+			dispatch({ type: "setLoading", value: false });
 		}
 	};
 
 	return (
 		<Modal isOpen={isOpen} onClose={handleClose} title="Change Password">
 			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
-				{error && (
+				{state.error && (
 					<div className="text-(--col-fail) text-sm bg-(--col-bg-input) p-2 rounded border border-(--col-fail)">
-						{error}
+						{state.error}
 					</div>
 				)}
 
@@ -65,8 +86,14 @@ export default function ModalChangePassword({ isOpen, onClose }) {
 					<Input
 						id="current-password"
 						type="password"
-						value={currentPassword}
-						onChange={(e) => setCurrentPassword(e.target.value)}
+						value={state.currentPassword}
+						onChange={(e) =>
+							dispatch({
+								type: "setField",
+								field: "currentPassword",
+								value: e.target.value,
+							})
+						}
 						required
 					/>
 				</div>
@@ -81,8 +108,14 @@ export default function ModalChangePassword({ isOpen, onClose }) {
 					<Input
 						id="new-password"
 						type="password"
-						value={newPassword}
-						onChange={(e) => setNewPassword(e.target.value)}
+						value={state.newPassword}
+						onChange={(e) =>
+							dispatch({
+								type: "setField",
+								field: "newPassword",
+								value: e.target.value,
+							})
+						}
 						required
 						minLength={6}
 					/>
@@ -98,8 +131,14 @@ export default function ModalChangePassword({ isOpen, onClose }) {
 					<Input
 						id="confirm-new-password"
 						type="password"
-						value={confirmPassword}
-						onChange={(e) => setConfirmPassword(e.target.value)}
+						value={state.confirmPassword}
+						onChange={(e) =>
+							dispatch({
+								type: "setField",
+								field: "confirmPassword",
+								value: e.target.value,
+							})
+						}
 						required
 					/>
 				</div>
@@ -112,8 +151,8 @@ export default function ModalChangePassword({ isOpen, onClose }) {
 					>
 						Cancel
 					</Button>
-					<Button type="submit" disabled={isLoading} className="shadow-xl">
-						{isLoading ? "Saving..." : "Change Password"}
+					<Button type="submit" disabled={state.isLoading} className="shadow-xl">
+						{state.isLoading ? "Saving..." : "Change Password"}
 					</Button>
 				</div>
 			</form>

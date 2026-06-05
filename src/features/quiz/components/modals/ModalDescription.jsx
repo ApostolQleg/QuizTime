@@ -1,11 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
-import { deleteQuiz, getQuizById } from "@/features/quiz/api/quizzes.api.js";
+import { deleteQuiz } from "@/features/quiz/api/quizzes.api.js";
 import Button from "@/shared/ui/Button.jsx";
 import Modal from "@/shared/ui/Modal.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import Avatar from "@/shared/ui/user/Avatar.jsx";
+
+const renderLoadingSkeleton = () => (
+	<div className="flex flex-col flex-1 overflow-y-auto gap-4">
+		<div className="h-12 bg-(--col-bg-card) rounded animate-pulse w-3/4"></div>
+		<div className="h-10 bg-(--col-bg-card) rounded animate-pulse w-1/2"></div>
+		<div className="h-24 bg-(--col-bg-card) animate-pulse w-full"></div>
+		<div className="h-20 bg-(--col-bg-card) animate-pulse w-full"></div>
+	</div>
+);
 
 export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSuccess }) {
 	const { user } = useAuthUserState();
@@ -15,27 +24,7 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 
 	const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 	const [errorMessage, setErrorMessage] = useState(null);
-	const [fullQuizData, setFullQuizData] = useState(null);
-	const [isLoading, setIsLoading] = useState(false);
-
-	useEffect(() => {
-		if (!isOpen || !quizId) return;
-
-		const fetchFullQuizData = async () => {
-			setIsLoading(true);
-			try {
-				const response = await getQuizById(quizId);
-				setFullQuizData(response.quiz);
-			} catch (error) {
-				console.error("Error fetching full quiz data:", error);
-				setErrorMessage("Failed to load quiz details. Please try again.");
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchFullQuizData();
-	}, [isOpen, quizId]);
+	const isLoading = false;
 
 	const handleDelete = async () => {
 		if (!quizId) {
@@ -58,22 +47,9 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 		}
 	};
 
-	const isOwner =
-		user &&
-		(fullQuizData?.authorId || quiz?.authorId) &&
-		String(user._id) === String(fullQuizData?.authorId || quiz?.authorId);
+	const isOwner = user && quiz?.authorId && String(user._id) === String(quiz.authorId);
 	const canManage = isOwner;
-
-	const renderLoadingSkeleton = () => (
-		<div className="flex flex-col flex-1 overflow-y-auto gap-4">
-			<div className="h-12 bg-(--col-bg-card) rounded animate-pulse w-3/4"></div>
-			<div className="h-10 bg-(--col-bg-card) rounded animate-pulse w-1/2"></div>
-			<div className="h-24 bg-(--col-bg-card) animate-pulse w-full"></div>
-			<div className="h-20 bg-(--col-bg-card) animate-pulse w-full"></div>
-		</div>
-	);
-
-	const displayData = fullQuizData || quiz;
+	const displayData = quiz;
 
 	return (
 		<>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createQuiz } from "@/features/quiz/api/quizzes.api.js";
 import QuizForm from "@/features/quiz/components/edit/QuizForm.jsx";
 import useQuizEditorValidation from "@/features/quiz/hooks/useQuizEditorValidation.js";
+import { buildQuizPayload } from "@/features/quiz/libs/buildQuiz.js";
 import {
 	useQuizEditorActions,
 	useQuizEditorContentState,
@@ -25,13 +26,13 @@ export default function Create() {
 		if (!validate()) return;
 
 		try {
-			const quizPayload = {
+			const quizPayload = buildQuizPayload({
 				title,
 				category,
-				tags: tags.map((tag) => tag.text.trim()).filter((t) => t !== ""),
+				tags,
 				description,
 				questions,
-			};
+			});
 
 			await createQuiz(quizPayload);
 			addToast("Your quiz has been created.");
