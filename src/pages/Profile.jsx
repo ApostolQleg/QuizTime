@@ -17,6 +17,7 @@ import settingsIcon from "@/shared/assets/settings.png";
 import { API_CONFIG } from "@/shared/config/config.js";
 import { useSSE } from "@/shared/hooks/useSSE.js";
 import { getPaginationRange } from "@/shared/libs/pagination.js";
+import Loading from "@/shared/ui/Loading.jsx";
 import Avatar from "@/shared/ui/user/Avatar.jsx";
 import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
 
@@ -149,7 +150,7 @@ export default function Profile() {
 		),
 	);
 
-	if (isProfileLoading) return <div className="text-center">Loading...</div>;
+	if (isProfileLoading) return <Loading />;
 	if (!user) return null;
 
 	const authUserId = authUser?._id;

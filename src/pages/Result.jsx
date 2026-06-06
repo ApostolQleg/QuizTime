@@ -7,6 +7,7 @@ import {
 } from "@/features/quiz/stores/quizSessionStore.js";
 import { getResultById } from "@/features/result/api/results.api.js";
 import Button from "@/shared/ui/Button.jsx";
+import Loading from "@/shared/ui/Loading.jsx";
 
 export default function Result() {
 	const navigate = useNavigate();
@@ -50,7 +51,7 @@ export default function Result() {
 	}, [isGuestMode, quizData, resultData, quizId, navigate, setLoading]);
 
 	if (loading) {
-		return <div className="text-center text-(--col-text-main)">Loading...</div>;
+		return <Loading />;
 	}
 
 	if (!quizData || !resultData) return null;

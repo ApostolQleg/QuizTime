@@ -8,6 +8,7 @@ import {
 import { QUIZ_CATEGORIES, QUIZ_CONSTRAINTS, QUIZ_TAGS } from "@/shared/config/config.js";
 import Button from "@/shared/ui/Button.jsx";
 import Input from "@/shared/ui/Input.jsx";
+import Loading from "@/shared/ui/Loading.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import Textarea from "@/shared/ui/Textarea.jsx";
 
@@ -36,7 +37,7 @@ export default function QuizForm({ onSave, isEditing = false }) {
 	};
 
 	if (loading && isEditing) {
-		return <div className="text-center text-(--col-text-main)">Loading...</div>;
+		return <Loading />;
 	}
 
 	return (

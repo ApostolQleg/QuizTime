@@ -100,7 +100,6 @@ export const PROFILE_CONFIG = {
 export const PROFILE_SETTINGS_CONFIG = {
 	page: {
 		title: "Settings",
-		loadingLabel: "Loading...",
 		tabs: [
 			{ id: "all", label: "All" },
 			{ id: "profile", label: "Profile" },

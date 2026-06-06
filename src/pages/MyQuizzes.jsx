@@ -15,6 +15,7 @@ import { API_CONFIG } from "@/shared/config/config.js";
 import { useDebounce } from "@/shared/hooks/useDebounce.js";
 import { useSSE } from "@/shared/hooks/useSSE.js";
 import { getPaginationRange } from "@/shared/libs/pagination.js";
+import Loading from "@/shared/ui/Loading.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
 import ToolBar from "@/widgets/quiz-toolbar/ui/ToolBar.jsx";
@@ -167,11 +168,7 @@ export default function MyQuizzes() {
 	if (!user) return null;
 
 	if (loading && page === 1) {
-		return (
-			<div className="flex-1 flex items-center justify-center text-(--col-text-main) text-xl font-bold animate-pulse">
-				Loading quizzes...
-			</div>
-		);
+		return <Loading message="Loading quizzes..." />;
 	}
 
 	return (
@@ -197,7 +194,7 @@ export default function MyQuizzes() {
 					emptyMessage={
 						debouncedQuery
 							? `No quizzes found matching "${debouncedQuery}"`
-							: "You are quizless, create one!"
+							: "You are quizless, create your first quiz!"
 					}
 				/>
 			</div>

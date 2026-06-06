@@ -18,6 +18,7 @@ import {
 	useProfilePageStatusState,
 } from "@/features/user/stores/profilePageStore.js";
 import { PROFILE_SETTINGS_CONFIG } from "@/shared/config/config.js";
+import Loading from "@/shared/ui/Loading";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
 const TABS = PROFILE_SETTINGS_CONFIG.page.tabs;
@@ -65,8 +66,7 @@ export default function Settings() {
 		};
 	}, [flushPendingSave, status]);
 
-	if (isLoading)
-		return <div className="text-center">{PROFILE_SETTINGS_CONFIG.page.loadingLabel}</div>;
+	if (isLoading) return <Loading />;
 	if (!user) return null;
 
 	return (

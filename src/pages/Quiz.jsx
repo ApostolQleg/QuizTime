@@ -9,6 +9,7 @@ import {
 } from "@/features/quiz/stores/quizSessionStore.js";
 import { saveResult } from "@/features/result/api/results.api.js";
 import Button from "@/shared/ui/Button.jsx";
+import Loading from "@/shared/ui/Loading.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
@@ -112,7 +113,7 @@ export default function Quiz() {
 	};
 
 	if (loading) {
-		return <div className="text-center text-(--col-text-main) w-full py-10">Loading...</div>;
+		return <Loading />;
 	}
 
 	if (!quizData) return null;
