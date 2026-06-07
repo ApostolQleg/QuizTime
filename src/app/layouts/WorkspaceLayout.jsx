@@ -1,9 +1,10 @@
 import { Outlet } from "react-router";
+import Container from "@/shared/ui/Container.jsx";
 
 export default function WorkspaceLayout() {
 	return (
-		<div className="container flex-1 flex flex-col w-full">
+		<Container className="page-layout p-6 flex-1 flex flex-col w-full">
 			<Outlet />
-		</div>
+		</Container>
 	);
 }

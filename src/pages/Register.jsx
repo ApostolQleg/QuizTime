@@ -109,7 +109,7 @@ export default function Register() {
 		step === 1 ? "Create Account" : step === 2 ? "Verify Email" : "Set Password";
 
 	return (
-		<Container className="flex flex-col items-center justify-center gap-6">
+		<Container className="page-layout flex flex-col items-center justify-center gap-6">
 			<h2 className="text-3xl font-bold text-(--col-text-accent) drop-shadow-md text-center">
 				{renderTitle}
 			</h2>
