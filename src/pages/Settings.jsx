@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	useAuthActions,
@@ -33,7 +33,9 @@ export default function Settings() {
 	const { user } = useProfilePageIdentityState();
 	const { isLoading } = useProfilePageStatusState();
 	const { initialize } = useProfileFormActions();
+
 	const { status } = useProfileFormStatusState();
+	const statusRef = useRef(status);
 
 	const { addToast } = useToastActions();
 	const { fetchProfile } = useProfilePageActions({
@@ -59,12 +61,16 @@ export default function Settings() {
 	}, [initialize, user]);
 
 	useEffect(() => {
+		statusRef.current = status;
+	}, [status]);
+
+	useEffect(() => {
 		return () => {
-			if (status === "dirty") {
+			if (statusRef.current === "dirty") {
 				void flushPendingSave({ force: true });
 			}
 		};
-	}, [flushPendingSave, status]);
+	}, [flushPendingSave]);
 
 	if (isLoading) return <Loading />;
 	if (!user) return null;

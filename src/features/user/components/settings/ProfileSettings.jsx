@@ -4,7 +4,6 @@ import DangerZoneSetting from "./profile_settings/DangerZoneSetting.jsx";
 import NicknameSetting from "./profile_settings/NicknameSetting.jsx";
 import SessionSetting from "./profile_settings/SessionSetting.jsx";
 import ThemeColorSetting from "./profile_settings/ThemeColorSetting.jsx";
-import SaveStatusIndicator from "./SaveStatusIndicator.jsx";
 
 export default function ProfileSettings() {
 	return (
@@ -18,7 +17,6 @@ export default function ProfileSettings() {
 				</p>
 			</div>
 
-			<SaveStatusIndicator />
 			<NicknameSetting />
 			<ThemeColorSetting />
 			<AvatarSetting />
