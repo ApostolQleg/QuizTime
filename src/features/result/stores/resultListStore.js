@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
+import { getResults } from "@/features/result/api/results.api.js";
+import { getPaginationRange } from "@/shared/libs/pagination.js";
 
 const initialState = {
 	items: [],
@@ -11,24 +13,31 @@ const initialState = {
 const useResultsListStore = create((set) => ({
 	...initialState,
 	actions: {
-		setItems: (items) => set({ items }),
+		fetchResultsPage: async ({ pageToLoad, itemsPerPage, query = "", sort = "newest" }) => {
+			set({ loading: true });
+			try {
+				const { skip, limit } = getPaginationRange(pageToLoad, itemsPerPage);
+				const data = await getResults(skip, limit, query, sort);
+				const fetchedResults = data.results;
 
-		appendItems: (items) =>
-			set((state) => ({
-				items: [...state.items, ...items],
-			})),
+				set((state) => ({
+					items: pageToLoad === 1 ? fetchedResults : [...state.items, ...fetchedResults],
+					hasMore: fetchedResults.length >= limit,
+					page: pageToLoad,
+				}));
+			} catch (err) {
+				console.error("Failed to load results", err);
+				set({ hasMore: false });
+			} finally {
+				set({ loading: false });
+			}
+		},
 
 		clear: () => set({ ...initialState }),
 
-		setLoading: (loading) => set({ loading }),
-
-		setPage: (page) => set({ page }),
-
-		setHasMore: (hasMore) => set({ hasMore }),
-
-		removeItem: (resultId) =>
+		removeResultsByQuizId: (deletedQuizId) =>
 			set((state) => ({
-				items: state.items.filter((item) => item._id !== resultId),
+				items: state.items.filter((item) => item.quizId !== deletedQuizId),
 			})),
 	},
 }));

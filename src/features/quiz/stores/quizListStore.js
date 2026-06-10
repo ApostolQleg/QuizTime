@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
+import { getQuizList } from "@/features/quiz/api/quizzes.api.js";
+import { getPaginationRange } from "@/shared/libs/pagination.js";
 
 const initialState = {
 	items: [],
@@ -11,22 +13,51 @@ const initialState = {
 const useQuizzesListStore = create((set) => ({
 	...initialState,
 	actions: {
-		setItems: (items) => set({ items }),
+		fetchQuizzesPage: async ({
+			pageToLoad,
+			itemsPerPage,
+			itemsPerPageFirst,
+			condition,
+			query = "",
+			sort = "newest",
+			authorId = null,
+		}) => {
+			set({ loading: true });
+			try {
+				const { skip, limit } = getPaginationRange(
+					pageToLoad,
+					itemsPerPage,
+					itemsPerPageFirst,
+					condition,
+				);
+				const data = await getQuizList(skip, limit, query, sort, authorId);
+				const fetchedQuizzes = data.quizzes;
 
-		appendItems: (items) =>
-			set((state) => ({
-				items: [...state.items, ...items],
-			})),
+				set((state) => ({
+					items: pageToLoad === 1 ? fetchedQuizzes : [...state.items, ...fetchedQuizzes],
+					hasMore: fetchedQuizzes.length >= limit,
+					page: pageToLoad,
+				}));
+			} catch (err) {
+				console.error("Failed to load quizzes", err);
+				set({ hasMore: false });
+			} finally {
+				set({ loading: false });
+			}
+		},
 
 		clear: () => set({ ...initialState }),
 
-		setLoading: (loading) => set({ loading }),
+		addQuiz: (newQuiz) => set((state) => ({ items: [newQuiz, ...state.items] })),
 
-		setPage: (page) => set({ page }),
+		updateQuiz: (updatedQuiz) =>
+			set((state) => ({
+				items: state.items.map((item) =>
+					item._id === updatedQuiz._id ? updatedQuiz : item,
+				),
+			})),
 
-		setHasMore: (hasMore) => set({ hasMore }),
-
-		removeItem: (quizId) =>
+		removeQuiz: (quizId) =>
 			set((state) => ({
 				items: state.items.filter((item) => item._id !== quizId),
 			})),
