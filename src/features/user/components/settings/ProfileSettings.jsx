@@ -1,9 +1,9 @@
 import { PROFILE_SETTINGS_CONFIG } from "@/shared/config/config.js";
-import AvatarSetting from "./profile/AvatarSetting.jsx";
-import DangerZoneSetting from "./profile/DangerZoneSetting.jsx";
-import NicknameSetting from "./profile/NicknameSetting.jsx";
-import SessionSetting from "./profile/SessionSetting.jsx";
-import ThemeColorSetting from "./profile/ThemeColorSetting.jsx";
+import AvatarSetting from "./profile_settings/AvatarSetting.jsx";
+import DangerZoneSetting from "./profile_settings/DangerZoneSetting.jsx";
+import NicknameSetting from "./profile_settings/NicknameSetting.jsx";
+import SessionSetting from "./profile_settings/SessionSetting.jsx";
+import ThemeColorSetting from "./profile_settings/ThemeColorSetting.jsx";
 import SaveStatusIndicator from "./SaveStatusIndicator.jsx";
 
 export default function ProfileSettings() {

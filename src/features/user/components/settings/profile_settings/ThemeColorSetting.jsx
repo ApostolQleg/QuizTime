@@ -1,4 +1,4 @@
-import ColorGenerator from "@/features/user/components/ColorGenerator.jsx";
+import ColorGenerator from "@/features/user/components/settings/ColorGenerator.jsx";
 import {
 	useProfileFormActions,
 	useProfileFormDraftState,

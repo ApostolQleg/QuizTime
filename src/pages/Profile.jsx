@@ -12,7 +12,7 @@ import {
 	useQuizzesListState,
 } from "@/features/quiz/stores/quizzesListStore.js";
 import { getUserProfile } from "@/features/user/api/user.api.js";
-import { QuizStatsCard } from "@/features/user/components/StatsCard.jsx";
+import { QuizStatsCard } from "@/features/user/components/profile/StatsCard.jsx";
 import settingsIcon from "@/shared/assets/settings.png";
 import { API_CONFIG } from "@/shared/config/config.js";
 import { useSSE } from "@/shared/hooks/useSSE.js";

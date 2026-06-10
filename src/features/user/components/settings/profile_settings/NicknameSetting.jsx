@@ -56,10 +56,10 @@ export default function NicknameSetting() {
 				</span>
 			</div>
 
-			<div className="w-full flex flex-row items-center gap-3">
+			<div className="flex flex-row items-center gap-3">
 				<Input
 					id="profile-nickname"
-					className="flex-1"
+					className="w-48 lg:w-full max-w-xl"
 					value={draftState?.nickname ?? ""}
 					onChange={(event) => updateField("nickname", event.target.value)}
 					placeholder={PROFILE_SETTINGS_CONFIG.nickname.placeholder}
@@ -68,12 +68,7 @@ export default function NicknameSetting() {
 					required
 					disabled={isRolling}
 				/>
-				<Button
-					type="button"
-					onClick={handleRandomNickname}
-					disabled={isRolling}
-					className="px-4 py-2 bg-(--col-bg-input) border border-(--col-border) hover:bg-(--col-border) text-(--col-text-main) shadow-none text-sm"
-				>
+				<Button type="button" onClick={handleRandomNickname} disabled={isRolling}>
 					{isRolling
 						? PROFILE_SETTINGS_CONFIG.nickname.randomButtonLabel.rolling
 						: PROFILE_SETTINGS_CONFIG.nickname.randomButtonLabel.idle}
