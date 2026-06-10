@@ -10,7 +10,7 @@ import ModalDescription from "@/features/quiz/components/modals/ModalDescription
 import {
 	useQuizzesListActions,
 	useQuizzesListState,
-} from "@/features/quiz/stores/quizzesListStore.js";
+} from "@/features/quiz/stores/quizListStore.js";
 import { API_CONFIG } from "@/shared/config/config.js";
 import { useDebounce } from "@/shared/hooks/useDebounce.js";
 import { useSSE } from "@/shared/hooks/useSSE.js";

@@ -10,7 +10,7 @@ import ModalDescription from "@/features/quiz/components/modals/ModalDescription
 import {
 	useQuizzesListActions,
 	useQuizzesListState,
-} from "@/features/quiz/stores/quizzesListStore.js";
+} from "@/features/quiz/stores/quizListStore.js";
 import { getUserProfile } from "@/features/user/api/user.api.js";
 import { QuizStatsCard } from "@/features/user/components/profile/StatsCard.jsx";
 import settingsIcon from "@/shared/assets/settings.png";
