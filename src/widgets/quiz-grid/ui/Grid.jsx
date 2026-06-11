@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 import QuizCard from "@/entities/quiz/ui/QuizCard.jsx";
+import ResultCard from "@/entities/result/ui/ResultCard.jsx";
 import addIcon from "@/shared/assets/plus.png";
 
 export default function Grid({ items, onLoadMore, emptyMessage, view, onCardClick }) {
 	const { loading, hasMore, isLoadingMore, showAddButton = false, isResultsPage = false } = view;
+
+	const CardComponent = isResultsPage ? ResultCard : QuizCard;
 
 	return (
 		<>
@@ -20,13 +23,13 @@ export default function Grid({ items, onLoadMore, emptyMessage, view, onCardClic
 					)}
 
 					{items.map((item) => (
-						<QuizCard
+						<CardComponent
 							key={item._id}
 							item={item}
-							isResultsPage={isResultsPage}
 							onClick={() => onCardClick(item)}
 						/>
 					))}
+
 					{!loading && items.length === 0 && (
 						<div
 							className={`
