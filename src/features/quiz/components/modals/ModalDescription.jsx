@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
-import { deleteQuiz } from "@/features/quiz/api/quizzes.api.js";
+import { deleteQuiz, getQuizById } from "@/features/quiz/api/quizzes.api.js";
 import Button from "@/shared/ui/Button.jsx";
 import Modal from "@/shared/ui/Modal.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
@@ -19,12 +19,31 @@ const renderLoadingSkeleton = () => (
 export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSuccess }) {
 	const { user } = useAuthUserState();
 	const quizId = quiz?._id;
-
 	const navigate = useNavigate();
 
 	const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 	const [errorMessage, setErrorMessage] = useState(null);
-	const isLoading = false;
+	const [fullQuizData, setFullQuizData] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
+
+	useEffect(() => {
+		if (!isOpen || !quizId) return;
+
+		const fetchFullQuizData = async () => {
+			setIsLoading(true);
+			try {
+				const response = await getQuizById(quizId);
+				setFullQuizData(response.quiz);
+			} catch (error) {
+				console.error("Error fetching full quiz data:", error);
+				setErrorMessage("Failed to load quiz details. Please try again.");
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		fetchFullQuizData();
+	}, [isOpen, quizId]);
 
 	const handleDelete = async () => {
 		if (!quizId) {
@@ -47,9 +66,13 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 		}
 	};
 
-	const isOwner = user && quiz?.authorId && String(user._id) === String(quiz.authorId);
+	const isOwner =
+		user &&
+		(fullQuizData?.authorId || quiz?.authorId) &&
+		String(user._id) === String(fullQuizData?.authorId || quiz?.authorId);
 	const canManage = isOwner;
-	const displayData = quiz;
+
+	const displayData = fullQuizData || quiz;
 
 	return (
 		<>
@@ -65,11 +88,11 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 						<div className="text-sm">
 							{displayData.authorName ? (
 								<div className="flex items-center gap-2 mt-1 pb-4 border-(--col-border) border-b">
-									<span>Author:</span>
+									<span className="text-(--col-text-muted)">Author:</span>
 
 									<button
 										type="button"
-										className="flex items-center gap-2 p-1 pr-3 rounded-full bg-(--col-bg-card) border border-(--col-border) w-fit"
+										className="flex items-center gap-2 p-1 pr-3 rounded-full bg-(--col-bg-card) border border-(--col-border) w-fit hover:opacity-90 transition-opacity"
 										onClick={() => navigate(`/user/${displayData.authorId}`)}
 									>
 										<Avatar
@@ -80,12 +103,12 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 											size="sm"
 										/>
 										<span
-											className="font-bold text-sm"
-											style={{
-												color:
-													displayData.authorThemeColor ||
-													"var(--col-primary)",
-											}}
+											className={`font-bold text-sm ${!displayData.authorThemeColor ? "text-(--col-text-accent)" : ""}`}
+											style={
+												displayData.authorThemeColor
+													? { color: displayData.authorThemeColor }
+													: {}
+											}
 										>
 											{displayData.authorName}
 										</span>
@@ -98,23 +121,29 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 							)}
 						</div>
 
-						{displayData.category && displayData.tags && (
+						{(displayData.category ||
+							(displayData.tags && displayData.tags.length > 0)) && (
 							<div className="border-b border-(--col-border) pb-4">
-								<div className="font-bold text-xl px-2 py-1 rounded-full mb-2">
-									Category: {displayData.category}
-								</div>
-								<div className="flex flex-wrap gap-1 mt-2 px-2">
-									{displayData.tags.map((tag) => (
-										<span
-											key={tag}
-											className="inline-block bg-indigo-200 text-indigo-800 text-xs px-2 py-1 rounded-full mb-2"
-										>
-											{tag}
-										</span>
-									))}
-								</div>
+								{displayData.category && (
+									<div className="font-bold text-xl px-2 py-1 rounded-full mb-2 text-(--col-text-main)">
+										Category: {displayData.category}
+									</div>
+								)}
+								{displayData.tags && displayData.tags.length > 0 && (
+									<div className="flex flex-wrap gap-1 mt-2 px-2">
+										{displayData.tags.map((tag) => (
+											<span
+												key={tag}
+												className="inline-block bg-indigo-200 text-indigo-800 text-xs px-2 py-1 rounded-full mb-2"
+											>
+												{tag}
+											</span>
+										))}
+									</div>
+								)}
 							</div>
 						)}
+
 						<div className="text-2xl w-full break-all leading-relaxed text-(--col-text-muted)">
 							{displayData.description}
 						</div>
