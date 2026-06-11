@@ -30,7 +30,7 @@ export default function Header() {
 				</button>
 
 				<Link
-					to="/"
+					to="/quizzes"
 					className="flex items-center gap-3 hover:opacity-80 transition-opacity group"
 				>
 					<img
