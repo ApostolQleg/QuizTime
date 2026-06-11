@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import { getQuizById } from "@/features/quiz/api/quizzes.api.js";
@@ -31,6 +31,8 @@ export default function Quiz() {
 	const { addToast } = useToastActions();
 	const currentQuizId = quizData?._id ?? quizId;
 
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
 	useEffect(() => {
 		resetSession();
 		setLoading(true);
@@ -51,7 +53,7 @@ export default function Quiz() {
 	}, [quizId, navigate, loadQuizForPlay, resetSession, setLoading]);
 
 	const handleSubmit = async () => {
-		if (!quizData) return;
+		if (!quizData || isSubmitting) return;
 
 		let allAnswered = true;
 		const newErrors = {};
@@ -65,6 +67,8 @@ export default function Quiz() {
 
 		setValidationErrors(newErrors);
 		if (!allAnswered) return;
+
+		setIsSubmitting(true);
 
 		let score = 0;
 
@@ -100,6 +104,7 @@ export default function Quiz() {
 			} catch (error) {
 				console.error("Save error", error);
 				setAlertInfo({ isOpen: true, message: "Failed to save result" });
+				setIsSubmitting(false);
 			}
 		} else {
 			const localResult = {
@@ -130,8 +135,12 @@ export default function Quiz() {
 				))}
 			</div>
 
-			<Button onClick={handleSubmit} className="w-full md:w-auto min-w-50 text-lg shadow-xl">
-				Submit
+			<Button
+				onClick={handleSubmit}
+				disabled={isSubmitting}
+				className="w-full md:w-auto min-w-50 text-lg shadow-xl"
+			>
+				{isSubmitting ? "Submitting..." : "Submit"}
 			</Button>
 
 			<ModalConfirm
