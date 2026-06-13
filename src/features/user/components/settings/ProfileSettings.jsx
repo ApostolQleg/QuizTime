@@ -1,9 +1,7 @@
 import { PROFILE_SETTINGS_CONFIG } from "@/shared/config/config.js";
-import AvatarSetting from "./profile_settings/AvatarSetting.jsx";
-import DangerZoneSetting from "./profile_settings/DangerZoneSetting.jsx";
-import NicknameSetting from "./profile_settings/NicknameSetting.jsx";
-import SessionSetting from "./profile_settings/SessionSetting.jsx";
-import ThemeColorSetting from "./profile_settings/ThemeColorSetting.jsx";
+import AvatarSetting from "./profile-settings/AvatarSetting.jsx";
+import NicknameSetting from "./profile-settings/NicknameSetting.jsx";
+import ThemeColorSetting from "./profile-settings/ThemeColorSetting.jsx";
 
 export default function ProfileSettings() {
 	return (
@@ -18,12 +16,8 @@ export default function ProfileSettings() {
 			</div>
 
 			<NicknameSetting />
-			<ThemeColorSetting />
 			<AvatarSetting />
-			<hr className="w-full border-(--col-border) opacity-50" />
-			<SessionSetting />
-			<hr className="w-full border-(--col-border) opacity-50" />
-			<DangerZoneSetting />
+			<ThemeColorSetting />
 		</div>
 	);
 }

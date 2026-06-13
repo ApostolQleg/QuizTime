@@ -5,8 +5,10 @@ import {
 	useAuthSessionState,
 	useAuthUserState,
 } from "@/features/auth/hooks/useAuth.js";
+import AccountSettings from "@/features/user/components/settings/AccountSettings.jsx";
 import OtherSettings from "@/features/user/components/settings/OtherSettings.jsx";
 import ProfileSettings from "@/features/user/components/settings/ProfileSettings.jsx";
+import SecuritySettings from "@/features/user/components/settings/SecuritySettings.jsx";
 import { useProfileFormAutosave } from "@/features/user/hooks/useProfileFormAutosave.js";
 import useProfilePageActions from "@/features/user/hooks/useProfilePageActions.js";
 import {
@@ -105,6 +107,18 @@ export default function Settings() {
 
 				<main className="flex-1 w-full bg-(--col-bg-input-darker)/30 border border-(--col-border)/50 rounded-2xl p-6 md:p-8 min-h-100">
 					{(activeTab === "all" || activeTab === "profile") && <ProfileSettings />}
+
+					{activeTab === "all" && (
+						<hr className="w-full border-(--col-border) opacity-50 my-10" />
+					)}
+
+					{(activeTab === "all" || activeTab === "account") && <AccountSettings />}
+
+					{activeTab === "all" && (
+						<hr className="w-full border-(--col-border) opacity-50 my-10" />
+					)}
+
+					{(activeTab === "all" || activeTab === "security") && <SecuritySettings />}
 
 					{activeTab === "all" && (
 						<hr className="w-full border-(--col-border) opacity-50 my-10" />

@@ -103,6 +103,8 @@ export const PROFILE_SETTINGS_CONFIG = {
 		tabs: [
 			{ id: "all", label: "All" },
 			{ id: "profile", label: "Profile" },
+			{ id: "account", label: "Account" },
+			{ id: "security", label: "Security" },
 			{ id: "other", label: "Other" },
 		],
 	},
