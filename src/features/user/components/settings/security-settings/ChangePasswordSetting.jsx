@@ -11,23 +11,26 @@ export default function ChangePasswordSetting() {
 	const { openPasswordModal, closePasswordModal } = useProfilePageActions();
 
 	return (
-		<div className="p-4 border border-(--col-border) bg-(--col-bg-input-darker) rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4 w-full">
-			<div className="text-sm opacity-90 w-full sm:w-auto">
-				<p className="font-bold text-(--col-text-main)">
+		<section className="flex flex-col gap-4 p-5 border border-(--col-border) bg-(--col-bg-input-darker)/20 rounded-2xl w-full max-w-xl">
+			<div className="flex flex-col gap-1">
+				<span className="text-sm font-bold text-(--col-text-muted)">
 					{PROFILE_SETTINGS_CONFIG.dangerZone.changePassword.title}
-				</p>
-				<p className="text-(--col-text-muted)">
+				</span>
+				<span className="text-xs text-(--col-text-muted)/80">
 					{PROFILE_SETTINGS_CONFIG.dangerZone.changePassword.helpText}
-				</p>
+				</span>
 			</div>
-			<Button
-				onClick={openPasswordModal}
-				className="bg-(--col-bg-input) border border-(--col-border) hover:bg-(--col-border) shadow-none text-xs px-4 py-2 whitespace-nowrap w-full sm:w-auto"
-			>
-				{PROFILE_SETTINGS_CONFIG.dangerZone.changePassword.buttonLabel}
-			</Button>
+
+			<div className="flex justify-start pt-1">
+				<Button
+					onClick={openPasswordModal}
+					className="bg-(--col-bg-input) border border-(--col-border) hover:bg-(--col-border) shadow-none text-xs px-4 py-2 whitespace-nowrap w-full sm:w-auto"
+				>
+					{PROFILE_SETTINGS_CONFIG.dangerZone.changePassword.buttonLabel}
+				</Button>
+			</div>
 
 			<ModalChangePassword isOpen={isPasswordModalOpen} onClose={closePasswordModal} />
-		</div>
+		</section>
 	);
 }
