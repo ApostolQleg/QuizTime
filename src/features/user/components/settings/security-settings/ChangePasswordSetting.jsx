@@ -5,23 +5,18 @@ import {
 } from "@/features/user/stores/profilePageStore.js";
 import { PROFILE_SETTINGS_CONFIG } from "@/shared/config/config.js";
 import Button from "@/shared/ui/Button.jsx";
+import SettingCard from "@/shared/ui/SettingCard.jsx";
 
 export default function ChangePasswordSetting() {
 	const { isPasswordModalOpen } = useProfilePageModalState();
 	const { openPasswordModal, closePasswordModal } = useProfilePageActions();
 
 	return (
-		<section className="flex flex-col gap-4 p-5 border border-(--col-border) bg-(--col-bg-input-darker)/20 rounded-2xl w-full max-w-xl">
-			<div className="flex flex-col gap-1">
-				<span className="text-sm font-bold text-(--col-text-muted)">
-					{PROFILE_SETTINGS_CONFIG.dangerZone.changePassword.title}
-				</span>
-				<span className="text-xs text-(--col-text-muted)/80">
-					{PROFILE_SETTINGS_CONFIG.dangerZone.changePassword.helpText}
-				</span>
-			</div>
-
-			<div className="flex justify-start pt-1">
+		<SettingCard
+			title={PROFILE_SETTINGS_CONFIG.dangerZone.changePassword.title}
+			helpText={PROFILE_SETTINGS_CONFIG.dangerZone.changePassword.helpText}
+		>
+			<div className="flex justify-start">
 				<Button
 					onClick={openPasswordModal}
 					className="bg-(--col-bg-input) border border-(--col-border) hover:bg-(--col-border) shadow-none text-xs px-4 py-2 whitespace-nowrap w-full sm:w-auto"
@@ -31,6 +26,6 @@ export default function ChangePasswordSetting() {
 			</div>
 
 			<ModalChangePassword isOpen={isPasswordModalOpen} onClose={closePasswordModal} />
-		</section>
+		</SettingCard>
 	);
 }

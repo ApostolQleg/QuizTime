@@ -11,6 +11,7 @@ import {
 } from "@/shared/config/config.js";
 import Button from "@/shared/ui/Button.jsx";
 import Input from "@/shared/ui/Input.jsx";
+import SettingCard from "@/shared/ui/SettingCard.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -43,19 +44,11 @@ export default function NicknameSetting() {
 	};
 
 	return (
-		<section className="flex flex-col gap-4 p-5 border border-(--col-border) bg-(--col-bg-input-darker)/20 rounded-2xl">
-			<div className="flex flex-col gap-1">
-				<label
-					htmlFor="profile-nickname"
-					className="text-sm font-bold text-(--col-text-muted)"
-				>
-					{PROFILE_SETTINGS_CONFIG.nickname.label}
-				</label>
-				<span className="text-xs text-(--col-text-muted)/80">
-					{PROFILE_SETTINGS_CONFIG.nickname.helpText}
-				</span>
-			</div>
-
+		<SettingCard
+			title={PROFILE_SETTINGS_CONFIG.nickname.label}
+			helpText={PROFILE_SETTINGS_CONFIG.nickname.helpText}
+			htmlFor="profile-nickname"
+		>
 			<div className="flex flex-row items-center gap-3">
 				<Input
 					id="profile-nickname"
@@ -74,6 +67,6 @@ export default function NicknameSetting() {
 						: PROFILE_SETTINGS_CONFIG.nickname.randomButtonLabel.idle}
 				</Button>
 			</div>
-		</section>
+		</SettingCard>
 	);
 }

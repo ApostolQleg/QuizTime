@@ -10,6 +10,7 @@ import {
 	useProfileFormDraftState,
 } from "@/features/user/stores/profileFormStore.js";
 import { PROFILE_CONFIG, PROFILE_SETTINGS_CONFIG } from "@/shared/config/config.js";
+import SettingCard from "@/shared/ui/SettingCard.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 import Avatar from "@/shared/ui/user/Avatar.jsx";
 
@@ -38,16 +39,10 @@ export default function AvatarSetting() {
 	};
 
 	return (
-		<section className="flex flex-col gap-4 p-5 border border-(--col-border) bg-(--col-bg-input-darker)/20 rounded-2xl">
-			<div className="flex flex-col gap-1">
-				<span className="text-sm font-bold text-(--col-text-muted)">
-					{PROFILE_SETTINGS_CONFIG.avatar.label}
-				</span>
-				<span className="text-xs text-(--col-text-muted)/80">
-					{PROFILE_SETTINGS_CONFIG.avatar.helpText}
-				</span>
-			</div>
-
+		<SettingCard
+			title={PROFILE_SETTINGS_CONFIG.avatar.label}
+			helpText={PROFILE_SETTINGS_CONFIG.avatar.helpText}
+		>
 			<div className="flex gap-2 p-1 bg-(--col-bg-input) rounded-xl border border-(--col-border)">
 				<button
 					type="button"
@@ -129,6 +124,6 @@ export default function AvatarSetting() {
 					</div>
 				)}
 			</div>
-		</section>
+		</SettingCard>
 	);
 }
