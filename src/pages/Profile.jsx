@@ -13,7 +13,7 @@ import settingsIcon from "@/shared/assets/settings.png";
 import { API_CONFIG } from "@/shared/config/config.js";
 import Loading from "@/shared/ui/Loading.jsx";
 import Avatar from "@/shared/ui/user/Avatar.jsx";
-import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
+import Grid from "@/widgets/grid/ui/Grid.jsx";
 
 const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_PUBLIC_PROFILE;
 

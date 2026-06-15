@@ -161,8 +161,8 @@ src/
 ├── widgets/                    # Large compositional blocks
 │   ├── footer/
 │   ├── header/
-│   ├── quiz-grid/
-│   └── quiz-toolbar/
+│   ├── grid/
+│   └── toolbar/
 ├── styles.css                  # Global styles & theme tokens
 ```
 

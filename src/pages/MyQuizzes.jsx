@@ -11,8 +11,8 @@ import { API_CONFIG } from "@/shared/config/config.js";
 import { useDebounce } from "@/shared/hooks/useDebounce.js";
 import Loading from "@/shared/ui/Loading.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
-import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
-import ToolBar from "@/widgets/quiz-toolbar/ui/ToolBar.jsx";
+import Grid from "@/widgets/grid/ui/Grid.jsx";
+import ToolBar from "@/widgets/toolbar/ui/ToolBar.jsx";
 
 const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_QUIZZES;
 const ITEMS_PER_PAGE_FIRST = API_CONFIG.ITEMS_PER_PAGE_QUIZZES_AUTH;
