@@ -1,6 +1,10 @@
 export default function QuizCard({ item, onClick }) {
 	return (
-		<button type="button" className="quiz-card flex flex-col justify-between" onClick={onClick}>
+		<button
+			type="button"
+			className="quiz-card aspect-square flex flex-col justify-between"
+			onClick={onClick}
+		>
 			<div className="font-bold text-lg mb-2 pt-4 px-2">{item.title}</div>
 			{typeof item.category === "string" && item.category.trim() && (
 				<div className="text-sm opacity-80 px-2 mb-2">{item.category}</div>
