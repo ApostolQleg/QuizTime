@@ -1,25 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
-import {
-	getQuizList,
-	invalidateQuizCache,
-	invalidateQuizListCache,
-} from "@/features/quiz/api/quizzes.api.js";
 import ModalDescription from "@/features/quiz/components/modals/ModalDescription.jsx";
+import { useQuizSSE } from "@/features/quiz/hooks/useQuizSSE.js";
 import {
 	useQuizzesListActions,
 	useQuizzesListState,
-} from "@/features/quiz/stores/quizzesListStore.js";
+} from "@/features/quiz/stores/quizListStore.js";
 import { getUserProfile } from "@/features/user/api/user.api.js";
-import { QuizStatsCard } from "@/features/user/components/StatsCard.jsx";
+import { QuizStatsCard } from "@/features/user/components/profile/StatsCard.jsx";
 import settingsIcon from "@/shared/assets/settings.png";
 import { API_CONFIG } from "@/shared/config/config.js";
-import { useSSE } from "@/shared/hooks/useSSE.js";
-import { getPaginationRange } from "@/shared/libs/pagination.js";
-import Container from "@/shared/ui/Container.jsx";
+import Loading from "@/shared/ui/Loading.jsx";
 import Avatar from "@/shared/ui/user/Avatar.jsx";
-import Grid from "@/widgets/quiz-grid/ui/Grid.jsx";
+import Grid from "@/widgets/grid/ui/Grid.jsx";
 
 const ITEMS_PER_PAGE = API_CONFIG.ITEMS_PER_PAGE_PUBLIC_PROFILE;
 
@@ -34,15 +28,7 @@ export default function Profile() {
 	const { user: authUser } = useAuthUserState();
 
 	const { items, loading: loadingQuizzes, page, hasMore } = useQuizzesListState();
-	const { setItems, appendItems, clear, setLoading, setPage, setHasMore } =
-		useQuizzesListActions();
-
-	const removeItemLocally = useCallback(
-		(idToRemove) => {
-			setItems(items.filter((item) => item._id !== idToRemove));
-		},
-		[items, setItems],
-	);
+	const { fetchQuizzesPage, clear } = useQuizzesListActions();
 
 	useEffect(() => {
 		if (userId) {
@@ -60,104 +46,50 @@ export default function Profile() {
 		}
 	}, [userId, navigate]);
 
-	const fetchUserQuizzes = useCallback(
-		async (pageToLoad) => {
-			if (!userId) return;
-
-			setLoading(true);
-			try {
-				const { skip, limit } = getPaginationRange(pageToLoad, ITEMS_PER_PAGE);
-
-				const data = await getQuizList(skip, limit, "", "newest", userId);
-				const fetchedQuizzes = data.quizzes;
-
-				if (pageToLoad === 1) {
-					setItems(fetchedQuizzes);
-				} else {
-					appendItems(fetchedQuizzes);
-				}
-
-				setHasMore(fetchedQuizzes.length >= limit);
-				setPage(pageToLoad);
-			} catch (err) {
-				console.error("Failed to load quizzes", err);
-				setHasMore(false);
-			} finally {
-				setLoading(false);
-			}
-		},
-		[userId, setItems, appendItems, setHasMore, setPage, setLoading],
+	const fetchParams = useCallback(
+		(pageToLoad) => ({
+			pageToLoad,
+			itemsPerPage: ITEMS_PER_PAGE,
+			query: "",
+			sort: "newest",
+			authorId: userId,
+		}),
+		[userId],
 	);
 
 	useEffect(() => {
 		if (userId) {
 			clear();
-			fetchUserQuizzes(1);
+			fetchQuizzesPage(fetchParams(1));
 		}
 		return () => clear();
-	}, [fetchUserQuizzes, clear, userId]);
+	}, [fetchQuizzesPage, clear, userId, fetchParams]);
 
 	const handleLoadMore = useCallback(() => {
 		if (!loadingQuizzes && hasMore) {
-			fetchUserQuizzes(page + 1);
+			fetchQuizzesPage(fetchParams(page + 1));
 		}
-	}, [loadingQuizzes, hasMore, page, fetchUserQuizzes]);
+	}, [loadingQuizzes, hasMore, page, fetchQuizzesPage, fetchParams]);
 
-	useSSE(
-		"CREATE_QUIZ",
-		useCallback(
-			(newQuiz) => {
-				if (newQuiz.authorId === userId) {
-					setItems([newQuiz, ...items]);
-				}
-				invalidateQuizListCache();
-			},
-			[items, setItems, userId],
-		),
-	);
+	useQuizSSE({
+		authorId: userId,
+		searchQuery: "",
+		sortOption: "newest",
+		onActiveQuizChange: (updatedOrNull) => {
+			if (!updatedOrNull && selectedQuiz) setSelectedQuiz(null);
+			if (updatedOrNull && selectedQuiz?._id === updatedOrNull._id)
+				setSelectedQuiz(updatedOrNull);
+		},
+	});
 
-	useSSE(
-		"UPDATE_QUIZ",
-		useCallback(
-			(updatedQuiz) => {
-				if (updatedQuiz.authorId === userId) {
-					setItems(
-						items.map((item) => (item._id === updatedQuiz._id ? updatedQuiz : item)),
-					);
-					if (selectedQuiz?._id === updatedQuiz._id) {
-						setSelectedQuiz(updatedQuiz);
-					}
-					invalidateQuizCache(updatedQuiz._id);
-					invalidateQuizListCache();
-				}
-			},
-			[items, setItems, selectedQuiz, userId],
-		),
-	);
-
-	useSSE(
-		"DELETE_QUIZ",
-		useCallback(
-			(deletedQuizId) => {
-				removeItemLocally(deletedQuizId);
-				if (selectedQuiz?._id === deletedQuizId) {
-					setSelectedQuiz(null);
-				}
-				invalidateQuizCache(deletedQuizId);
-				invalidateQuizListCache();
-			},
-			[removeItemLocally, selectedQuiz],
-		),
-	);
-
-	if (isProfileLoading) return <Container className="text-center">Loading...</Container>;
+	if (isProfileLoading) return <Loading />;
 	if (!user) return null;
 
 	const authUserId = authUser?._id;
 	const isOwnProfile = authUserId && authUserId === userId;
 
 	return (
-		<Container className="flex flex-col items-center gap-8 py-8">
+		<div className="flex flex-col items-center gap-8 py-8">
 			<div className="flex flex-col items-center justify-center p-8 bg-(--col-bg-card) border border-(--col-border) rounded-3xl w-full max-w-4xl shadow-lg gap-5 relative">
 				{isOwnProfile && (
 					<button
@@ -166,7 +98,7 @@ export default function Profile() {
 						aria-label="Settings"
 						className="absolute top-5 right-5 p-1 bg-transparent hover:opacity-80 transition-opacity cursor-pointer border-none flex items-center justify-center"
 					>
-						<img src={settingsIcon} alt="" className="w-10 h-10 object-contain" />
+						<img src={settingsIcon} alt="" className="size-10 object-contain" />
 					</button>
 				)}
 
@@ -201,12 +133,14 @@ export default function Profile() {
 
 				<Grid
 					items={items}
-					loading={loadingQuizzes && page === 1}
-					hasMore={hasMore}
+					view={{
+						loading: loadingQuizzes && page === 1,
+						hasMore,
+						isLoadingMore: loadingQuizzes && page > 1,
+						showAddButton: false,
+						isResultsPage: false,
+					}}
 					onLoadMore={handleLoadMore}
-					isLoadingMore={loadingQuizzes && page > 1}
-					showAddButton={false}
-					isResultsPage={false}
 					onCardClick={setSelectedQuiz}
 					emptyMessage={
 						isOwnProfile
@@ -223,6 +157,6 @@ export default function Profile() {
 					isOpen={!!selectedQuiz}
 				/>
 			)}
-		</Container>
+		</div>
 	);
 }

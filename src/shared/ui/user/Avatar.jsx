@@ -1,21 +1,21 @@
 import { useState } from "react";
 
+const SIZE_CLASSES = {
+	sm: "size-8 text-xs",
+	md: "size-14 text-sm",
+	lg: "size-20 text-2xl",
+	xl: "size-32 text-4xl",
+};
+
 export default function Avatar({ src, name, type = "google", color, size = "md", className = "" }) {
 	const [error, setError] = useState(false);
-
-	const sizeClasses = {
-		sm: "w-8 h-8 text-xs",
-		md: "w-14 h-14 text-sm",
-		lg: "w-20 h-20 text-2xl",
-		xl: "w-32 h-32 text-4xl",
-	};
 
 	if (type === "generated" || !src || error) {
 		const finalColor = color || "var(--col-primary)";
 
 		return (
 			<div
-				className={`${sizeClasses[size]} ${className} rounded-full shadow-md border border-(--col-border)`}
+				className={`${SIZE_CLASSES[size]} ${className} rounded-full shadow-md border border-(--col-border)`}
 				style={{
 					backgroundColor: finalColor,
 					boxShadow: `0 0 10px ${finalColor}60`,
@@ -30,7 +30,7 @@ export default function Avatar({ src, name, type = "google", color, size = "md",
 		<img
 			src={secureSrc}
 			alt={name || "User avatar"}
-			className={`${sizeClasses[size]} ${className} rounded-full object-cover bg-(--col-bg-input) border border-(--col-border)`}
+			className={`${SIZE_CLASSES[size]} ${className} rounded-full object-cover bg-(--col-bg-input) border border-(--col-border)`}
 			referrerPolicy="no-referrer"
 			onError={() => setError(true)}
 		/>

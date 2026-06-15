@@ -7,10 +7,18 @@ import Modal from "@/shared/ui/Modal.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import Avatar from "@/shared/ui/user/Avatar.jsx";
 
+const renderLoadingSkeleton = () => (
+	<div className="flex flex-col flex-1 overflow-y-auto gap-4">
+		<div className="h-12 bg-(--col-bg-card) rounded animate-pulse w-3/4"></div>
+		<div className="h-10 bg-(--col-bg-card) rounded animate-pulse w-1/2"></div>
+		<div className="h-24 bg-(--col-bg-card) animate-pulse w-full"></div>
+		<div className="h-20 bg-(--col-bg-card) animate-pulse w-full"></div>
+	</div>
+);
+
 export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSuccess }) {
 	const { user } = useAuthUserState();
 	const quizId = quiz?._id;
-
 	const navigate = useNavigate();
 
 	const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
@@ -64,15 +72,6 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 		String(user._id) === String(fullQuizData?.authorId || quiz?.authorId);
 	const canManage = isOwner;
 
-	const renderLoadingSkeleton = () => (
-		<div className="flex flex-col flex-1 overflow-y-auto gap-4">
-			<div className="h-12 bg-(--col-bg-card) rounded animate-pulse w-3/4"></div>
-			<div className="h-10 bg-(--col-bg-card) rounded animate-pulse w-1/2"></div>
-			<div className="h-24 bg-(--col-bg-card) animate-pulse w-full"></div>
-			<div className="h-20 bg-(--col-bg-card) animate-pulse w-full"></div>
-		</div>
-	);
-
 	const displayData = fullQuizData || quiz;
 
 	return (
@@ -89,11 +88,11 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 						<div className="text-sm">
 							{displayData.authorName ? (
 								<div className="flex items-center gap-2 mt-1 pb-4 border-(--col-border) border-b">
-									<span>Author:</span>
+									<span className="text-(--col-text-muted)">Author:</span>
 
 									<button
 										type="button"
-										className="flex items-center gap-2 p-1 pr-3 rounded-full bg-(--col-bg-card) border border-(--col-border) w-fit"
+										className="flex items-center gap-2 p-1 pr-3 rounded-full bg-(--col-bg-card) border border-(--col-border) w-fit hover:opacity-90 transition-opacity"
 										onClick={() => navigate(`/user/${displayData.authorId}`)}
 									>
 										<Avatar
@@ -104,12 +103,12 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 											size="sm"
 										/>
 										<span
-											className="font-bold text-sm"
-											style={{
-												color:
-													displayData.authorThemeColor ||
-													"var(--col-primary)",
-											}}
+											className={`font-bold text-sm ${!displayData.authorThemeColor ? "text-(--col-text-accent)" : ""}`}
+											style={
+												displayData.authorThemeColor
+													? { color: displayData.authorThemeColor }
+													: {}
+											}
 										>
 											{displayData.authorName}
 										</span>
@@ -122,23 +121,29 @@ export default function ModalDescription({ quiz, onClose, isOpen, onDeleteSucces
 							)}
 						</div>
 
-						{displayData.category && displayData.tags && (
+						{(displayData.category ||
+							(displayData.tags && displayData.tags.length > 0)) && (
 							<div className="border-b border-(--col-border) pb-4">
-								<div className="font-bold text-xl px-2 py-1 rounded-full mb-2">
-									Category: {displayData.category}
-								</div>
-								<div className="flex flex-wrap gap-1 mt-2 px-2">
-									{displayData.tags.map((tag) => (
-										<span
-											key={tag}
-											className="inline-block bg-indigo-200 text-indigo-800 text-xs px-2 py-1 rounded-full mb-2"
-										>
-											{tag}
-										</span>
-									))}
-								</div>
+								{displayData.category && (
+									<div className="font-bold text-xl px-2 py-1 rounded-full mb-2 text-(--col-text-main)">
+										Category: {displayData.category}
+									</div>
+								)}
+								{displayData.tags && displayData.tags.length > 0 && (
+									<div className="flex flex-wrap gap-1 mt-2 px-2">
+										{displayData.tags.map((tag) => (
+											<span
+												key={tag}
+												className="inline-block bg-indigo-200 text-indigo-800 text-xs px-2 py-1 rounded-full mb-2"
+											>
+												{tag}
+											</span>
+										))}
+									</div>
+								)}
 							</div>
 						)}
+
 						<div className="text-2xl w-full break-all leading-relaxed text-(--col-text-muted)">
 							{displayData.description}
 						</div>

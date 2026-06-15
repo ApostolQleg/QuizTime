@@ -1,21 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	useAuthActions,
 	useAuthSessionState,
 	useAuthUserState,
 } from "@/features/auth/hooks/useAuth.js";
+import AccountSettings from "@/features/user/components/settings/AccountSettings.jsx";
 import OtherSettings from "@/features/user/components/settings/OtherSettings.jsx";
 import ProfileSettings from "@/features/user/components/settings/ProfileSettings.jsx";
+import SecuritySettings from "@/features/user/components/settings/SecuritySettings.jsx";
+import { useProfileFormAutosave } from "@/features/user/hooks/useProfileFormAutosave.js";
 import useProfilePageActions from "@/features/user/hooks/useProfilePageActions.js";
 import {
+	useProfileFormActions,
+	useProfileFormStatusState,
+} from "@/features/user/stores/profileFormStore.js";
+import {
 	useProfilePageIdentityState,
-	useProfilePageModalState,
 	useProfilePageStatusState,
-	useProfilePageActions as useProfilePageStoreActions,
 } from "@/features/user/stores/profilePageStore.js";
-import Container from "@/shared/ui/Container.jsx";
+import { PROFILE_SETTINGS_CONFIG } from "@/shared/config/config.js";
+import Loading from "@/shared/ui/Loading";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
+
+const TABS = PROFILE_SETTINGS_CONFIG.page.tabs;
 
 export default function Settings() {
 	const navigate = useNavigate();
@@ -25,14 +33,14 @@ export default function Settings() {
 	const { logout, login } = useAuthActions();
 	const { token, isSessionChecking } = useAuthSessionState();
 	const { user } = useProfilePageIdentityState();
-	const { isLoading, isSaving } = useProfilePageStatusState();
+	const { isLoading } = useProfilePageStatusState();
+	const { initialize } = useProfileFormActions();
 
-	const { isDeleteModalOpen, isPasswordModalOpen } = useProfilePageModalState();
-	const { openDeleteModal, closeDeleteModal, openPasswordModal, closePasswordModal } =
-		useProfilePageStoreActions();
+	const { status } = useProfileFormStatusState();
+	const statusRef = useRef(status);
 
 	const { addToast } = useToastActions();
-	const { saveProfile, removeAccount, fetchProfile } = useProfilePageActions({
+	const { fetchProfile } = useProfilePageActions({
 		navigate,
 		login,
 		logout,
@@ -41,30 +49,43 @@ export default function Settings() {
 		isSessionChecking,
 		addToast,
 	});
+	const { flushPendingSave } = useProfileFormAutosave();
 
 	useEffect(() => {
-		if (isSessionChecking || !token) return;
-		if (typeof fetchProfile === "function") {
-			fetchProfile();
-		}
+		if (isSessionChecking || !token || typeof fetchProfile !== "function") return;
+		fetchProfile();
 	}, [fetchProfile, isSessionChecking, token]);
 
-	if (isLoading) return <Container className="text-center">Loading...</Container>;
+	useEffect(() => {
+		if (user) {
+			initialize(user);
+		}
+	}, [initialize, user]);
+
+	useEffect(() => {
+		statusRef.current = status;
+	}, [status]);
+
+	useEffect(() => {
+		return () => {
+			if (statusRef.current === "dirty") {
+				void flushPendingSave({ force: true });
+			}
+		};
+	}, [flushPendingSave]);
+
+	if (isLoading) return <Loading />;
 	if (!user) return null;
 
-	const tabs = [
-		{ id: "all", label: "All" },
-		{ id: "profile", label: "Profile" },
-		{ id: "other", label: "Other" },
-	];
-
 	return (
-		<Container className="flex flex-col gap-8 max-w-6xl w-full">
-			<h1 className="text-3xl font-bold text-(--col-text-accent) drop-shadow-md">Settings</h1>
+		<div className="flex flex-col gap-8 max-w-6xl w-full">
+			<h1 className="text-3xl font-bold text-(--col-text-accent) drop-shadow-md">
+				{PROFILE_SETTINGS_CONFIG.page.title}
+			</h1>
 
 			<div className="w-full flex flex-col md:flex-row gap-8 items-start">
 				<aside className="w-full md:w-64 flex flex-row md:flex-col gap-2 p-1 bg-(--col-bg-input-darker) border border-(--col-border) rounded-2xl overflow-x-auto md:overflow-visible shrink-0">
-					{tabs.map((tab) => {
+					{TABS.map((tab) => {
 						const isActive = activeTab === tab.id;
 						return (
 							<button
@@ -85,20 +106,19 @@ export default function Settings() {
 				</aside>
 
 				<main className="flex-1 w-full bg-(--col-bg-input-darker)/30 border border-(--col-border)/50 rounded-2xl p-6 md:p-8 min-h-100">
-					{(activeTab === "all" || activeTab === "profile") && (
-						<ProfileSettings
-							user={user}
-							saveProfile={saveProfile}
-							isSaving={isSaving}
-							openPasswordModal={openPasswordModal}
-							openDeleteModal={openDeleteModal}
-							isDeleteModalOpen={isDeleteModalOpen}
-							closeDeleteModal={closeDeleteModal}
-							removeAccount={removeAccount}
-							isPasswordModalOpen={isPasswordModalOpen}
-							closePasswordModal={closePasswordModal}
-						/>
+					{(activeTab === "all" || activeTab === "profile") && <ProfileSettings />}
+
+					{activeTab === "all" && (
+						<hr className="w-full border-(--col-border) opacity-50 my-10" />
 					)}
+
+					{(activeTab === "all" || activeTab === "account") && <AccountSettings />}
+
+					{activeTab === "all" && (
+						<hr className="w-full border-(--col-border) opacity-50 my-10" />
+					)}
+
+					{(activeTab === "all" || activeTab === "security") && <SecuritySettings />}
 
 					{activeTab === "all" && (
 						<hr className="w-full border-(--col-border) opacity-50 my-10" />
@@ -107,6 +127,6 @@ export default function Settings() {
 					{(activeTab === "all" || activeTab === "other") && <OtherSettings />}
 				</main>
 			</div>
-		</Container>
+		</div>
 	);
 }

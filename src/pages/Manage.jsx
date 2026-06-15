@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getQuizById, updateQuiz } from "@/features/quiz/api/quizzes.api.js";
 import QuizForm from "@/features/quiz/components/edit/QuizForm.jsx";
 import useQuizEditorValidation from "@/features/quiz/hooks/useQuizEditorValidation.js";
+import { buildQuizPayload } from "@/features/quiz/libs/buildQuiz.js";
 import {
 	useQuizEditorActions,
 	useQuizEditorContentState,
@@ -38,13 +39,13 @@ export default function Manage() {
 		if (!validate()) return;
 
 		try {
-			const quizPayload = {
+			const quizPayload = buildQuizPayload({
 				title,
 				category,
-				tags: tags.map((tag) => tag.text.trim()).filter((t) => t !== ""),
+				tags,
 				description,
 				questions,
-			};
+			});
 
 			await updateQuiz(quizId, quizPayload);
 			addToast("Your quiz has been updated.");

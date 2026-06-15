@@ -7,10 +7,19 @@ import {
 } from "@/features/quiz/stores/quizEditorStore.js";
 import { QUIZ_CATEGORIES, QUIZ_CONSTRAINTS, QUIZ_TAGS } from "@/shared/config/config.js";
 import Button from "@/shared/ui/Button.jsx";
-import Container from "@/shared/ui/Container.jsx";
 import Input from "@/shared/ui/Input.jsx";
+import Loading from "@/shared/ui/Loading.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import Textarea from "@/shared/ui/Textarea.jsx";
+
+const selectedTags = (tags) =>
+	tags.reduce((accumulator, tag) => {
+		if (tag.text !== "") {
+			accumulator.push(tag);
+		}
+
+		return accumulator;
+	}, []);
 
 export default function QuizForm({ onSave, isEditing = false }) {
 	const { loading, alertInfo } = useQuizEditorMetaState();
@@ -19,12 +28,20 @@ export default function QuizForm({ onSave, isEditing = false }) {
 	const editorActions = useQuizEditorActions();
 	const { closeAlert } = useQuizEditorValidation();
 
+	const handleTagChange = (event) => {
+		const selectedTagText = event.target.value;
+
+		if (tags.length < 5) {
+			editorActions.setTags([...tags, { id: crypto.randomUUID(), text: selectedTagText }]);
+		}
+	};
+
 	if (loading && isEditing) {
-		return <Container className="text-center text-(--col-text-main)">Loading...</Container>;
+		return <Loading />;
 	}
 
 	return (
-		<Container className={"flex flex-col gap-4 flex-1"}>
+		<div className="flex flex-col gap-4 flex-1">
 			<div className="w-full flex flex-col gap-4 p-4 rounded-xl border bg-(--col-bg-input-darker) border-(--col-border)">
 				<div className="flex flex-row items-center gap-3 w-full">
 					<Input
@@ -74,14 +91,7 @@ export default function QuizForm({ onSave, isEditing = false }) {
 					<select
 						className={`w-full p-3 rounded-xl border bg-(--col-bg-input) border-(--col-border) text-(--col-text-muted) font-bold text-xs lg:text-sm focus:ring-(--col-primary-glow) focus:border focus:border-(--col-primary) focus:ring-2 focus:ring-opacity-50 ${errors.tags ? "error" : ""}`}
 						value=""
-						onChange={(event) => {
-							const selectedTagText = event.target.value;
-							if (tags.length < 5)
-								editorActions.setTags([
-									...tags,
-									{ id: crypto.randomUUID(), text: selectedTagText },
-								]);
-						}}
+						onChange={handleTagChange}
 					>
 						<option value="" disabled>
 							Select a tag to add...
@@ -98,25 +108,21 @@ export default function QuizForm({ onSave, isEditing = false }) {
 
 					{tags.length > 0 && tags[0].text !== "" && (
 						<div className="flex flex-wrap gap-2 items-center mt-2 p-3 rounded-xl border border-dashed border-(--col-border) min-h-12.5">
-							{tags
-								.filter((tag) => tag.text !== "")
-								.map((tag) => (
-									<div
-										key={tag.id}
-										className="flex items-center gap-1 bg-(--col-bg-input-darker) px-3 py-1 rounded-full border border-(--col-border)"
+							{selectedTags(tags).map((tag) => (
+								<div
+									key={tag.id}
+									className="flex items-center gap-1 bg-(--col-bg-input-darker) px-3 py-1 rounded-full border border-(--col-border)"
+								>
+									<span className="text-xs lg:text-sm font-bold">{tag.text}</span>
+									<Button
+										onClick={() => editorActions.deleteTag(tag.id)}
+										className="bg-transparent text-red-500 font-bold px-1 hover:bg-transparent hover:text-red-700 shadow-none border-none p-0 ml-1"
+										title="Remove tag"
 									>
-										<span className="text-xs lg:text-sm font-bold">
-											{tag.text}
-										</span>
-										<Button
-											onClick={() => editorActions.deleteTag(tag.id)}
-											className="bg-transparent text-red-500 font-bold px-1 hover:bg-transparent hover:text-red-700 shadow-none border-none p-0 ml-1"
-											title="Remove tag"
-										>
-											x
-										</Button>
-									</div>
-								))}
+										x
+									</Button>
+								</div>
+							))}
 						</div>
 					)}
 				</div>
@@ -154,6 +160,6 @@ export default function QuizForm({ onSave, isEditing = false }) {
 				isAlert={true}
 				isDanger={true}
 			/>
-		</Container>
+		</div>
 	);
 }

@@ -5,12 +5,8 @@ export const QuizStatsCard = ({ passedCount }) => {
 
 	return (
 		<div className="bg-(--col-bg-card) border-(--col-border) text-(--col-text-main) shadow-2xl rounded-2xl p-6 flex items-center gap-5 border">
-			<div className="bg-(--col-bg-main) p-4 rounded-full flex items-center justify-center">
-				<img
-					src={galochkaIcon}
-					alt="Passed Quiz Icon"
-					className="w-10 h-10 object-contain"
-				/>
+			<div className="bg-(--col-bg-input) p-2 rounded-full flex items-center justify-center">
+				<img src={galochkaIcon} alt="Passed Quiz Icon" className="size-10 object-contain" />
 			</div>
 
 			<div className="flex flex-col">

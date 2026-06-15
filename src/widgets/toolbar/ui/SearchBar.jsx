@@ -8,7 +8,7 @@ export default function SearchBar({ searchTerm, onSearchChange, placeholder = "S
 			onChange={(e) => onSearchChange(e.target.value)}
 			image={searchIcon}
 			placeholder={placeholder}
-			className="w-full max-w-xs sm:max-w-sm lg:max-w-lg xl:max-w-xl p-4"
+			className="w-full p-4"
 		/>
 	);
 }

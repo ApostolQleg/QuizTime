@@ -71,3 +71,100 @@ export const QUIZ_TAGS = [
 	"Logic",
 	"Math",
 ];
+
+export const PROFILE_CONFIG = {
+	DEFAULT_THEME_COLOR: "#4f46e5",
+	AUTOSAVE_DELAY_MS: 1000,
+	NICKNAME_ROLL_DELAY_MS: 70,
+	AVATAR_FALLBACK_INITIAL: "?",
+	SAVE_STATUS_META: {
+		saved: {
+			label: "Saved",
+			className: "border-(--col-border) bg-(--col-bg-input-darker)/80 text-(--col-text-main)",
+		},
+		dirty: {
+			label: "Unsaved changes...",
+			className: "border-amber-400/30 bg-amber-400/10 text-amber-200",
+		},
+		saving: {
+			label: "Saving...",
+			className: "border-sky-400/30 bg-sky-400/10 text-sky-200",
+		},
+		invalid: {
+			label: "Invalid Name",
+			className: "border-(--col-fail)/30 bg-(--col-fail-bg) text-(--col-fail)",
+		},
+	},
+};
+
+export const PROFILE_SETTINGS_CONFIG = {
+	page: {
+		title: "Settings",
+		tabs: [
+			{ id: "all", label: "All" },
+			{ id: "profile", label: "Profile" },
+			{ id: "account", label: "Account" },
+			{ id: "security", label: "Security" },
+			{ id: "other", label: "Other" },
+		],
+	},
+	profile: {
+		title: "Profile Settings",
+		autosaveHint: "Changes are saved automatically after a short pause.",
+	},
+	nickname: {
+		label: "Nickname",
+		helpText: "Set your public name or roll a random one.",
+		placeholder: "Enter your nickname",
+		randomButtonLabel: {
+			idle: "Random",
+			rolling: "Rolling...",
+		},
+		successToast: "Nickname generated.",
+	},
+	themeColor: {
+		label: "Theme Color",
+		helpText: "This color styles your nickname and default avatar.",
+	},
+	avatar: {
+		label: "Avatar Customization",
+		helpText: "Choose how your profile picture looks to other users.",
+		options: {
+			google: "Google Photo",
+			generated: "Pure Color",
+		},
+		google: {
+			connectedLabel: "Active: synchronization with Google Profile Photo",
+			disconnectedTitle: "Connect Google Account",
+			disconnectedText: "Link your account to import your official Google photo.",
+			connectButtonText: "continue_with",
+		},
+		generated: {
+			activeLabel: "Active: styling using your Profile Theme Color",
+		},
+	},
+	session: {
+		title: "Session",
+		signedInAsPrefix: "Signed in as ",
+		fallbackName: "you",
+		helpText: "Log out on this device.",
+		buttonLabel: "Sign Out",
+	},
+	dangerZone: {
+		title: "Danger Zone",
+		changePassword: {
+			title: "Change Password",
+			helpText: "Update your password to keep your account secure.",
+			buttonLabel: "Change Password",
+		},
+		deleteAccount: {
+			title: "Delete Account",
+			helpText: "Permanently remove your account and all quiz results.",
+			buttonLabel: "Delete",
+			modalTitle: "Delete Account?",
+			modalMessage:
+				"Are you sure you want to delete your account? This action cannot be undone.",
+			modalConfirmLabel: "Yes",
+		},
+	},
+};

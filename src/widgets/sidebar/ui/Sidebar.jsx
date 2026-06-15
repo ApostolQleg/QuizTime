@@ -16,6 +16,7 @@ export default function Sidebar() {
 			<button
 				type="button"
 				onClick={close}
+				aria-label="Close sidebar"
 				className={`fixed z-50 top-0 left-0 w-screen h-screen bg-[rgba(2,6,23,0.2)] backdrop-blur-xs transition-opacity duration-300 ease-in-out ${
 					isOpened ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
 				}`}

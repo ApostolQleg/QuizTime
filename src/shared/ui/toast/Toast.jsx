@@ -5,27 +5,27 @@ import { useToastActions } from "./toastStore.js";
 
 const { TOAST_LIFETIME, TOAST_ANIM_TIME } = TOAST_CONFIG;
 
+const TOAST_STYLES = {
+	"--toast-lifetime": `${TOAST_LIFETIME}ms`,
+	"--toast-anim-duration": `${TOAST_ANIM_TIME}ms`,
+};
+
 export default function Toast({ id, message, image = systemIcon, isExiting }) {
 	const { dismissToast } = useToastActions();
-
-	const styles = {
-		"--toast-lifetime": `${TOAST_LIFETIME}ms`,
-		"--toast-anim-duration": `${TOAST_ANIM_TIME}ms`,
-	};
 
 	return (
 		<div
 			className={`pointer-events-auto relative flex items-start overflow-hidden rounded-xl border border-(--col-border) bg-(--col-bg-card) p-4 text-(--col-text-main) shadow-lg ${
 				isExiting ? "animate-toast-out" : "animate-toast-in"
 			}`}
-			style={styles}
+			style={TOAST_STYLES}
 		>
 			<div className="flex w-full items-start gap-3">
 				{image && (
 					<img
 						src={image}
 						alt="Toast"
-						className="h-8 w-8 shrink-0 rounded-md object-cover"
+						className="size-8 shrink-0 rounded-md object-cover"
 					/>
 				)}
 				<p className="flex-1 p-1 text-sm">{message}</p>

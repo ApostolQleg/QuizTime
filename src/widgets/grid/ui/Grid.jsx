@@ -1,0 +1,64 @@
+import { Link } from "react-router-dom";
+import QuizCard from "@/entities/quiz/ui/QuizCard.jsx";
+import ResultCard from "@/entities/result/ui/ResultCard.jsx";
+import addIcon from "@/shared/assets/plus.png";
+
+export default function Grid({ items, onLoadMore, emptyMessage, view, onCardClick }) {
+	const { loading, hasMore, isLoadingMore, showAddButton = false, isResultsPage = false } = view;
+
+	const CardComponent = isResultsPage ? ResultCard : QuizCard;
+
+	return (
+		<>
+			{(items.length > 0 || showAddButton || (!loading && items.length === 0)) && (
+				<div className="w-full grid gap-6 lg:gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 items-center justify-items-center mb-8">
+					{showAddButton && (
+						<Link to="/create" id={`quiz-add`} className="quiz-card group">
+							<img
+								src={addIcon}
+								alt="Add Quiz"
+								className="w-1/2 h-1/2 group-hover:rotate-90 transition-transform duration-300"
+							/>
+						</Link>
+					)}
+
+					{items.map((item) => (
+						<CardComponent
+							key={item._id}
+							item={item}
+							onClick={() => onCardClick(item)}
+						/>
+					))}
+
+					{!loading && items.length === 0 && (
+						<div
+							className={`
+                text-center text-(--col-text-main) py-4 w-full text-lg
+                ${
+					showAddButton
+						? "col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-5"
+						: "col-span-full"
+				}
+            `}
+						>
+							{emptyMessage}
+						</div>
+					)}
+				</div>
+			)}
+
+			{hasMore && items.length > 0 && (
+				<div className="flex justify-center pb-4">
+					<button
+						type="button"
+						onClick={onLoadMore}
+						disabled={isLoadingMore}
+						className="button px-8 py-3 text-lg"
+					>
+						{isLoadingMore ? "Loading..." : "Load More"}
+					</button>
+				</div>
+			)}
+		</>
+	);
+}

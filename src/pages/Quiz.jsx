@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthUserState } from "@/features/auth/hooks/useAuth.js";
 import { getQuizById } from "@/features/quiz/api/quizzes.api.js";
@@ -9,7 +9,7 @@ import {
 } from "@/features/quiz/stores/quizSessionStore.js";
 import { saveResult } from "@/features/result/api/results.api.js";
 import Button from "@/shared/ui/Button.jsx";
-import Container from "@/shared/ui/Container.jsx";
+import Loading from "@/shared/ui/Loading.jsx";
 import ModalConfirm from "@/shared/ui/ModalConfirm.jsx";
 import { useToastActions } from "@/shared/ui/toast/toastStore.js";
 
@@ -31,6 +31,8 @@ export default function Quiz() {
 	const { addToast } = useToastActions();
 	const currentQuizId = quizData?._id ?? quizId;
 
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
 	useEffect(() => {
 		resetSession();
 		setLoading(true);
@@ -51,7 +53,7 @@ export default function Quiz() {
 	}, [quizId, navigate, loadQuizForPlay, resetSession, setLoading]);
 
 	const handleSubmit = async () => {
-		if (!quizData) return;
+		if (!quizData || isSubmitting) return;
 
 		let allAnswered = true;
 		const newErrors = {};
@@ -65,6 +67,8 @@ export default function Quiz() {
 
 		setValidationErrors(newErrors);
 		if (!allAnswered) return;
+
+		setIsSubmitting(true);
 
 		let score = 0;
 
@@ -100,6 +104,7 @@ export default function Quiz() {
 			} catch (error) {
 				console.error("Save error", error);
 				setAlertInfo({ isOpen: true, message: "Failed to save result" });
+				setIsSubmitting(false);
 			}
 		} else {
 			const localResult = {
@@ -113,13 +118,13 @@ export default function Quiz() {
 	};
 
 	if (loading) {
-		return <Container className="text-center text-(--col-text-main)">Loading...</Container>;
+		return <Loading />;
 	}
 
 	if (!quizData) return null;
 
 	return (
-		<Container className="flex flex-col items-center gap-6">
+		<div className="flex flex-col items-center gap-6 w-full">
 			<div className="text-3xl font-bold text-center drop-shadow-md pb-2 border-b w-full text-(--col-text-accent) border-(--col-border)">
 				{quizData.title}
 			</div>
@@ -130,18 +135,23 @@ export default function Quiz() {
 				))}
 			</div>
 
-			<Button onClick={handleSubmit} className="w-full md:w-auto min-w-50 text-lg shadow-xl">
-				Submit
+			<Button
+				onClick={handleSubmit}
+				disabled={isSubmitting}
+				className="w-full md:w-auto min-w-50 text-lg shadow-xl"
+			>
+				{isSubmitting ? "Submitting..." : "Submit"}
 			</Button>
 
 			<ModalConfirm
 				isOpen={alertInfo.isOpen}
 				onClose={closeAlert}
+				onConfirm={closeAlert}
 				title="Ooops!"
 				message={alertInfo.message}
 				isAlert={true}
 				isDanger={true}
 			/>
-		</Container>
+		</div>
 	);
 }
